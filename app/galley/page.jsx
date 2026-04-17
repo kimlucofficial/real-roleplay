@@ -10,22 +10,30 @@ const images = [
 
 export default function GalleryPage() {
   return (
-    <div className="bg-black text-white min-h-screen px-6 py-20">
-      <h1 className="text-4xl font-bold mb-10">Gallery</h1>
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+  {images.map((src, i) => (
+    <div
+      key={i}
+      className="relative overflow-hidden rounded-2xl group border border-white/10"
+    >
+      <Image
+        src={src}
+        alt="gallery"
+        width={1200}
+        height={800}
+        className="w-full h-[300px] object-cover transition duration-500 group-hover:scale-110"
+      />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {images.map((src, i) => (
-          <div key={i} className="overflow-hidden rounded-2xl">
-            <Image
-              src={src}
-              alt="gallery"
-              width={1200}
-              height={800}
-              className="w-full h-[300px] object-cover hover:scale-105 transition"
-            />
-          </div>
-        ))}
+      {/* overlay */}
+      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition" />
+
+      {/* text */}
+      <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition">
+        <p className="text-sm text-white/80">Real Roleplay</p>
+        <h3 className="text-lg font-bold">City Life #{i + 1}</h3>
       </div>
     </div>
+  ))}
+</div>
   );
 }
