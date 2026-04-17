@@ -55,9 +55,9 @@ client.on("interactionCreate", async (interaction) => {
       await member.roles.add(process.env.WHITELIST_ROLE_ID);
 
       // DM user
-      await member.send(`✅ Bạn đã được duyệt whitelist\nLý do: ${reason}`);
+      await member.send(`✅ Bạn đã được duyệt whitelist \nFeedback: ${reason}`);
 
-      await interaction.editReply("✅ Approved + Role given");
+      await interaction.editReply("✅ Đã duyệt + Đã đưa role whitelist");
     }
 
     if (action === "reject") {
@@ -70,16 +70,16 @@ client.on("interactionCreate", async (interaction) => {
 
       await member.send(`❌ Bạn đã bị từ chối whitelist\nLý do: ${reason}`);
 
-      await interaction.editReply("❌ Rejected");
+      await interaction.editReply("❌ Từ chối whitelist + Đã gửi DM thông báo với lý do ${reason}");
     }
 
-    // 🔥 UPDATE MESSAGE (KHÓA NÚT + HIỆN NGƯỜI DUYỆT)
+    
 
     const original = interaction.message;
 
     await original.edit({
       components: [], // ❌ remove buttons
-      content: `✅ Processed by ${interaction.user.tag}\nReason: ${reason}`
+      content: `✅ Được duyệt bởi ${interaction.user.tag}\nFeedback: ${reason}`
     });
   }
 });
