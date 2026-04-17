@@ -7,10 +7,14 @@ import {
   ActionRowBuilder
 } from "discord.js";
 
+import { getDb } from "../lib/db.js";
+
+const db = getDb(); 
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildMembers
   ],
 });
 
