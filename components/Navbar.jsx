@@ -42,7 +42,7 @@ export default function Navbar({ page, setPage, mobileOpen, setMobileOpen, disco
             ))}
           </div>
 
-          <button className="nav-cta" onClick={() => setPage('whitelist')}>APPLY NOW</button>
+          <button className="nav-cta" onClick={() => setPage('whitelist')}>Whitelist</button>
           <button className="menu-btn" onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X size={18} /> : <Menu size={18} />}</button>
         </div>
         <div className={`mobile-nav ${mobileOpen ? 'show' : ''}`}>
