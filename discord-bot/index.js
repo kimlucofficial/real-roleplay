@@ -1,45 +1,75 @@
-import { Client, GatewayIntentBits } from "discord.js";
-import mysql from "mysql2/promise";
-
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-
-const db = await mysql.createConnection(process.env.DATABASE_URL);
-
-client.on("ready", () => {
-  console.log("Bot ready");
-});
+import {
+  Client,
+  GatewayIntentBits,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+  ActionRowBuilder
+} from "discord.js";
 
 client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isButton()) return;
+  if (interaction.isButton()) {
+    const [action, id, discordId] = interaction.customId.split("_");
 
-  await interaction.deferReply({ ephemeral: true }); // 🔥 THÊM DÒNG NÀY
+    const modal = new ModalBuilder()
+      .setCustomId(`${action}_${id}_${discordId}`)
+      .setTitle(action === "approve" ? "Approve Reason" : "Reject Reason");
 
-  const parts = interaction.customId.split("_");
+    const input = new TextInputBuilder()
+      .setCustomId("reason")
+      .setLabel("Nhập lý do")
+      .setStyle(TextInputStyle.Paragraph)
+      .setRequired(true);
 
-  if (parts[0] === "approve") {
-    const id = parts[1];
-    const discordId = parts[2];
+    modal.addComponents(new ActionRowBuilder().addComponents(input));
 
-    await db.execute(
-      "UPDATE whitelist_applications SET status='approved' WHERE id=?",
-      [id]
-    );
-
-    const member = await interaction.guild.members.fetch(discordId);
-    await member.roles.add(process.env.WHITELIST_ROLE_ID);
-
-    await interaction.editReply("✅ Approved + Role given");
+    await interaction.showModal(modal);
   }
 
-  if (parts[0] === "reject") {
-    const id = parts[1];
+  // submit modal
+  if (interaction.isModalSubmit()) {
+    const [action, id, discordId] = interaction.customId.split("_");
 
-    await db.execute(
-      "UPDATE whitelist_applications SET status='rejected' WHERE id=?",
-      [id]
-    );
+    const reason = interaction.fields.getTextInputValue("reason");
 
-    await interaction.editReply("❌ Rejected");
+    await interaction.deferReply({ ephemeral: true });
+
+    if (action === "approve") {
+      await db.execute(
+        "UPDATE whitelist_applications SET status='approved' WHERE id=?",
+        [id]
+      );
+
+      const member = await interaction.guild.members.fetch(discordId);
+      await member.roles.add(process.env.WHITELIST_ROLE_ID);
+
+      // DM user
+      await member.send(`✅ Bạn đã được duyệt whitelist\nLý do: ${reason}`);
+
+      await interaction.editReply("✅ Approved + Role given");
+    }
+
+    if (action === "reject") {
+      await db.execute(
+        "UPDATE whitelist_applications SET status='rejected' WHERE id=?",
+        [id]
+      );
+
+      const member = await interaction.guild.members.fetch(discordId);
+
+      await member.send(`❌ Bạn đã bị từ chối whitelist\nLý do: ${reason}`);
+
+      await interaction.editReply("❌ Rejected");
+    }
+
+    // 🔥 UPDATE MESSAGE (KHÓA NÚT + HIỆN NGƯỜI DUYỆT)
+
+    const original = interaction.message;
+
+    await original.edit({
+      components: [], // ❌ remove buttons
+      content: `✅ Processed by ${interaction.user.tag}\nReason: ${reason}`
+    });
   }
 });
 
