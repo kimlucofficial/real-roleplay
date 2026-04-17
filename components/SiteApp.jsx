@@ -108,7 +108,7 @@ function HomePage({ setPage, discordUrl }) {
 }
 
 function FeaturesPage() {
-  return <section className="section"><div className="container"><Label>Design language</Label><h2 className="section-title">Features</h2><div className="features-grid" style={{ marginTop: 28 }}>{features.map((item) => <div key={item.title} className="feature-card"><div className="content"><div className="card-title">{item.title}</div><div className="card-text">{item.text}</div></div></div>)}</div></div></section>;
+  return <section className="section"><div className="container"><Label></Label><h2 className="section-title">Features</h2><div className="features-grid" style={{ marginTop: 28 }}>{features.map((item) => <div key={item.title} className="feature-card"><div className="content"><div className="card-title">{item.title}</div><div className="card-text">{item.text}</div></div></div>)}</div></div></section>;
 }
 
 function WhitelistPage() {
@@ -215,11 +215,11 @@ function WhitelistPage() {
 }
 
 function UpdatePage() {
-  return <section className="section"><div className="container"><Label>City updates</Label><h2 className="section-title">Update</h2><div className="updates-grid" style={{ marginTop: 28 }}>{updates.map((item) => <div key={item.title} className="update-card"><div className="content"><div className="badge">{item.tag}</div><div className="card-title">{item.title}</div><div className="card-text">{item.text}</div><div className="update-link">Read more <ChevronRight size={16} /></div></div></div>)}</div></div></section>;
+  return <section className="section"><div className="container"><Label></Label><h2 className="section-title">Update</h2><div className="updates-grid" style={{ marginTop: 28 }}>{updates.map((item) => <div key={item.title} className="update-card"><div className="content"><div className="badge">{item.tag}</div><div className="card-title">{item.title}</div><div className="card-text">{item.text}</div><div className="update-link">Read more <ChevronRight size={16} /></div></div></div>)}</div></div></section>;
 }
 
 function PedPage() {
-  return <section className="section"><div className="container"><Label>Identity library</Label><h2 className="section-title">PED</h2><div className="ped-grid" style={{ marginTop: 28 }}>{pedCards.map((item, i) => <div key={item.name} className="ped-card"><div className={`ped-visual ${i === 0 ? 'ped-v1' : i === 1 ? 'ped-v2' : 'ped-v3'}`}></div><div className="content"><div className="card-title">{item.name}</div><div className="card-text">{item.text}</div></div></div>)}</div></div></section>;
+  return <section className="section"><div className="container"><Label></Label><h2 className="section-title">PED</h2><div className="ped-grid" style={{ marginTop: 28 }}>{pedCards.map((item, i) => <div key={item.name} className="ped-card"><div className={`ped-visual ${i === 0 ? 'ped-v1' : i === 1 ? 'ped-v2' : 'ped-v3'}`}></div><div className="content"><div className="card-title">{item.name}</div><div className="card-text">{item.text}</div></div></div>)}</div></div></section>;
 }
 
 function DiscordPage({ discordUrl }) {
