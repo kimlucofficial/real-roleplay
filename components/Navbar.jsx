@@ -5,7 +5,7 @@ import { Crown, Menu, X } from 'lucide-react';
 const nav = [
   { key: 'home', label: 'Trang chủ' },
   { key: 'features', label: 'Tính năng' },
-  { key: 'whitelist', label: 'Whitelist' },
+  { key: 'gallery', label: 'Gallery' },
   { key: 'update', label: 'Update' },
   { key: 'ped', label: 'PED' },
   { key: 'discord', label: 'Discord' }
