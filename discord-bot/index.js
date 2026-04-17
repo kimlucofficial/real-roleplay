@@ -7,6 +7,13 @@ import {
   ActionRowBuilder
 } from "discord.js";
 
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+  ],
+});
+
 client.on("interactionCreate", async (interaction) => {
   if (interaction.isButton()) {
     const [action, id, discordId] = interaction.customId.split("_");
