@@ -60,18 +60,35 @@ client.on("interactionCreate", async (interaction) => {
       await interaction.editReply("✅ Đã duyệt + Đã đưa role whitelist");
     }
 
-    if (action === "reject") {
-      await db.execute(
-        "UPDATE whitelist_applications SET status='rejected' WHERE id=?",
-        [id]
-      );
+   if (action === "reject") {
+  try {
+    await db.execute(
+      "UPDATE whitelist_applications SET status='rejected' WHERE id=?",
+      [id]
+    );
 
-      const member = await interaction.guild.members.fetch(discordId);
+    let member = null;
 
-      await member.send(`❌ Bạn đã bị từ chối whitelist\nLý do: ${reason}`);
-
-      await interaction.editReply("❌ Từ chối whitelist + Đã gửi DM thông báo với lý do ${reason}");
+    try {
+      member = await interaction.guild.members.fetch(discordId);
+    } catch (e) {
+      console.log("Không fetch được member");
     }
+
+    if (member) {
+      try {
+        await member.send(`❌ Bạn đã bị từ chối whitelist\nLý do: ${reason}`);
+      } catch (e) {
+        console.log("Không gửi được DM");
+      }
+    }
+
+    await interaction.editReply(`❌ Đã từ chối\nLý do: ${reason}`);
+  } catch (err) {
+    console.error(err);
+    await interaction.editReply("❌ Lỗi khi reject (check log)");
+  }
+}
 
     
 
