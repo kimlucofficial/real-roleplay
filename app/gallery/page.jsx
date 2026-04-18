@@ -3,71 +3,99 @@
 import Image from "next/image";
 import { useState } from "react";
 
-const images = [
-  "https://media.discordapp.net/attachments/1488117722658373743/1494671563553902592/3.png",
-  "https://media.discordapp.net/attachments/1488117722658373743/1494671563906351206/4.png",
-  "https://media.discordapp.net/attachments/1488117722658373743/1494671564266930258/5.png",
-  "https://media.discordapp.net/attachments/1488117722658373743/1494671564648743033/6.png",
-  "https://media.discordapp.net/attachments/1488117722658373743/1494671564971573358/7.png",
-  "https://media.discordapp.net/attachments/1488117722658373743/1494671565311316151/8.png"
+const scenes = [
+  {
+    title: "THE CITY BREATHES",
+    subtitle: "Where stories begin",
+    img: "/images/1.jpg",
+  },
+  {
+    title: "LAW VS CHAOS",
+    subtitle: "Every choice matters",
+    img: "/images/2.jpg",
+  },
+  {
+    title: "NIGHT LIFE",
+    subtitle: "The city never sleeps",
+    img: "/images/3.jpg",
+  },
+  {
+    title: "POWER & CONTROL",
+    subtitle: "Who runs the streets?",
+    img: "/images/4.jpg",
+  },
+  {
+    title: "THE STORY IS YOURS",
+    subtitle: "Write your legacy",
+    img: "/images/5.jpg",
+  },
 ];
 
 export default function GalleryPage() {
-  const [selected, setSelected] = useState(null);
+  const [active, setActive] = useState(null);
 
   return (
-    <div className="bg-black text-white min-h-screen px-6 py-20">
+    <div className="bg-black text-white">
 
-      {/* TITLE */}
-      <h1 className="text-5xl font-bold mb-12 text-center tracking-wider">
-        CITY GALLERY
-      </h1>
+      {/* HERO */}
+      <section className="h-screen flex items-center justify-center text-center px-6">
+        <div>
+          <h1 className="text-7xl font-black tracking-widest mb-6">
+            ENTER THE CITY
+          </h1>
+          <p className="text-white/50 max-w-xl mx-auto">
+            This is not a gallery. This is a glimpse into a living world.
+          </p>
+        </div>
+      </section>
 
-      {/* GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {images.map((src, i) => (
-          <div
-            key={i}
-            className="relative overflow-hidden rounded-2xl group cursor-pointer border border-white/10"
-            onClick={() => setSelected(src)}
-          >
-            <Image
-              src={src}
-              alt="gallery"
-              width={1200}
-              height={800}
-              className="w-full h-[300px] object-cover transition duration-500 group-hover:scale-110"
-            />
+      {/* SCENES */}
+      {scenes.map((scene, i) => (
+        <section
+          key={i}
+          className="h-screen relative flex items-end px-10 pb-20 group cursor-pointer"
+          onClick={() => setActive(scene.img)}
+        >
+          {/* IMAGE */}
+          <Image
+            src={scene.img}
+            fill
+            className="object-cover opacity-60 group-hover:opacity-80 transition duration-700 group-hover:scale-105"
+            alt=""
+          />
 
-            {/* OVERLAY */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition" />
+          {/* GRADIENT */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
 
-            {/* TEXT */}
-            <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition">
-              <p className="text-sm text-white/70">Real Roleplay</p>
-              <h3 className="text-lg font-bold">Scene #{i + 1}</h3>
-            </div>
+          {/* TEXT */}
+          <div className="relative z-10 max-w-2xl">
+            <h2 className="text-6xl font-black tracking-wider">
+              {scene.title}
+            </h2>
+            <p className="text-white/60 mt-4 text-lg">
+              {scene.subtitle}
+            </p>
           </div>
-        ))}
-      </div>
+        </section>
+      ))}
 
       {/* LIGHTBOX */}
-      {selected && (
+      {active && (
         <div
-          className="fixed inset-0 bg-black/90 backdrop-blur flex items-center justify-center z-50"
-          onClick={() => setSelected(null)}
+          className="fixed inset-0 bg-black/95 backdrop-blur flex items-center justify-center z-50"
+          onClick={() => setActive(null)}
         >
-          <div className="max-w-5xl w-full px-4">
+          <div className="max-w-6xl w-full px-4">
             <Image
-              src={selected}
-              alt="preview"
+              src={active}
               width={1600}
               height={1000}
-              className="w-full h-auto rounded-2xl shadow-2xl"
+              className="w-full h-auto rounded-xl shadow-2xl"
+              alt=""
             />
           </div>
         </div>
       )}
     </div>
   );
-}
+} 
