@@ -24,7 +24,10 @@ client.on("interactionCreate", async (interaction) => {
       const [action, id, discordId] = interaction.customId.split("_");
 
       const modal = new ModalBuilder()
-        .setCustomId(`${action}_${id}_${discordId}`)
+        // 🔥 lưu messageId để edit lại đúng message
+        .setCustomId(
+          `${action}_${id}_${discordId}_${interaction.message.id}`
+        )
         .setTitle(
           action === "approve" ? "Approve Reason" : "Reject Reason"
         );
@@ -44,7 +47,9 @@ client.on("interactionCreate", async (interaction) => {
     // MODAL SUBMIT
     // =========================
     if (interaction.isModalSubmit()) {
-      const [action, id, discordId] = interaction.customId.split("_");
+      const [action, id, discordId, messageId] =
+        interaction.customId.split("_");
+
       const reason = interaction.fields.getTextInputValue("reason");
 
       await interaction.deferReply({ ephemeral: true });
@@ -54,7 +59,7 @@ client.on("interactionCreate", async (interaction) => {
       // fetch member an toàn
       try {
         member = await interaction.guild.members.fetch(discordId);
-      } catch (e) {
+      } catch {
         console.log("Không fetch được member");
       }
 
@@ -70,7 +75,7 @@ client.on("interactionCreate", async (interaction) => {
         if (member) {
           try {
             await member.roles.add(process.env.WHITELIST_ROLE_ID);
-          } catch (e) {
+          } catch {
             console.log("Không add được role");
           }
 
@@ -113,7 +118,7 @@ client.on("interactionCreate", async (interaction) => {
               ],
             });
           } catch {
-            console.log("Không gửi được DM");
+            console.log("User tắt DM hoặc không gửi được");
           }
         }
 
@@ -121,24 +126,21 @@ client.on("interactionCreate", async (interaction) => {
       }
 
       // =========================
-      // UPDATE MESSAGE (LOCK BUTTON + LOG)
+      // UPDATE MESSAGE (REMOVE BUTTON)
       // =========================
-      const channel = interaction.channel;
-      const messages = await channel.messages.fetch({ limit: 10 });
+      try {
+        const msg = await interaction.channel.messages.fetch(messageId);
 
-      const target = messages.find((msg) =>
-        msg.content.includes(`ID: ${id}`)
-      );
-
-      if (target) {
-        await target.edit({
-          components: [], // remove buttons
+        await msg.edit({
+          components: [], // ❌ remove button
           content: `${
             action === "approve"
               ? "✅ Được duyệt"
               : "❌ Bị từ chối"
           } bởi ${interaction.user.tag}\nLý do: ${reason}`,
         });
+      } catch (e) {
+        console.log("Không edit được message:", e);
       }
     }
   } catch (err) {
