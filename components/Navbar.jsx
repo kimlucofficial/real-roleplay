@@ -1,5 +1,6 @@
 'use client';
 
+import Link from "next/link";
 import { Crown, Menu, X } from 'lucide-react';
 
 const nav = [
@@ -11,13 +12,12 @@ const nav = [
   { key: 'discord', label: 'Discord' }
 ];
 
-
-
 export default function Navbar({ page, setPage, mobileOpen, setMobileOpen, discordUrl }) {
   return (
     <div className="navbar-wrap">
       <div className="navbar">
         <div className="nav-inner">
+
           <button className="brand" onClick={() => setPage('home')}>
             <div className="brand-mark"><Crown size={18} /></div>
             <div>
@@ -27,42 +27,51 @@ export default function Navbar({ page, setPage, mobileOpen, setMobileOpen, disco
           </button>
 
           <div className="nav-links">
-            {nav.map((item) => (
-              <button
-                key={item.key}
-                className={`nav-link ${page === item.key ? 'active' : ''}`}
-                onClick={() => {
-                  if (item.key === 'discord') {
-                    window.open(discordUrl, '_blank', 'noopener,noreferrer');
-                  } else {
-                    setPage(item.key);
-                  }
-                }}
-              >
-                {item.label.toUpperCase()}
-              </button>
-            ))}
+            {nav.map((item) => {
+
+              // 👉 FIX GALLERY
+              if (item.key === 'gallery') {
+                return (
+                  <Link key={item.key} href="/gallery" className="nav-link">
+                    {item.label.toUpperCase()}
+                  </Link>
+                );
+              }
+
+              // 👉 DISCORD
+              if (item.key === 'discord') {
+                return (
+                  <button
+                    key={item.key}
+                    className="nav-link"
+                    onClick={() => window.open(discordUrl, '_blank')}
+                  >
+                    {item.label.toUpperCase()}
+                  </button>
+                );
+              }
+
+              // 👉 CÒN LẠI GIỮ NGUYÊN
+              return (
+                <button
+                  key={item.key}
+                  className={`nav-link ${page === item.key ? 'active' : ''}`}
+                  onClick={() => setPage(item.key)}
+                >
+                  {item.label.toUpperCase()}
+                </button>
+              );
+            })}
           </div>
 
-          <button className="nav-cta" onClick={() => setPage('whitelist')}>Whitelist</button>
-          <button className="menu-btn" onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X size={18} /> : <Menu size={18} />}</button>
-        </div>
-        <div className={`mobile-nav ${mobileOpen ? 'show' : ''}`}>
-          {nav.map((item) => (
-            <button
-              key={item.key}
-              onClick={() => {
-                if (item.key === 'discord') {
-                  window.open(discordUrl, '_blank', 'noopener,noreferrer');
-                } else {
-                  setPage(item.key);
-                }
-                setMobileOpen(false);
-              }}
-            >
-              {item.label.toUpperCase()}
-            </button>
-          ))}
+          {/* 👉 WHITELIST PAGE */}
+          <Link href="/whitelist" className="nav-cta">
+            Whitelist
+          </Link>
+
+          <button className="menu-btn" onClick={() => setMobileOpen(!mobileOpen)}>
+            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
         </div>
       </div>
     </div>
