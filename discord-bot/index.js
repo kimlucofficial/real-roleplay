@@ -100,30 +100,34 @@ client.on("interactionCreate", async (interaction) => {
       // =========================
       // REJECT
       // =========================
-      if (action === "reject") {
-        await db.execute(
-          "UPDATE whitelist_applications SET status='rejected' WHERE id=?",
-          [id]
-        );
+     if (action === "reject") {
+  await db.execute(
+    "UPDATE whitelist_applications SET status='rejected' WHERE id=?",
+    [id]
+  );
 
-        if (member) {
-          try {
-            await member.send({
-              embeds: [
-                {
-                  title: "❌ WHITELIST REJECTED",
-                  description: `Đơn của bạn đã bị từ chối.\n\n📌 Lý do:\n${reason}`,
-                  color: 0xff0000,
-                },
-              ],
-            });
-          } catch {
-            console.log("User tắt DM hoặc không gửi được");
-          }
-        }
+  try {
+    const user = await client.users.fetch(discordId);
 
-        await interaction.editReply(`❌ Đã từ chối\nLý do: ${reason}`);
-      }
+    try {
+      await user.send({
+        embeds: [
+          {
+            title: "❌ WHITELIST REJECTED",
+            description: `Đơn của bạn đã bị từ chối.\n\n📌 Lý do:\n${reason}`,
+            color: 0xff0000,
+          },
+        ],
+      });
+    } catch {
+      console.log("User tắt DM");
+    }
+  } catch {
+    console.log("Không fetch được user");
+  }
+
+  await interaction.editReply(`❌ Đã từ chối\nLý do: ${reason}`);
+}
 
       // =========================
       // UPDATE MESSAGE (REMOVE BUTTON)
