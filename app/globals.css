@@ -465,3 +465,19 @@ img { max-width: 100%; display: block; }
   .container { width: min(calc(100% - 20px), 1240px); }
   .nav-inner { padding: 14px 16px; }
 }
+
+@keyframes borderMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.animate-border {
+  background-size: 200% 200%;
+  animation: borderMove 4s linear infinite;
+  filter: blur(6px);
+  opacity: 0.7;
+}
