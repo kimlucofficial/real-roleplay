@@ -18,61 +18,68 @@ const scenes = [
     subtitle: "The city never sleeps",
     img: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30",
   },
-  {
-    title: "POWER & CONTROL",
-    subtitle: "Who runs the streets?",
-    img: "https://images.unsplash.com/photo-1508057198894-247b23fe5ade",
-  },
-  {
-    title: "THE STORY IS YOURS",
-    subtitle: "Write your legacy",
-    img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c",
-  },
 ];
 
 export default function GalleryPage() {
   const [active, setActive] = useState(null);
 
   return (
-    <div className="bg-black text-white">
+    <div className="bg-[#0a0a0a] text-white">
 
       {/* HERO */}
-      <section className="h-screen flex items-center justify-center text-center px-6">
-        <div>
-          <h1 className="text-7xl font-black tracking-widest mb-6">
-            ENTER THE CITY
+      <section className="h-screen flex items-center justify-center text-center px-6 relative">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1a1a1a,black)]" />
+        
+        <div className="relative z-10">
+          <h1 className="text-7xl font-black tracking-[0.2em] text-white">
+            GALLERY
           </h1>
-          <p className="text-white/50 max-w-xl mx-auto">
-            This is not a gallery. This is a cinematic experience.
+
+          <div className="h-[2px] w-32 mx-auto mt-6 bg-gradient-to-r from-yellow-400 to-orange-500" />
+
+          <p className="text-white/40 mt-6 max-w-xl mx-auto">
+            A cinematic look into the world of Real Roleplay.
           </p>
         </div>
       </section>
 
       {/* SCENES */}
-      {scenes.map((scene, i) => (
-        <section
-          key={i}
-          className="h-screen relative flex items-end px-10 pb-20 group cursor-pointer"
-          onClick={() => setActive(scene.img)}
-        >
-          {/* FIX: dùng img thay vì next/image */}
-          <img
-            src={scene.img}
-            className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition duration-700"
-          />
+      <div className="max-w-7xl mx-auto px-6 pb-32 space-y-32">
+        {scenes.map((scene, i) => (
+          <div
+            key={i}
+            className={`flex flex-col md:flex-row items-center gap-10 ${
+              i % 2 === 1 ? "md:flex-row-reverse" : ""
+            }`}
+          >
+            {/* IMAGE */}
+            <div
+              className="w-full md:w-1/2 relative group cursor-pointer"
+              onClick={() => setActive(scene.img)}
+            >
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-yellow-500/20 to-transparent opacity-0 group-hover:opacity-100 transition" />
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+              <img
+                src={scene.img}
+                className="rounded-2xl shadow-2xl object-cover w-full h-[350px] group-hover:scale-[1.03] transition duration-500"
+              />
+            </div>
 
-          <div className="relative z-10 max-w-2xl">
-            <h2 className="text-6xl font-black tracking-wider">
-              {scene.title}
-            </h2>
-            <p className="text-white/60 mt-4 text-lg">
-              {scene.subtitle}
-            </p>
+            {/* TEXT */}
+            <div className="w-full md:w-1/2">
+              <h2 className="text-4xl font-black tracking-wider">
+                {scene.title}
+              </h2>
+
+              <div className="h-[2px] w-16 bg-yellow-400 mt-4 mb-4" />
+
+              <p className="text-white/50 text-lg">
+                {scene.subtitle}
+              </p>
+            </div>
           </div>
-        </section>
-      ))}
+        ))}
+      </div>
 
       {/* LIGHTBOX */}
       {active && (
@@ -82,7 +89,7 @@ export default function GalleryPage() {
         >
           <img
             src={active}
-            className="max-w-6xl w-full rounded-xl shadow-2xl"
+            className="max-w-6xl w-full rounded-xl shadow-[0_0_60px_rgba(255,200,0,0.3)]"
           />
         </div>
       )}
