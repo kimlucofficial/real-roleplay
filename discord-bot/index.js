@@ -110,7 +110,7 @@ client.on("interactionCreate", async (interaction) => {
     const user = await client.users.fetch(discordId);
 
     try {
-      await user.send({
+      await member.send({
         embeds: [
           {
             title: "❌ WHITELIST REJECTED",
