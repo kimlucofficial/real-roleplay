@@ -142,8 +142,8 @@ function Hero({ setPage, discordUrl }) {
           <h1 className="hero-title">Law <span className="muted">vs</span><span style={{ display: 'block' }}>Chaos</span></h1>
           <p className="hero-body">Không phải một server. Đây là một thành phố bị xé đôi giữa trật tự và hỗn loạn. Ở đây, câu chuyện của bạn không bắt đầu bằng việc bấm chơi — nó bắt đầu từ việc được chấp nhận bước vào thành phố.</p>
           <div className="hero-actions">
-            <button className="btn-primary elite-primary" onClick={() => setPage('whitelist')}>REQUEST ACCESS <ArrowRight size={16} style={{ marginLeft: 8 }} /></button>
-            <button className="btn-secondary elite-secondary" onClick={() => setPage('intro')}>CITY STANDARD</button>
+            <button className="btn-primary elite-primary" onClick={() => setPage('whitelist')}>Nộp Đơn Whitelist <ArrowRight size={16} style={{ marginLeft: 8 }} /></button>
+            <button className="btn-secondary elite-secondary" onClick={() => setPage('intro')}>City Club</button>
           </div>
           <div className="stats">
             {[['3700+', 'người chơi trên toàn thành phố'], ['24/7', 'Thành phố không bao giờ ngủ'], ['100+', 'Jobs & identities']].map(([v, l]) => (
