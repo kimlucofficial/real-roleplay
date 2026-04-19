@@ -97,7 +97,7 @@ export default function Navbar({ page, setPage, mobileOpen, setMobileOpen, disco
           </div>
 
           <Link href="/whitelist" className="nav-cta">
-            Whitelist
+            Request Access
           </Link>
 
           <button className="menu-btn" onClick={() => setMobileOpen(!mobileOpen)}>
@@ -120,7 +120,7 @@ export default function Navbar({ page, setPage, mobileOpen, setMobileOpen, disco
           <button className={page === 'update' ? 'active' : ''} onClick={() => goTo('update')}>UPDATE</button>
           <button className={page === 'ped' ? 'active' : ''} onClick={() => goTo('ped')}>PED</button>
           <button onClick={() => window.open(discordUrl, '_blank', 'noopener,noreferrer')}>DISCORD</button>
-          <Link href="/whitelist" className="mobile-nav-cta">WHITELIST</Link>
+          <Link href="/whitelist" className="mobile-nav-cta">REQUEST ACCESS</Link>
         </div>
       </div>
     </div>

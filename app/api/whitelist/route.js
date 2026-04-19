@@ -3,6 +3,15 @@ import { authOptions } from '@/lib/auth';
 import { getDb } from '@/lib/db';
 import { sendWhitelistEmbed } from '@/lib/discord';
 
+function countWords(text = '') {
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+function validateWordRange(text) {
+  const words = countWords(text);
+  return words >= 50 && words <= 300;
+}
+
 export async function POST(req) {
   try {
     const session = await getServerSession(authOptions);
@@ -14,6 +23,20 @@ export async function POST(req) {
     const required = ['full_name','age','rp_experience','online_time','source','short_description','backstory','why_join'];
     for (const field of required) {
       if (!body[field]) return Response.json({ error: `Missing field: ${field}` }, { status: 400 });
+    }
+
+    if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(body.full_name.trim())) {
+      return Response.json({ error: 'Họ tên chỉ được chứa chữ.' }, { status: 400 });
+    }
+
+    if (!/^\d+$/.test(String(body.age)) || Number(body.age) < 16) {
+      return Response.json({ error: 'Tuổi phải là số hợp lệ và từ 16 trở lên.' }, { status: 400 });
+    }
+
+    for (const field of ['short_description', 'backstory', 'why_join']) {
+      if (!validateWordRange(body[field])) {
+        return Response.json({ error: 'Mô tả, tiểu sử và lý do tham gia phải từ 50 đến 300 chữ.' }, { status: 400 });
+      }
     }
 
     const db = getDb();

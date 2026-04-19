@@ -98,8 +98,8 @@ function Hero({ setPage, discordUrl }) {
           <h1 className="hero-title">Law <span className="muted">vs</span><span style={{ display: 'block' }}>Chaos</span></h1>
           <p className="hero-body">Không phải một server. Đây là một thành phố bị xé đôi giữa trật tự và hỗn loạn. Ở đây, câu chuyện của bạn không bắt đầu bằng việc bấm chơi — nó bắt đầu từ việc được chấp nhận bước vào thành phố.</p>
           <div className="hero-actions">
-            <button className="btn-primary" onClick={() => setPage('whitelist')}>APPLY FOR ACCESS <ArrowRight size={16} style={{ marginLeft: 8 }} /></button>
-            <button className="btn-secondary" onClick={() => window.open(discordUrl, '_blank', 'noopener,noreferrer')}>COMMUNITY</button>
+            <button className="btn-primary elite-primary" onClick={() => setPage('whitelist')}>REQUEST ACCESS <ArrowRight size={16} style={{ marginLeft: 8 }} /></button>
+            <button className="btn-secondary elite-secondary" onClick={() => setPage('intro')}>CITY STANDARD</button>
           </div>
           <div className="stats">
             {[['3700+', 'Players across the city'], ['24/7', 'City never sleeps'], ['100+', 'Jobs & identities']].map(([v, l]) => (
@@ -112,8 +112,8 @@ function Hero({ setPage, discordUrl }) {
           <Panel>
             <div className="panel-body hero-panel-body">
               <div>
-                <Label>Luke.ng program</Label>
-                <div className="section-title" style={{ marginTop: 12 }}>Whitelist is the Gate</div>
+                <Label>Private access</Label>
+                <div className="section-title" style={{ marginTop: 12 }}>Access defines the City</div>
               </div>
               <div className="panel-stack">
                 {[
@@ -126,8 +126,8 @@ function Hero({ setPage, discordUrl }) {
               </div>
               <div className="panel-highlight">
                 <div className="eyebrow" style={{ color: '#f4c53a' }}>Main action</div>
-                <div className="card-title" style={{ marginTop: 10 }}>Enter the City</div>
-                <div className="card-text" style={{ color: '#d4d4d8' }}>Không phải ai cũng vào được. Điều đó tạo ra giá trị cho community và cho chính câu chuyện của bạn.</div>
+                <div className="card-title" style={{ marginTop: 10 }}>Request Access</div>
+                <div className="card-text" style={{ color: '#d4d4d8' }}>Entry is reviewed manually. Một cánh cổng duy nhất giữ lại đúng người, đúng thái độ và đúng chất lượng cho thành phố.</div>
               </div>
             </div>
           </Panel>
@@ -148,7 +148,7 @@ function HomePage({ setPage, discordUrl }) {
               <Label>World pillars</Label>
               <h2 className="section-title">The City System</h2>
             </div>
-            <button className="btn-secondary" onClick={() => setPage('whitelist')}>GO TO WHITELIST</button>
+            <div className="badge elite-badge">PRIVATE ACCESS ONLY</div>
           </div>
           <div className="features-grid">
             {introCards.map((item, i) => {
@@ -198,22 +198,57 @@ function RulesPage({ type }) {
 
 function WhitelistPage() {
   const { data: session, status } = useSession();
-  const [form, setForm] = useState({ full_name: '', age: '', rp_experience: '', online_time: '', source: '', short_description: '', backstory: '', why_join: '' });
+  const [form, setForm] = useState({ full_name: '', age: '', rp_experience: '', online_time: '', source: 'Discord Community', short_description: '', backstory: '', why_join: '' });
+
+  const countWords = (text) => text.trim().split(/\s+/).filter(Boolean).length;
+
+  const restrictedFields = {
+    full_name: /[^a-zA-ZÀ-ỹ\s]/g,
+    age: /[^0-9]/g
+  };
+
+  const wordLimitedFields = new Set(['short_description', 'backstory', 'why_join']);
+
+  const getWordError = (value) => {
+    const words = countWords(value);
+    if (words === 0) return '';
+    if (words < 50) return 'Ít nhất 50 chữ';
+    if (words > 300) return 'Tối đa 300 chữ';
+    return '';
+  };
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
-  const onChange = (e) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const onChange = (e) => {
+    const { name, value } = e.target;
+
+    if (restrictedFields[name]) {
+      setForm((prev) => ({ ...prev, [name]: value.replace(restrictedFields[name], '') }));
+      return;
+    }
+
+    if (wordLimitedFields.has(name) && countWords(value) > 300) return;
+
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
 
   const submit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
+
+    const wordErrors = [form.short_description, form.backstory, form.why_join].map(getWordError).filter(Boolean);
+    if (wordErrors.length) {
+      setMessage('Mô tả, tiểu sử và lý do tham gia phải từ 50 đến 300 chữ.');
+      setLoading(false);
+      return;
+    }
     try {
       const res = await fetch('/api/whitelist', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Submit failed');
       setMessage('Đơn whitelist đã được gửi thành công.');
-      setForm({ full_name: '', age: '', rp_experience: '', online_time: '', source: '', short_description: '', backstory: '', why_join: '' });
+      setForm({ full_name: '', age: '', rp_experience: '', online_time: '', source: 'Discord Community', short_description: '', backstory: '', why_join: '' });
     } catch (err) {
       setMessage(err.message || 'Có lỗi xảy ra.');
     } finally {
@@ -223,8 +258,8 @@ function WhitelistPage() {
 
   return (
     <>
-      <PageHero eyebrow="Whitelist priority" title="Enter the City" description="Đây không phải một form bình thường. Nó phải giống một cánh cổng tuyển chọn, nơi những người chơi nghiêm túc chứng minh họ xứng đáng bước vào thế giới này." rightTitle="Admission Logic" rightItems={[['Staff Reviewed', 'Mỗi hồ sơ được đội ngũ kiểm tra thủ công.'], ['Story Driven', 'Tiểu sử nhân vật là trọng tâm của đơn xét duyệt.'], ['Quality Filter', 'Whitelist giữ nhịp roleplay và chất lượng cộng đồng.']]} rightNote="Những hồ sơ có câu chuyện rõ ràng, thái độ tốt và động cơ roleplay nghiêm túc sẽ luôn có giá trị hơn mọi thứ khác." accent="gold" />
-      <section className="section section-tight" style={{ position: 'relative' }}><div className="container whitelist-grid"><Panel><div className="panel-body"><Label>Admission note</Label><h2 className="section-title" style={{ marginTop: 12 }}>Before You Apply</h2><p className="section-sub" style={{ marginTop: 18 }}>Người được chấp nhận không chỉ là người trả lời đủ câu hỏi. Đó là người cho thấy mình hiểu roleplay, hiểu cộng đồng và có khả năng xây một nhân vật đáng nhớ.</p><div className="panel-stack">{[['Character First', 'Nhân vật cần có động lực, tính cách và mục tiêu rõ ràng.'], ['Serious Entry', 'Chỉ người chơi phù hợp mới được bước vào.'], ['Manual Review', 'Từng hồ sơ được xem xét cẩn thận thay vì auto accept.']].map(([a, b]) => <div className="info-tile" key={a}><div className="info-title">{a}</div><div className="info-text">{b}</div></div>)}</div></div></Panel><Panel><div className="panel-body"><div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: 16 }}><div><Label>Application form</Label><h3 className="section-title" style={{ fontSize: '2.6rem', marginTop: 12 }}>Submit Your Application</h3><p className="section-sub" style={{ marginTop: 12 }}>Trả lời nghiêm túc. Đây là lần đầu tiên thành phố đọc câu chuyện của bạn.</p></div><div className="badge"><BadgeCheck size={14} style={{ marginRight: 8 }} /> verified</div></div>{status !== 'authenticated' ? (<div className="form-note" style={{ marginTop: 24 }}>Bạn cần đăng nhập bằng Discord trước khi nộp whitelist.<div style={{ marginTop: 16 }}><button className="btn-primary" onClick={() => signIn('discord')}>LOGIN WITH DISCORD</button></div></div>) : (<><div className="form-note" style={{ marginTop: 24 }}>Đăng nhập với: <strong style={{ color: '#fff' }}>{session?.user?.globalName || session?.user?.name}</strong><button style={{ marginLeft: 12, border: 0, background: 'transparent', color: '#f4c53a', fontWeight: 700 }} onClick={() => signOut()}>Đổi tài khoản</button></div><form onSubmit={submit}><div className="form-grid-2" style={{ marginTop: 18 }}><input className="input" name="full_name" value={form.full_name} onChange={onChange} placeholder="Họ và tên" required /><input className="input" value={session?.user?.username || ''} disabled placeholder="Discord username" /></div><div className="form-grid-2" style={{ marginTop: 14 }}><input className="input" name="age" type="number" min="16" value={form.age} onChange={onChange} placeholder="Tuổi" required /><input className="input" name="rp_experience" value={form.rp_experience} onChange={onChange} placeholder="Kinh nghiệm roleplay" required /></div><div className="form-grid-2" style={{ marginTop: 14 }}><input className="input" name="online_time" value={form.online_time} onChange={onChange} placeholder="Khung giờ thường online" required /><input className="input" name="source" value={form.source} onChange={onChange} placeholder="Bạn biết đến server từ đâu?" required /></div><textarea className="textarea" style={{ marginTop: 14 }} name="short_description" value={form.short_description} onChange={onChange} placeholder="Mô tả ngắn về bạn: bạn thích kiểu roleplay nào, thái độ khi chơi và điều bạn muốn đóng góp cho cộng đồng." required /><textarea className="textarea long" style={{ marginTop: 14 }} name="backstory" value={form.backstory} onChange={onChange} placeholder="Tiểu sử nhân vật: quá khứ, mục tiêu, động lực, mối quan hệ, điểm mạnh - điểm yếu và cách nhân vật của bạn tồn tại trong thành phố." required /><textarea className="textarea" style={{ marginTop: 14 }} name="why_join" value={form.why_join} onChange={onChange} placeholder="Vì sao đội ngũ nên chấp nhận bạn? Hãy trả lời ngắn gọn nhưng đủ thuyết phục." required /><div className="form-note">Đơn whitelist sẽ được đội ngũ staff kiểm tra thủ công. Hãy coi đây là bước giới thiệu bản thân với thành phố, không chỉ là một form để điền cho xong.</div>{message && <div className="form-note" style={{ color: message.includes('thành công') ? '#fde68a' : '#fca5a5' }}>{message}</div>}<button type="submit" className="btn-full" disabled={loading} style={{ marginTop: 18 }}>{loading ? 'SUBMITTING...' : 'SUBMIT APPLICATION'}</button></form></>)}</div></Panel></div></section>
+      <PageHero eyebrow="Whitelist priority" title="Request Access" description="Đây là cánh cổng vào duy nhất của thành phố. Mọi hồ sơ đều đi qua cùng một luồng tuyển chọn: gọn, rõ và đủ tinh tế để giữ đúng chất lượng cộng đồng." rightTitle="Admission Logic" rightItems={[['Single Entry', 'Mọi hồ sơ đều đi qua một nguồn duy nhất: Discord Community.'], ['Story Driven', 'Tiểu sử nhân vật là trọng tâm của đơn xét duyệt.'], ['Manual Review', 'Mỗi hồ sơ được đội ngũ kiểm tra thủ công.']]} rightNote="Một cánh cổng duy nhất khiến whitelist trở thành đặc quyền, không còn là một nút bấm xuất hiện ở khắp nơi." accent="gold" />
+      <section className="section section-tight" style={{ position: 'relative' }}><div className="container whitelist-grid"><Panel><div className="panel-body"><Label>Admission note</Label><h2 className="section-title" style={{ marginTop: 12 }}>Before You Apply</h2><p className="section-sub" style={{ marginTop: 18 }}>Người được chấp nhận không chỉ là người trả lời đủ câu hỏi. Đó là người cho thấy mình hiểu roleplay, hiểu cộng đồng và có khả năng xây một nhân vật đáng nhớ.</p><div className="panel-stack">{[['Character First', 'Nhân vật cần có động lực, tính cách và mục tiêu rõ ràng.'], ['Serious Entry', 'Chỉ người chơi phù hợp mới được bước vào.'], ['Manual Review', 'Từng hồ sơ được xem xét cẩn thận thay vì auto accept.']].map(([a, b]) => <div className="info-tile" key={a}><div className="info-title">{a}</div><div className="info-text">{b}</div></div>)}</div></div></Panel><Panel><div className="panel-body"><div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: 16 }}><div><Label>Application form</Label><h3 className="section-title" style={{ fontSize: '2.6rem', marginTop: 12 }}>Submit Your Application</h3><p className="section-sub" style={{ marginTop: 12 }}>Trả lời nghiêm túc. Đây là lần đầu tiên thành phố đọc câu chuyện của bạn.</p></div><div className="badge"><BadgeCheck size={14} style={{ marginRight: 8 }} /> verified</div></div>{status !== 'authenticated' ? (<div className="form-note" style={{ marginTop: 24 }}>Bạn cần đăng nhập bằng Discord trước khi nộp whitelist.<div style={{ marginTop: 16 }}><button className="btn-primary" onClick={() => signIn('discord')}>LOGIN WITH DISCORD</button></div></div>) : (<><div className="form-note" style={{ marginTop: 24 }}>Đăng nhập với: <strong style={{ color: '#fff' }}>{session?.user?.globalName || session?.user?.name}</strong><button style={{ marginLeft: 12, border: 0, background: 'transparent', color: '#f4c53a', fontWeight: 700 }} onClick={() => signOut()}>Đổi tài khoản</button></div><form onSubmit={submit}><div className="form-grid-2" style={{ marginTop: 18 }}><input className="input" name="full_name" value={form.full_name} onChange={onChange} placeholder="Họ và tên" inputMode="text" required /><input className="input" value={session?.user?.username || ''} disabled placeholder="Discord username" /></div><div className="form-grid-2" style={{ marginTop: 14 }}><input className="input" name="age" type="text" inputMode="numeric" value={form.age} onChange={onChange} placeholder="Tuổi" required /><input className="input" name="rp_experience" value={form.rp_experience} onChange={onChange} placeholder="Kinh nghiệm roleplay" required /></div><div className="form-grid-2" style={{ marginTop: 14 }}><input className="input" name="online_time" value={form.online_time} onChange={onChange} placeholder="Khung giờ thường online" required /><div className="source-lock"><div className="eyebrow">Nguồn vào duy nhất</div><div className="source-lock-value">Discord Community</div><div className="source-lock-note">Whitelist hiện chỉ nhận hồ sơ từ một nguồn duy nhất để giữ luồng tuyển chọn rõ ràng.</div></div></div><input type="hidden" name="source" value={form.source} /><div className="field-wrap" style={{ marginTop: 14 }}><textarea className="textarea" name="short_description" value={form.short_description} onChange={onChange} placeholder="Mô tả ngắn về bạn: bạn thích kiểu roleplay nào, thái độ khi chơi và điều bạn muốn đóng góp cho cộng đồng." required /><div className="field-meta"><span>{countWords(form.short_description)} / 300 chữ</span><span>Tối thiểu 50 chữ</span></div>{getWordError(form.short_description) && <div className="field-error">{getWordError(form.short_description)}</div>}</div><div className="field-wrap" style={{ marginTop: 14 }}><textarea className="textarea long" name="backstory" value={form.backstory} onChange={onChange} placeholder="Tiểu sử nhân vật: quá khứ, mục tiêu, động lực, mối quan hệ, điểm mạnh - điểm yếu và cách nhân vật của bạn tồn tại trong thành phố." required /><div className="field-meta"><span>{countWords(form.backstory)} / 300 chữ</span><span>Tối thiểu 50 chữ</span></div>{getWordError(form.backstory) && <div className="field-error">{getWordError(form.backstory)}</div>}</div><div className="field-wrap" style={{ marginTop: 14 }}><textarea className="textarea" name="why_join" value={form.why_join} onChange={onChange} placeholder="Vì sao đội ngũ nên chấp nhận bạn? Hãy trả lời ngắn gọn nhưng đủ thuyết phục." required /><div className="field-meta"><span>{countWords(form.why_join)} / 300 chữ</span><span>Tối thiểu 50 chữ</span></div>{getWordError(form.why_join) && <div className="field-error">{getWordError(form.why_join)}</div>}</div><div className="form-note">Đơn whitelist sẽ được đội ngũ staff kiểm tra thủ công. Hãy coi đây là bước giới thiệu bản thân với thành phố, không chỉ là một form để điền cho xong.</div>{message && <div className="form-note" style={{ color: message.includes('thành công') ? '#fde68a' : '#fca5a5' }}>{message}</div>}<button type="submit" className="btn-full" disabled={loading} style={{ marginTop: 18 }}>{loading ? 'SUBMITTING...' : 'REQUEST ACCESS'}</button></form></>)}</div></Panel></div></section>
     </>
   );
 }
