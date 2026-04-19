@@ -146,7 +146,7 @@ function Hero({ setPage, discordUrl }) {
             <button className="btn-secondary elite-secondary" onClick={() => setPage('intro')}>CITY STANDARD</button>
           </div>
           <div className="stats">
-            {[['3700+', 'người chơi trên toàn thành phố'], ['24/7', 'Thành phố không bao giờ ngủ'], ['100+', 'Jobs & identities']].map(([v, l]) => (
+            {[['50+', 'Người chơi trên toàn thành phố'], ['24/7', 'Thành phố không bao giờ ngủ'], ['100+', 'Jobs & identities']].map(([v, l]) => (
               <div className="stat-box" key={l}><div className="stat-value">{v}</div><div className="stat-label">{l}</div></div>
             ))}
           </div>
