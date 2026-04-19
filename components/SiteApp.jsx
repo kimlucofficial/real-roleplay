@@ -30,15 +30,59 @@ const introCards = [
 ];
 
 const icRules = [
-  { title: 'Giữ logic nhân vật', text: 'Mọi quyết định IC phải xuất phát từ tính cách, hoàn cảnh và thông tin mà nhân vật thật sự có.' },
-  { title: 'Tôn trọng hậu quả', text: 'Hành động lớn phải kéo theo phản ứng tương xứng. Không có lựa chọn nào hoàn toàn miễn phí.' },
-  { title: 'Ưu tiên diễn xuất', text: 'Roleplay, đàm phán, căng thẳng và xây tình huống luôn có giá trị hơn việc đẩy mọi thứ thành combat vô nghĩa.' }
+  { title: 'Tôn trọng nhận thức của nhân vật', text: 'Chỉ hành động theo những gì nhân vật thật sự biết, thấy hoặc được kể lại một cách hợp lệ.' },
+  { title: 'Giữ động cơ và tính cách nhất quán', text: 'Mọi lựa chọn lớn phải phản ánh quá khứ, tham vọng, điểm mạnh và điểm yếu của nhân vật.' },
+  { title: 'Không ép tình huống vô lý', text: 'Không đẩy diễn biến đi quá nhanh hoặc quá cực đoan nếu bối cảnh chưa đủ thuyết phục.' },
+  { title: 'Tôn trọng hậu quả sau hành động', text: 'Mọi hành vi có rủi ro đều phải chấp nhận phản ứng từ pháp luật, cộng đồng hoặc đối thủ.' },
+  { title: 'Không powergaming', text: 'Không áp đặt kết quả hành động lên người khác và không biến roleplay thành thao tác một chiều.' , important: true},
+  { title: 'Không metagaming', text: 'Không sử dụng thông tin lấy từ Discord, stream, voice ngoài game hoặc OOC để dẫn dắt quyết định IC.', important: true },
+  { title: 'Không mix cảm xúc OOC vào IC', text: 'Mâu thuẫn ngoài đời không được phép làm thay đổi hành vi của nhân vật trong thành phố.' },
+  { title: 'Ưu tiên đối thoại trước leo thang', text: 'Khi bối cảnh cho phép, hãy để roleplay, thương lượng và tension dẫn chuyện trước bạo lực.' },
+  { title: 'Tôn trọng tuyến vai của người khác', text: 'Không cắt ngang hoặc phá vỡ arc của người chơi khác chỉ để giành spotlight ngắn hạn.' },
+  { title: 'Giữ nhịp độ tình huống hợp lý', text: 'Những tuyến lớn cần được xây theo lớp, tránh đốt giai đoạn hoặc đẩy conflict quá nhanh.' },
+  { title: 'Không abuse cơ chế để thắng IC', text: 'Cơ chế gameplay không được dùng như công cụ lách logic hoặc phá trải nghiệm câu chuyện.' },
+  { title: 'Bảo toàn giá trị rủi ro', text: 'Khi bước vào tình huống nguy hiểm, nhân vật phải cư xử như đang thật sự có thứ để mất.' },
+  { title: 'Tài sản và quyền lực phải có nguồn gốc', text: 'Xe, nhà, doanh nghiệp, quan hệ hoặc ảnh hưởng lớn cần được xây bằng roleplay hợp lý.' },
+  { title: 'Hợp tác khi có tuyến chung', text: 'Khi nhiều người cùng tham gia một kịch bản, cần giữ tính phối hợp để tình huống tròn và có nhịp.' },
+  { title: 'Không biến mọi việc thành combat', text: 'Bạo lực là một nhánh của roleplay, không phải đáp án mặc định cho mọi mâu thuẫn.' },
+  { title: 'Phản ứng theo mức độ thông tin', text: 'Chỉ được nghi ngờ, truy xét hoặc trả đũa ở mức phù hợp với chứng cứ mà nhân vật đang có.' },
+  { title: 'Tôn trọng không gian công cộng', text: 'Các hành vi phá phách, gây náo loạn hoặc lạm dụng phương tiện phải đi kèm nguy cơ bị xử lý IC.' },
+  { title: 'Giữ logic nghề nghiệp', text: 'Người làm luật, doanh nhân, dân thường hay tội phạm đều cần hành xử đúng với tuyến vai của mình.' },
+  { title: 'Mọi giao dịch phải có bối cảnh', text: 'Trao đổi tiền, hàng, dịch vụ hoặc thông tin cần diễn ra trong bối cảnh hợp lý và có diễn biến.' },
+  { title: 'Không lạm dụng việc quên ký ức', text: 'Mất trí nhớ, bỏ qua hậu quả hoặc chối bỏ tình huống chỉ được dùng khi có lý do IC chặt chẽ.' },
+  { title: 'Tôn trọng hiện trường và chứng cứ', text: 'Những vụ việc lớn nên để lại dấu vết, nhân chứng hoặc hệ quả thay vì tự biến mất vô lý.' },
+  { title: 'Giữ chuẩn nhập vai khi bị bắt giữ', text: 'Các tình huống kiểm tra, thẩm vấn, truy đuổi hoặc xét xử cần được roleplay đủ và không qua loa.' },
+  { title: 'Tôn trọng ranh giới năng lực nhân vật', text: 'Không tự biến nhân vật thành người giỏi mọi thứ nếu câu chuyện chưa từng xây điều đó.' },
+  { title: 'Xây quan hệ theo thời gian', text: 'Tin tưởng, thù hằn, liên minh hay phản bội đều nên được tích lũy bằng nhiều tương tác thực tế.' },
+  { title: 'Giữ giá trị danh tiếng', text: 'Tên tuổi của nhân vật trong thành phố phải đến từ hành vi lặp lại và ảnh hưởng được công nhận.' },
+  { title: 'Không lạm dụng danh nghĩa tổ chức', text: 'Factions, doanh nghiệp hay nhóm riêng không được dùng như lá chắn để né trách nhiệm cá nhân.' },
+  { title: 'Tôn trọng nhịp phục hồi sau sự kiện lớn', text: 'Sau những biến cố nặng, nhân vật cần thời gian phản ứng thay vì quay lại bình thường ngay lập tức.' },
+  { title: 'Chấp nhận thua khi câu chuyện đòi hỏi', text: 'Một nhân vật tốt không phải lúc nào cũng thắng; biết thua đúng lúc sẽ làm arc có giá trị hơn.', important: true },
+  { title: 'Giữ chất lượng trình bày IC', text: 'Tin nhắn, thoại, hành động và mô tả nên rõ ràng, có chủ đích và đủ để người khác bắt nhịp.' },
+  { title: 'Bảo vệ tính liên tục của thành phố', text: 'Hãy chơi như thể thành phố vẫn tiếp tục sống sau khi bạn rời khỏi màn hình, không chỉ tồn tại cho riêng bạn.' }
 ];
 
 const ocRules = [
-  { title: 'Không kéo OOC vào IC', text: 'Mâu thuẫn ngoài đời hoặc trong chat không được phép làm hỏng câu chuyện của nhân vật trong thành phố.' },
-  { title: 'Tôn trọng staff và người chơi', text: 'Góp ý văn minh, không toxic, không công kích cá nhân. Một community tốt bắt đầu từ thái độ tốt.' },
-  { title: 'Không lạm dụng meta', text: 'Thông tin lấy từ stream, Discord, voice ngoài game hoặc chat OOC không được dùng để ra quyết định IC.' }
+  { title: 'Tôn trọng staff và người chơi', text: 'Góp ý đúng mực, không công kích cá nhân và không tạo không khí độc hại trong cộng đồng.', important: true },
+  { title: 'Không kéo drama ngoài đời vào server', text: 'Mâu thuẫn cá nhân, chuyện riêng hoặc nhóm riêng không được làm ảnh hưởng trải nghiệm chung.' },
+  { title: 'Không phát tán thông tin sai lệch', text: 'Mọi thắc mắc về luật, án phạt hoặc quy trình nên xác minh với staff trước khi lan truyền.' },
+  { title: 'Không toxic trong chat hoặc voice', text: 'Cách giao tiếp bên ngoài nhân vật phải giữ được sự lịch sự và mức tôn trọng tối thiểu.' },
+  { title: 'Không quấy rối người chơi khác', text: 'Spam, bám đuôi OOC, gây áp lực hoặc xúc phạm lặp lại đều không được chấp nhận.', important: true },
+  { title: 'Không dùng thông tin OOC để dẫn IC', text: 'Những gì biết ngoài game không được phép trở thành lợi thế bên trong thành phố.', important: true },
+  { title: 'Tôn trọng quyết định điều hành', text: 'Nếu có tranh cãi, xử lý qua kênh hỗ trợ thay vì kéo đám đông hoặc gây náo loạn công khai.' },
+  { title: 'Không chia phe phá cộng đồng', text: 'Không tạo tâm lý bè phái, cô lập người khác hoặc kích động sự đối đầu ngoài phạm vi roleplay.' },
+  { title: 'Không lợi dụng bug hoặc lỗi hệ thống', text: 'Mọi lỗi phát hiện cần báo lại; việc khai thác bug để có lợi thế sẽ bị xử lý nặng.', important: true },
+  { title: 'Giữ văn hóa trao đổi trưởng thành', text: 'Bất đồng là bình thường, nhưng cách nói chuyện phải giữ tiêu chuẩn của một cộng đồng có chọn lọc.' },
+  { title: 'Không spam ticket hoặc staff', text: 'Hãy gom thông tin rõ ràng trước khi gửi để đội ngũ xử lý nhanh và chính xác hơn.' },
+  { title: 'Tôn trọng quyền riêng tư', text: 'Không tự ý phát tán hình ảnh, tin nhắn riêng hoặc thông tin cá nhân của người khác.' },
+  { title: 'Không mạo danh đội ngũ', text: 'Không sử dụng danh nghĩa staff, partner hoặc người có quyền hạn để dẫn dắt cộng đồng sai lệch.' },
+  { title: 'Không kích động bypass quy trình', text: 'Mọi whitelist, khiếu nại hoặc hỗ trợ đều đi theo luồng chính thức thay vì nhờ vả vòng ngoài.' },
+  { title: 'Tôn trọng kết quả xử lý', text: 'Nếu không đồng ý với quyết định, hãy kháng nghị đúng quy trình thay vì công kích công khai.' },
+  { title: 'Không lạm dụng ping hoặc mention', text: 'Việc gọi đích danh staff hoặc cộng đồng hàng loạt chỉ nên dùng khi thực sự cần thiết.' },
+  { title: 'Giữ môi trường giao tiếp sạch', text: 'Không đăng nội dung phản cảm, kích động hoặc làm giảm hình ảnh chung của server.' },
+  { title: 'Không chia sẻ công cụ trái phép', text: 'Script, cheat, exploit hoặc hướng dẫn lách luật tuyệt đối không được tồn tại trong cộng đồng.' },
+  { title: 'Tôn trọng thời gian phản hồi', text: 'Không phải mọi ticket đều được trả lời ngay; kiên nhẫn là một phần của văn hóa cộng đồng.' },
+  { title: 'Giữ uy tín khi đại diện cộng đồng', text: 'Khi xuất hiện ở nơi khác dưới tên server, bạn đang góp phần xây hoặc làm xấu đi hình ảnh chung.' }
 ];
 
 const updates = [
@@ -186,12 +230,67 @@ function RulesPage({ type }) {
   const ruleSet = type === 'oc' ? ocRules : icRules;
   const title = type === 'oc' ? 'Luật OC' : 'Luật IC';
   const eyebrow = type === 'oc' ? 'Out of character standards' : 'In character standards';
-  const description = type === 'oc' ? 'Luật OC bảo vệ chất lượng cộng đồng bên ngoài nhân vật: thái độ, ứng xử, meta và cách mọi người tôn trọng nhau khi xây một server lâu dài.' : 'Luật IC giữ cho thành phố có logic, có trọng lượng và có hậu quả. Nó là khung để mọi câu chuyện được diễn ra một cách đáng tin.';
+  const description = type === 'oc'
+    ? 'Luật OC giữ cho cộng đồng sạch, văn minh và có kỷ luật. Mục tiêu là bảo vệ trải nghiệm chung mà không làm mất chất premium của toàn bộ hệ thống.'
+    : 'Luật IC giữ cho thành phố có trọng lượng, logic và hậu quả. Cách trình bày được thiết kế để bạn đọc nhanh, nhớ lâu và vẫn giữ được cảm giác luxury của website.';
+  const importantRules = ruleSet.filter((item) => item.important).slice(0, 4);
 
   return (
     <>
-      <PageHero eyebrow={eyebrow} title={title} description={description} rightTitle={type === 'oc' ? 'Community Discipline' : 'Narrative Discipline'} rightItems={ruleSet.map((item) => [item.title, item.text])} rightNote={type === 'oc' ? 'OC tốt giữ community bền. IC tốt giữ thành phố sống.' : 'Mỗi luật tồn tại để câu chuyện có trọng lượng và để mọi quyết định đều có giá trị.'} accent={type === 'oc' ? 'red' : 'gold'} />
-      <section className="section section-tight"><div className="container rules-grid">{ruleSet.map((item, index) => (<div className="feature-card premium-card" key={item.title}><div className="content"><div className="rule-number">0{index + 1}</div><div className="card-title">{item.title}</div><div className="card-text">{item.text}</div></div></div>))}</div></section>
+      <PageHero
+        eyebrow={eyebrow}
+        title={title}
+        description={description}
+        rightTitle={type === 'oc' ? 'Community Discipline' : 'Narrative Discipline'}
+        rightItems={[
+          [type === 'oc' ? '20 rule capacity' : '30 rule capacity', type === 'oc' ? 'Layout chia 2 cột để đọc nhanh và không bị nặng mắt.' : 'Layout chia 3 cột để chứa nhiều luật mà vẫn giữ nhịp luxury.'],
+          ['Important notes', 'Các luật đặc biệt quan trọng được đánh dấu rõ để người đọc không bỏ sót.'],
+          ['Controlled palette', 'Giữ bảng màu tối, điểm vàng tinh tế thay vì nhiều màu game UI.']
+        ]}
+        rightNote={type === 'oc'
+          ? 'Important: ưu tiên sự văn minh, tôn trọng quy trình và bảo vệ trải nghiệm cộng đồng.'
+          : 'Important: ưu tiên logic nhân vật, không meta, không powergaming và luôn tôn trọng hậu quả.'}
+        accent={type === 'oc' ? 'red' : 'gold'}
+      />
+      <section className="section section-tight">
+        <div className="container rules-shell">
+          <div className="rules-topbar">
+            <div>
+              <Label>{type === 'oc' ? 'Community code' : 'City doctrine'}</Label>
+              <h2 className="section-title rules-title">{type === 'oc' ? 'Outside the Character' : 'Inside the Character'}</h2>
+              <p className="section-sub rules-sub">{type === 'oc' ? 'Thiết kế ưu tiên sự gọn gàng, tôn trọng và dễ rà soát khi số lượng luật tăng lên.' : 'Thiết kế này được dựng để bạn có thể mở rộng lên 30 luật IC mà vẫn giữ cảm giác gọn và cao cấp.'}</p>
+            </div>
+            <div className="rules-summary">
+              <div className="badge elite-badge">{ruleSet.length} RULES</div>
+              <div className="badge rules-important-badge">IMPORTANT NOTES INCLUDED</div>
+            </div>
+          </div>
+
+          {importantRules.length ? (
+            <div className="important-strip">
+              {importantRules.map((item) => (
+                <div className="important-chip" key={item.title}>
+                  <span className="important-label">IMPORTANT</span>
+                  <span className="important-text">{item.title}</span>
+                </div>
+              ))}
+            </div>
+          ) : null}
+
+          <div className={`rules-lux-grid ${type === 'oc' ? 'rules-lux-grid-oc' : 'rules-lux-grid-ic'}`}>
+            {ruleSet.map((item, index) => (
+              <div className="rule-lux-card" key={item.title}>
+                <div className="rule-lux-top">
+                  <div className="rule-lux-index">{String(index + 1).padStart(2, '0')}</div>
+                  {item.important ? <div className="rule-lux-tag">Important</div> : null}
+                </div>
+                <div className="rule-lux-title">{item.title}</div>
+                <div className="rule-lux-text">{item.text}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </>
   );
 }
@@ -209,10 +308,10 @@ function WhitelistPage() {
 
   const wordLimitedFields = new Set(['short_description', 'backstory', 'why_join']);
 
-  const getWordError = (value) => {
+  const getWordError = (value, minWords = 50) => {
     const words = countWords(value);
     if (words === 0) return '';
-    if (words < 50) return 'Ít nhất 50 chữ';
+    if (words < minWords) return `Ít nhất ${minWords} chữ`;
     if (words > 300) return 'Tối đa 300 chữ';
     return '';
   };
@@ -237,9 +336,13 @@ function WhitelistPage() {
     setLoading(true);
     setMessage('');
 
-    const wordErrors = [form.short_description, form.backstory, form.why_join].map(getWordError).filter(Boolean);
+    const wordErrors = [
+      getWordError(form.short_description, 50),
+      getWordError(form.backstory, 50),
+      getWordError(form.why_join, 30)
+    ].filter(Boolean);
     if (wordErrors.length) {
-      setMessage('Mô tả, tiểu sử và lý do tham gia phải từ 50 đến 300 chữ.');
+      setMessage('Mô tả phải từ 50 đến 300 chữ, tiểu sử phải từ 50 đến 300 chữ và phần vì sao phải từ 30 đến 300 chữ.');
       setLoading(false);
       return;
     }
@@ -259,7 +362,7 @@ function WhitelistPage() {
   return (
     <>
       <PageHero eyebrow="Whitelist priority" title="Request Access" description="Đây là cánh cổng vào duy nhất của thành phố. Mọi hồ sơ đều đi qua cùng một luồng tuyển chọn: gọn, rõ và đủ tinh tế để giữ đúng chất lượng cộng đồng." rightTitle="Admission Logic" rightItems={[['Single Entry', 'Mọi hồ sơ đều đi qua một nguồn duy nhất: Discord Community.'], ['Story Driven', 'Tiểu sử nhân vật là trọng tâm của đơn xét duyệt.'], ['Manual Review', 'Mỗi hồ sơ được đội ngũ kiểm tra thủ công.']]} rightNote="Một cánh cổng duy nhất khiến whitelist trở thành đặc quyền, không còn là một nút bấm xuất hiện ở khắp nơi." accent="gold" />
-      <section className="section section-tight" style={{ position: 'relative' }}><div className="container whitelist-grid"><Panel><div className="panel-body"><Label>Admission note</Label><h2 className="section-title" style={{ marginTop: 12 }}>Before You Apply</h2><p className="section-sub" style={{ marginTop: 18 }}>Người được chấp nhận không chỉ là người trả lời đủ câu hỏi. Đó là người cho thấy mình hiểu roleplay, hiểu cộng đồng và có khả năng xây một nhân vật đáng nhớ.</p><div className="panel-stack">{[['Character First', 'Nhân vật cần có động lực, tính cách và mục tiêu rõ ràng.'], ['Serious Entry', 'Chỉ người chơi phù hợp mới được bước vào.'], ['Manual Review', 'Từng hồ sơ được xem xét cẩn thận thay vì auto accept.']].map(([a, b]) => <div className="info-tile" key={a}><div className="info-title">{a}</div><div className="info-text">{b}</div></div>)}</div></div></Panel><Panel><div className="panel-body"><div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: 16 }}><div><Label>Application form</Label><h3 className="section-title" style={{ fontSize: '2.6rem', marginTop: 12 }}>Submit Your Application</h3><p className="section-sub" style={{ marginTop: 12 }}>Trả lời nghiêm túc. Đây là lần đầu tiên thành phố đọc câu chuyện của bạn.</p></div><div className="badge"><BadgeCheck size={14} style={{ marginRight: 8 }} /> verified</div></div>{status !== 'authenticated' ? (<div className="form-note" style={{ marginTop: 24 }}>Bạn cần đăng nhập bằng Discord trước khi nộp whitelist.<div style={{ marginTop: 16 }}><button className="btn-primary" onClick={() => signIn('discord')}>LOGIN WITH DISCORD</button></div></div>) : (<><div className="form-note" style={{ marginTop: 24 }}>Đăng nhập với: <strong style={{ color: '#fff' }}>{session?.user?.globalName || session?.user?.name}</strong><button style={{ marginLeft: 12, border: 0, background: 'transparent', color: '#f4c53a', fontWeight: 700 }} onClick={() => signOut()}>Đổi tài khoản</button></div><form onSubmit={submit}><div className="form-grid-2" style={{ marginTop: 18 }}><input className="input" name="full_name" value={form.full_name} onChange={onChange} placeholder="Họ và tên" inputMode="text" required /><input className="input" value={session?.user?.username || ''} disabled placeholder="Discord username" /></div><div className="form-grid-2" style={{ marginTop: 14 }}><input className="input" name="age" type="text" inputMode="numeric" value={form.age} onChange={onChange} placeholder="Tuổi" required /><input className="input" name="rp_experience" value={form.rp_experience} onChange={onChange} placeholder="Kinh nghiệm roleplay" required /></div><div className="form-grid-2" style={{ marginTop: 14 }}><input className="input" name="online_time" value={form.online_time} onChange={onChange} placeholder="Khung giờ thường online" required /><div className="source-lock"><div className="eyebrow">Nguồn vào duy nhất</div><div className="source-lock-value">Discord Community</div><div className="source-lock-note">Whitelist hiện chỉ nhận hồ sơ từ một nguồn duy nhất để giữ luồng tuyển chọn rõ ràng.</div></div></div><input type="hidden" name="source" value={form.source} /><div className="field-wrap" style={{ marginTop: 14 }}><textarea className="textarea" name="short_description" value={form.short_description} onChange={onChange} placeholder="Mô tả ngắn về bạn: bạn thích kiểu roleplay nào, thái độ khi chơi và điều bạn muốn đóng góp cho cộng đồng." required /><div className="field-meta"><span>{countWords(form.short_description)} / 300 chữ</span><span>Tối thiểu 50 chữ</span></div>{getWordError(form.short_description) && <div className="field-error">{getWordError(form.short_description)}</div>}</div><div className="field-wrap" style={{ marginTop: 14 }}><textarea className="textarea long" name="backstory" value={form.backstory} onChange={onChange} placeholder="Tiểu sử nhân vật: quá khứ, mục tiêu, động lực, mối quan hệ, điểm mạnh - điểm yếu và cách nhân vật của bạn tồn tại trong thành phố." required /><div className="field-meta"><span>{countWords(form.backstory)} / 300 chữ</span><span>Tối thiểu 50 chữ</span></div>{getWordError(form.backstory) && <div className="field-error">{getWordError(form.backstory)}</div>}</div><div className="field-wrap" style={{ marginTop: 14 }}><textarea className="textarea" name="why_join" value={form.why_join} onChange={onChange} placeholder="Vì sao đội ngũ nên chấp nhận bạn? Hãy trả lời ngắn gọn nhưng đủ thuyết phục." required /><div className="field-meta"><span>{countWords(form.why_join)} / 300 chữ</span><span>Tối thiểu 50 chữ</span></div>{getWordError(form.why_join) && <div className="field-error">{getWordError(form.why_join)}</div>}</div><div className="form-note">Đơn whitelist sẽ được đội ngũ staff kiểm tra thủ công. Hãy coi đây là bước giới thiệu bản thân với thành phố, không chỉ là một form để điền cho xong.</div>{message && <div className="form-note" style={{ color: message.includes('thành công') ? '#fde68a' : '#fca5a5' }}>{message}</div>}<button type="submit" className="btn-full" disabled={loading} style={{ marginTop: 18 }}>{loading ? 'SUBMITTING...' : 'REQUEST ACCESS'}</button></form></>)}</div></Panel></div></section>
+      <section className="section section-tight" style={{ position: 'relative' }}><div className="container whitelist-grid"><Panel><div className="panel-body"><Label>Admission note</Label><h2 className="section-title" style={{ marginTop: 12 }}>Before You Apply</h2><p className="section-sub" style={{ marginTop: 18 }}>Người được chấp nhận không chỉ là người trả lời đủ câu hỏi. Đó là người cho thấy mình hiểu roleplay, hiểu cộng đồng và có khả năng xây một nhân vật đáng nhớ.</p><div className="panel-stack">{[['Character First', 'Nhân vật cần có động lực, tính cách và mục tiêu rõ ràng.'], ['Serious Entry', 'Chỉ người chơi phù hợp mới được bước vào.'], ['Manual Review', 'Từng hồ sơ được xem xét cẩn thận thay vì auto accept.']].map(([a, b]) => <div className="info-tile" key={a}><div className="info-title">{a}</div><div className="info-text">{b}</div></div>)}</div></div></Panel><Panel><div className="panel-body"><div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: 16 }}><div><Label>Application form</Label><h3 className="section-title" style={{ fontSize: '2.6rem', marginTop: 12 }}>Submit Your Application</h3><p className="section-sub" style={{ marginTop: 12 }}>Trả lời nghiêm túc. Đây là lần đầu tiên thành phố đọc câu chuyện của bạn.</p></div><div className="badge"><BadgeCheck size={14} style={{ marginRight: 8 }} /> verified</div></div>{status !== 'authenticated' ? (<div className="form-note" style={{ marginTop: 24 }}>Bạn cần đăng nhập bằng Discord trước khi nộp whitelist.<div style={{ marginTop: 16 }}><button className="btn-primary" onClick={() => signIn('discord')}>LOGIN WITH DISCORD</button></div></div>) : (<><div className="form-note" style={{ marginTop: 24 }}>Đăng nhập với: <strong style={{ color: '#fff' }}>{session?.user?.globalName || session?.user?.name}</strong><button style={{ marginLeft: 12, border: 0, background: 'transparent', color: '#f4c53a', fontWeight: 700 }} onClick={() => signOut()}>Đổi tài khoản</button></div><form onSubmit={submit}><div className="form-grid-2" style={{ marginTop: 18 }}><input className="input" name="full_name" value={form.full_name} onChange={onChange} placeholder="Họ và tên" inputMode="text" required /><input className="input" value={session?.user?.username || ''} disabled placeholder="Discord username" /></div><div className="form-grid-2" style={{ marginTop: 14 }}><input className="input" name="age" type="text" inputMode="numeric" value={form.age} onChange={onChange} placeholder="Tuổi" required /><input className="input" name="rp_experience" value={form.rp_experience} onChange={onChange} placeholder="Kinh nghiệm roleplay" required /></div><div className="form-grid-2" style={{ marginTop: 14 }}><input className="input" name="online_time" value={form.online_time} onChange={onChange} placeholder="Khung giờ thường online" required /><div className="source-lock"><div className="eyebrow">Nguồn vào duy nhất</div><div className="source-lock-value">Discord Community</div><div className="source-lock-note">Whitelist hiện chỉ nhận hồ sơ từ một nguồn duy nhất để giữ luồng tuyển chọn rõ ràng.</div></div></div><input type="hidden" name="source" value={form.source} /><div className="field-wrap" style={{ marginTop: 14 }}><textarea className="textarea" name="short_description" value={form.short_description} onChange={onChange} placeholder="Mô tả ngắn về bạn: bạn thích kiểu roleplay nào, thái độ khi chơi và điều bạn muốn đóng góp cho cộng đồng." required /><div className="field-meta"><span>{countWords(form.short_description)} / 300 chữ</span><span>Tối thiểu 50 chữ</span></div>{getWordError(form.short_description) && <div className="field-error">{getWordError(form.short_description)}</div>}</div><div className="field-wrap" style={{ marginTop: 14 }}><textarea className="textarea long" name="backstory" value={form.backstory} onChange={onChange} placeholder="Tiểu sử nhân vật: quá khứ, mục tiêu, động lực, mối quan hệ, điểm mạnh - điểm yếu và cách nhân vật của bạn tồn tại trong thành phố." required /><div className="field-meta"><span>{countWords(form.backstory)} / 300 chữ</span><span>Tối thiểu 50 chữ</span></div>{getWordError(form.backstory) && <div className="field-error">{getWordError(form.backstory)}</div>}</div><div className="field-wrap" style={{ marginTop: 14 }}><textarea className="textarea" name="why_join" value={form.why_join} onChange={onChange} placeholder="Vì sao đội ngũ nên chấp nhận bạn? Hãy trả lời ngắn gọn nhưng đủ thuyết phục." required /><div className="field-meta"><span>{countWords(form.why_join)} / 300 chữ</span><span>Tối thiểu 30 chữ</span></div>{getWordError(form.why_join, 30) && <div className="field-error">{getWordError(form.why_join, 30)}</div>}</div><div className="form-note">Đơn whitelist sẽ được đội ngũ staff kiểm tra thủ công. Hãy coi đây là bước giới thiệu bản thân với thành phố, không chỉ là một form để điền cho xong.</div>{message && <div className="form-note" style={{ color: message.includes('thành công') ? '#fde68a' : '#fca5a5' }}>{message}</div>}<button type="submit" className="btn-full" disabled={loading} style={{ marginTop: 18 }}>{loading ? 'SUBMITTING...' : 'REQUEST ACCESS'}</button></form></>)}</div></Panel></div></section>
     </>
   );
 }

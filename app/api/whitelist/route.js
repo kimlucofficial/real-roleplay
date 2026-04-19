@@ -7,9 +7,9 @@ function countWords(text = '') {
   return text.trim().split(/\s+/).filter(Boolean).length;
 }
 
-function validateWordRange(text) {
+function validateWordRange(text, minWords = 50) {
   const words = countWords(text);
-  return words >= 50 && words <= 300;
+  return words >= minWords && words <= 300;
 }
 
 export async function POST(req) {
@@ -33,10 +33,8 @@ export async function POST(req) {
       return Response.json({ error: 'Tuổi phải là số hợp lệ và từ 16 trở lên.' }, { status: 400 });
     }
 
-    for (const field of ['short_description', 'backstory', 'why_join']) {
-      if (!validateWordRange(body[field])) {
-        return Response.json({ error: 'Mô tả, tiểu sử và lý do tham gia phải từ 50 đến 300 chữ.' }, { status: 400 });
-      }
+    if (!validateWordRange(body.short_description, 50) || !validateWordRange(body.backstory, 50) || !validateWordRange(body.why_join, 30)) {
+      return Response.json({ error: 'Mô tả phải từ 50 đến 300 chữ, tiểu sử phải từ 50 đến 300 chữ và phần vì sao phải từ 30 đến 300 chữ.' }, { status: 400 });
     }
 
     const db = getDb();
