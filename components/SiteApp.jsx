@@ -194,6 +194,7 @@ function Hero({ setPage, discordUrl }) {
 }
 
 
+
 function EditorialDeck() {
   return (
     <section className="section editorial-flow">
@@ -205,24 +206,27 @@ function EditorialDeck() {
           </div>
           <div className="badge elite-badge">8 CURATED VISUALS</div>
         </div>
-        <div className="editorial-stack">
+
+        <div className="editorial-grid">
           {editorialDeck.map((item, index) => (
             <motion.div
               key={item.src}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.55, delay: index * 0.04 }}
-              className={`editorial-card editorial-card-${(index % 3) + 1}`}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.45, delay: index * 0.04 }}
+              className="editorial-card-grid"
             >
-              <div className="editorial-image-wrap">
-                <img src={item.src} alt={item.eyebrow} className="editorial-image" loading="lazy" />
+              <div className="editorial-image-wrap small">
+                <img src={item.src} alt={item.eyebrow} className="editorial-image editorial-image-grid" loading="lazy" />
+                <div className="editorial-overlay">
+                  <div className="editorial-overlay-top">
+                    <div className="editorial-eyebrow">{item.eyebrow}</div>
+                    <div className="editorial-count">{String(index + 1).padStart(2, '0')}</div>
+                  </div>
+                  <p className="editorial-note-grid">{item.note}</p>
+                </div>
               </div>
-              <div className="editorial-meta">
-                <div className="editorial-eyebrow">{item.eyebrow}</div>
-                <div className="editorial-count">{String(index + 1).padStart(2, '0')}</div>
-              </div>
-              <p className="editorial-note">{item.note}</p>
             </motion.div>
           ))}
         </div>
