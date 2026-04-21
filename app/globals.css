@@ -183,3 +183,63 @@ img { max-width: 100%; display: block; }
 .rule-lux-text { margin-top: 14px; color: var(--muted); font-size: 14px; line-height: 1.8; max-width: 42ch; }
 @media (max-width: 1100px) { .important-strip { grid-template-columns: repeat(2, minmax(0,1fr)); } .rules-lux-grid-ic, .rules-lux-grid-oc { grid-template-columns: repeat(2, minmax(0,1fr)); } }
 @media (max-width: 860px) { .rules-topbar { align-items: start; flex-direction: column; } .important-strip, .rules-lux-grid-ic, .rules-lux-grid-oc { grid-template-columns: 1fr; } }
+
+
+.editorial-flow { padding-top: 6px; }
+.editorial-head { margin-bottom: 22px; }
+.editorial-stack { display: grid; gap: 28px; }
+.editorial-card {
+  position: relative;
+  max-width: 1180px;
+  margin: 0 auto;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(212,163,115,.14);
+  background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+  box-shadow: 0 34px 90px rgba(0,0,0,.38);
+  backdrop-filter: blur(14px);
+}
+.editorial-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 70%, rgba(0,0,0,.46));
+  pointer-events: none;
+}
+.editorial-card-1 { max-width: 1220px; }
+.editorial-card-2 { max-width: 1100px; }
+.editorial-card-3 { max-width: 1160px; }
+.editorial-image-wrap { position: relative; background: #090909; }
+.editorial-image { width: 100%; height: auto; display: block; }
+.editorial-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 22px 0;
+  position: relative;
+  z-index: 1;
+}
+.editorial-eyebrow,
+.editorial-count {
+  color: rgba(255,255,255,.5);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+}
+.editorial-count { color: rgba(246,221,178,.8); }
+.editorial-note {
+  position: relative;
+  z-index: 1;
+  margin: 10px 22px 22px;
+  color: #b8bcc6;
+  font-size: 14px;
+  line-height: 1.75;
+  max-width: 720px;
+}
+@media (max-width: 860px) {
+  .editorial-card { border-radius: 22px; }
+  .editorial-meta { padding: 14px 16px 0; }
+  .editorial-note { margin: 8px 16px 16px; font-size: 13px; }
+}
