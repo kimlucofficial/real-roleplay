@@ -1,4 +1,4 @@
-.cinematic {
+.ultra-cinematic {
   position: relative;
   height: 100vh;
   overflow: hidden;
@@ -14,48 +14,79 @@
   animation: fade 18s infinite;
 }
 
-.bg.chess { background-image: url('/cinematic/1.jpg'); animation-delay: 0s; }
-.bg.puppet { background-image: url('/cinematic/2.jpg'); animation-delay: 6s; }
-.bg.chaos { background-image: url('/cinematic/3.jpg'); animation-delay: 12s; }
+.layer1 { background-image: url('/cinematic/1.jpg'); animation-delay: 0s;}
+.layer2 { background-image: url('/cinematic/2.jpg'); animation-delay: 6s;}
+.layer3 { background-image: url('/cinematic/3.jpg'); animation-delay: 12s;}
 
 @keyframes fade {
-  0% { opacity: 0; }
-  10% { opacity: 0.2; }
-  30% { opacity: 0.2; }
-  40% { opacity: 0; }
-  100% { opacity: 0; }
+  0% {opacity:0;}
+  10% {opacity:0.25;}
+  30% {opacity:0.25;}
+  40% {opacity:0;}
+  100% {opacity:0;}
 }
 
-.cinematic::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.95));
+.ultra-cinematic::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background: radial-gradient(circle, rgba(255,255,255,0.05), transparent),
+              linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.95));
 }
 
 .content {
   position: relative;
-  z-index: 2;
-  max-width: 900px;
-  margin: auto;
-  top: 50%;
-  transform: translateY(-50%);
-  text-align: center;
-  color: white;
+  z-index:2;
+  max-width:700px;
+  margin:auto;
+  top:50%;
+  transform:translateY(-50%);
+  text-align:center;
+  color:white;
+  opacity:0;
+  transition:1s;
 }
 
-.content h1 {
-  font-size: 64px;
-  margin-bottom: 20px;
+.content.show {
+  opacity:1;
 }
 
-.content p {
-  opacity: 0.8;
-  margin-bottom: 12px;
+h1 {
+  font-size:72px;
+  line-height:0.95;
+  letter-spacing:-1px;
+  text-shadow:0 0 40px rgba(255,255,255,0.1);
+}
+
+.line {
+  opacity:0;
+  animation: fadeIn 1s forwards;
+}
+
+.line:nth-child(2){animation-delay:0.6s;}
+.line:nth-child(3){animation-delay:1.2s;}
+.line:nth-child(4){animation-delay:1.8s;}
+
+@keyframes fadeIn {
+  to {opacity:0.8;}
 }
 
 .highlight {
-  margin-top: 20px;
-  font-weight: bold;
-  letter-spacing: 1px;
+  margin-top:20px;
+  font-weight:bold;
+}
+
+.cta {
+  margin-top:30px;
+  padding:12px 28px;
+  border-radius:30px;
+  background:#d4a96a;
+  color:black;
+  border:none;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.cta:hover {
+  transform:scale(1.05);
 }

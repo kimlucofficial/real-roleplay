@@ -1,28 +1,35 @@
 "use client";
+import { useEffect, useState } from "react";
 
 export default function IntroCinematic() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setVisible(true), 300);
+  }, []);
+
   return (
-    <section className="cinematic">
-      <div className="bg chess"></div>
-      <div className="bg puppet"></div>
-      <div className="bg chaos"></div>
+    <section className="ultra-cinematic">
+      <div className="bg layer1"></div>
+      <div className="bg layer2"></div>
+      <div className="bg layer3"></div>
 
-      <div className="content">
-        <h1>CONTROL. CONSEQUENCE. POWER.</h1>
+      <div className={`content ${visible ? "show" : ""}`}>
+        <h1>
+          CONTROL.<br/>
+          CONSEQUENCE.<br/>
+          POWER.
+        </h1>
 
-        <p>
-          Đây không phải là một thành phố dễ sống. Mỗi lựa chọn đều mang theo hệ quả.
-          Mỗi hành động đều được ghi nhớ.
-        </p>
-
-        <p>
-          Quyền lực không đến từ may mắn — mà từ cách bạn kiểm soát cuộc chơi.
-          Bạn có thể xây dựng trật tự, hoặc trở thành một phần của hỗn loạn.
-        </p>
+        <p className="line">Đây không phải là một thành phố dễ sống.</p>
+        <p className="line">Mỗi lựa chọn đều mang theo hệ quả.</p>
+        <p className="line">Mỗi hành động đều được ghi nhớ.</p>
 
         <p className="highlight">
           Một khi đã bước vào — không có đường quay lại.
         </p>
+
+        <button className="cta">ENTER THE CITY</button>
       </div>
     </section>
   );
