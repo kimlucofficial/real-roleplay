@@ -1,92 +1,82 @@
-.ultra-cinematic {
+.ultra2 {
   position: relative;
   height: 100vh;
   overflow: hidden;
   background: black;
 }
 
-.bg {
+.bg-wrapper {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
+}
+
+.bg-wrapper img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   opacity: 0;
-  animation: fade 18s infinite;
+  transition: opacity 1.5s ease;
 }
 
-.layer1 { background-image: url('/cinematic/1.jpg'); animation-delay: 0s;}
-.layer2 { background-image: url('/cinematic/2.jpg'); animation-delay: 6s;}
-.layer3 { background-image: url('/cinematic/3.jpg'); animation-delay: 12s;}
-
-@keyframes fade {
-  0% {opacity:0;}
-  10% {opacity:0.25;}
-  30% {opacity:0.25;}
-  40% {opacity:0;}
-  100% {opacity:0;}
+.bg-wrapper img.active {
+  opacity: 0.35;
 }
 
-.ultra-cinematic::after {
-  content:"";
-  position:absolute;
-  inset:0;
-  background: radial-gradient(circle, rgba(255,255,255,0.05), transparent),
-              linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.95));
+.overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.05), transparent),
+    linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.95));
 }
 
 .content {
   position: relative;
-  z-index:2;
-  max-width:700px;
-  margin:auto;
-  top:50%;
-  transform:translateY(-50%);
-  text-align:center;
-  color:white;
-  opacity:0;
-  transition:1s;
-}
-
-.content.show {
-  opacity:1;
+  z-index: 2;
+  max-width: 700px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 80px;
+  color: white;
 }
 
 h1 {
-  font-size:72px;
-  line-height:0.95;
-  letter-spacing:-1px;
-  text-shadow:0 0 40px rgba(255,255,255,0.1);
+  font-size: 80px;
+  line-height: 0.95;
+  text-shadow: 0 0 40px rgba(255,255,255,0.1);
 }
 
-.line {
-  opacity:0;
+.fade {
+  opacity: 0;
   animation: fadeIn 1s forwards;
 }
 
-.line:nth-child(2){animation-delay:0.6s;}
-.line:nth-child(3){animation-delay:1.2s;}
-.line:nth-child(4){animation-delay:1.8s;}
+.delay1 { animation-delay: 0.7s; }
+.delay2 { animation-delay: 1.4s; }
 
 @keyframes fadeIn {
-  to {opacity:0.8;}
+  to { opacity: 0.85; }
 }
 
 .highlight {
-  margin-top:20px;
-  font-weight:bold;
+  margin-top: 20px;
+  font-weight: bold;
 }
 
 .cta {
-  margin-top:30px;
-  padding:12px 28px;
-  border-radius:30px;
-  background:#d4a96a;
-  color:black;
-  border:none;
-  cursor:pointer;
-  transition:0.3s;
+  margin-top: 30px;
+  padding: 14px 32px;
+  border-radius: 30px;
+  background: #d4a96a;
+  color: black;
+  border: none;
+  font-weight: bold;
+  transition: 0.3s;
 }
 
 .cta:hover {
-  transform:scale(1.05);
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(212,169,106,0.4);
 }
