@@ -236,69 +236,6 @@ function EditorialDeck() {
 }
 
 
-
-function IntroCinematicSection({ setPage }) {
-  return (
-    <section className="intro-cinematic section-bleed">
-      <div className="intro-cinematic-media">
-        <div className="intro-cinematic-slide intro-slide-chess" />
-        <div className="intro-cinematic-slide intro-slide-puppet" />
-        <div className="intro-cinematic-slide intro-slide-chaos" />
-        <div className="intro-cinematic-noise" />
-        <div className="intro-cinematic-vignette" />
-      </div>
-      <div className="container intro-cinematic-shell">
-        <div className="intro-cinematic-copy">
-          <div className="label">Introduction sequence</div>
-          <h1 className="intro-cinematic-title">CONTROL. CONSEQUENCE. POWER.</h1>
-          <p className="intro-cinematic-text">
-            Đây không phải là một thành phố dễ sống. Mỗi lựa chọn đều mang theo hệ quả,
-            mỗi hành động đều để lại dư âm và mọi quyền lực đều có cái giá riêng.
-          </p>
-          <p className="intro-cinematic-text intro-cinematic-text-soft">
-            Ở Real Roleplay, sự ma mị không đến từ nỗi sợ rẻ tiền — nó đến từ cảm giác bị
-            quan sát, bị dẫn dắt và buộc phải sống cùng hậu quả của chính mình.
-          </p>
-          <p className="intro-cinematic-highlight">
-            Bạn có thể xây dựng trật tự, thao túng cuộc chơi, hoặc trở thành một phần của hỗn loạn.
-            Nhưng một khi đã bước vào, không còn đường quay lại như cũ.
-          </p>
-          <div className="intro-cinematic-actions">
-            <button className="btn btn-primary elite-primary" onClick={() => setPage('whitelist')}>
-              <span>Request Access</span>
-              <ArrowRight size={18} />
-            </button>
-            <button className="btn btn-secondary elite-secondary" onClick={() => setPage('rules-ic')}>
-              <span>City Doctrine</span>
-            </button>
-          </div>
-        </div>
-        <div className="intro-cinematic-side premium-card">
-          <div className="content">
-            <div className="accent-bar accent-gold"></div>
-            <div className="intro-side-eyebrow">Why it feels different</div>
-            <div className="intro-side-grid">
-              <div className="intro-side-item">
-                <div className="intro-side-title">Luxury darkness</div>
-                <div className="intro-side-text">Tối, ma mị và có chiều sâu, nhưng vẫn giữ sự tiết chế của một thương hiệu cao cấp.</div>
-              </div>
-              <div className="intro-side-item">
-                <div className="intro-side-title">Psychological tension</div>
-                <div className="intro-side-text">Căng thẳng đến từ lựa chọn, quyền lực, thao túng và hệ quả — không phải jumpscare hay chaos rẻ tiền.</div>
-              </div>
-              <div className="intro-side-item">
-                <div className="intro-side-title">Character consequence</div>
-                <div className="intro-side-text">Mọi arc nhân vật đều phải được xây bằng giá trị thật, rủi ro thật và hậu quả thật.</div>
-              </div>
-            </div>
-            <div className="intro-side-note">Important: phần Giới thiệu phải khiến người xem thấy đây là một thế giới có sức hút nguy hiểm, không phải một landing page game thông thường.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function HomePage({ setPage, discordUrl }) {
   return (
     <>
@@ -336,21 +273,123 @@ function HomePage({ setPage, discordUrl }) {
   );
 }
 
-function IntroductionPage({ setPage }) {
+
+function IntroductionPage() {
   return (
     <>
-      <IntroCinematicSection setPage={setPage} />
-      <section className="section intro-luxury-followup">
-        <div className="container">
-          <div className="section-head section-head-tight">
-            <div>
-              <Label>World doctrine</Label>
-              <h2 className="section-title">Giới thiệu về thành phố</h2>
-              <p className="section-sub">Một thành phố được xây bằng logic, tham vọng, quyền lực và những hệ quả đủ dài để định hình danh tiếng của bạn.</p>
+      <section className="intro-cinematic-shell">
+        <div className="intro-cinematic-media">
+          <img src="/cinematic/1.jpg" alt="" className="intro-bg intro-bg-a" />
+          <img src="/cinematic/2.jpg" alt="" className="intro-bg intro-bg-b" />
+          <img src="/cinematic/3.png" alt="" className="intro-bg intro-bg-c" />
+          <div className="intro-noise"></div>
+          <div className="intro-overlay"></div>
+        </div>
+
+        <div className="container intro-cinematic-grid">
+          <div className="intro-copy">
+            <div className="intro-kicker">Introduction sequence</div>
+            <h1 className="intro-title">CONTROL.<br />CONSEQUENCE.<br />POWER.</h1>
+            <p className="intro-lead">
+              Đây không phải là một thành phố để sống dễ dàng. Mỗi lựa chọn đều mang theo hệ quả, mỗi hành động đều để lại dư âm và mọi quyền lực đều có cái giá riêng.
+            </p>
+            <p className="intro-lead intro-lead-soft">
+              Ở Real Roleplay, sự ma mị không đến từ nỗi sợ rẻ tiền — nó đến từ cảm giác bị quan sát, bị dẫn dắt và buộc phải sống cùng hậu quả của chính mình.
+            </p>
+            <div className="intro-actions">
+              <button className="cta-primary" onClick={() => window.scrollTo({ top: window.innerHeight * 0.9, behavior: 'smooth' })}>
+                Enter the city <ArrowRight size={18} />
+              </button>
+              <button className="cta-secondary" onClick={() => window.scrollTo({ top: window.innerHeight * 1.55, behavior: 'smooth' })}>
+                City philosophy
+              </button>
             </div>
-            <div className="badge elite-badge">INTRODUCTION / LUXURY DARKNESS</div>
           </div>
-          <div className="features-grid">{introCards.map((item, i) => { const Icon = item.icon; return (<motion.div key={item.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.04 }}><div className="feature-card premium-card intro-feature-card"><div className="content"><div className={`accent-bar accent-${item.accent}`}></div><div className="icon-chip"><Icon size={18} /></div><div className="card-title">{item.title}</div><div className="card-text">{item.text}</div></div></div></motion.div>); })}</div>
+
+          <div className="intro-panel">
+            <div className="intro-panel-label">Why it feels different</div>
+            <div className="intro-panel-stack">
+              <div className="intro-note-card">
+                <div className="intro-note-title">Luxury Darkness</div>
+                <div className="intro-note-text">Tối, ma mị và có chiều sâu, nhưng vẫn giữ sự tiết chế của một thương hiệu cao cấp.</div>
+              </div>
+              <div className="intro-note-card">
+                <div className="intro-note-title">Psychological Tension</div>
+                <div className="intro-note-text">Căng thẳng đến từ lựa chọn, quyền lực, thao túng và hệ quả — không phải jumpscare hay chaos rẻ tiền.</div>
+              </div>
+              <div className="intro-note-card">
+                <div className="intro-note-title">Character Consequence</div>
+                <div className="intro-note-text">Mọi arc nhân vật đều phải được xây bằng giá trị thật, rủi ro thật và hậu quả thật.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section section-tight">
+        <div className="container intro-image-essay">
+          <div className="essay-head">
+            <Label>Dark editorial</Label>
+            <h2 className="section-title">Giới thiệu không để kể hết. Nó để kéo người xem vào đúng tâm trạng của thành phố.</h2>
+            <p className="section-sub">Ba khung hình dưới đây không dùng để “trang trí”. Chúng là tuyên ngôn về cách Real Roleplay nhìn nhận quyền lực, lựa chọn và sự kiểm soát.</p>
+          </div>
+
+          <div className="essay-grid">
+            <div className="essay-card essay-card-large">
+              <div className="essay-thumb"><img src="/cinematic/3.png" alt="" /></div>
+              <div className="essay-body">
+                <div className="essay-kicker">Strategy over noise</div>
+                <div className="essay-title">Quyền lực thuộc về người kiểm soát cuộc chơi.</div>
+                <div className="essay-text">Chúng tôi muốn người chơi cảm nhận được thành phố này như một bàn cờ sống: mỗi quyết định đều có trọng lượng, mỗi bước đi đều để lại hệ quả lâu dài.</div>
+              </div>
+            </div>
+
+            <div className="essay-card">
+              <div className="essay-thumb"><img src="/cinematic/2.jpg" alt="" /></div>
+              <div className="essay-body">
+                <div className="essay-kicker">Control</div>
+                <div className="essay-title">Sự ma mị đến từ cảm giác bị dẫn dắt.</div>
+                <div className="essay-text">Không phải thứ bóng tối lộ liễu, mà là cảm giác một thế lực vô hình luôn kéo mọi lựa chọn đi xa hơn dự tính ban đầu.</div>
+              </div>
+            </div>
+
+            <div className="essay-card">
+              <div className="essay-thumb"><img src="/cinematic/1.jpg" alt="" /></div>
+              <div className="essay-body">
+                <div className="essay-kicker">Consequence</div>
+                <div className="essay-title">Hỗn loạn chỉ đáng sợ khi nó có giá phải trả.</div>
+                <div className="essay-text">Tiền bạc, tham vọng, nỗi sợ và dục vọng không phải props. Chúng là thứ làm biến dạng nhân vật, tổ chức và cả trật tự của thành phố.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section section-tight">
+        <div className="container">
+          <div className="features-grid intro-features-grid">
+            {introCards.map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                >
+                  <div className="feature-card premium-card intro-refined-card">
+                    <div className="content">
+                      <div className={`accent-bar accent-${item.accent}`}></div>
+                      <div className="icon-chip"><Icon size={18} /></div>
+                      <div className="card-title">{item.title}</div>
+                      <div className="card-text">{item.text}</div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </section>
     </>
@@ -531,7 +570,7 @@ export default function SiteApp({ discordUrl, initialPage = 'home' }) {
 
   const view = useMemo(() => {
     switch (page) {
-      case 'intro': return <IntroductionPage setPage={setPage} />;
+      case 'intro': return <IntroductionPage />;
       case 'rules-ic': return <RulesPage type="ic" />;
       case 'rules-oc': return <RulesPage type="oc" />;
       case 'whitelist': return <WhitelistPage />;
