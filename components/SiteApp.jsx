@@ -21,12 +21,12 @@ import Navbar from './Navbar';
 import { useMemo, useState } from 'react';
 
 const introCards = [
-  { title: 'Định hướng thành phố', text: 'Real Roleplay được xây như một thành phố có nhịp sống riêng: trật tự, xung đột, kinh tế, cộng đồng và hệ quả dài hạn.', accent: 'blue', icon: Landmark },
-  { title: 'Character first', text: 'Nhân vật luôn đứng trước kỹ năng bấm phím. Câu chuyện của bạn phải có động lực, điểm yếu, lựa chọn và hậu quả.', accent: 'gold', icon: ScrollText },
-  { title: 'Whitelist có giá trị', text: 'Cổng vào nghiêm túc là thứ giữ chất lượng cộng đồng. Chúng tôi ưu tiên người chơi thật sự muốn xây câu chuyện dài hơi.', accent: 'red', icon: Shield },
-  { title: 'Trật tự và hỗn loạn', text: 'Law và Chaos không chỉ là 2 phe đối lập. Đó là triết lý vận hành mọi tình huống, quyền lực và lựa chọn trong thành phố.', accent: 'neutral', icon: Gavel },
-  { title: 'Đạo diễn hình ảnh', text: 'Mỗi trang, mỗi block, mỗi thẻ nội dung đều phục vụ cùng một mood: dark, premium, điện ảnh và có chiều sâu thương hiệu.', accent: 'gold', icon: Sparkles },
-  { title: 'Community có chọn lọc', text: 'Mục tiêu không phải đông nhanh, mà là đúng người. Một cộng đồng có gu sẽ tạo nên một server có đẳng cấp.', accent: 'blue', icon: Users }
+  { title: 'REAL ROLEPLAY', text: 'được xây dựng như một xã hội thu nhỏ, nơi bạn phải sống thật với nhân vật trong game của bạn.', accent: 'blue', icon: Landmark },
+  { title: 'CƠ CHẾ ĐẶC TRƯNG', text: 'hệ thống nghề nghiệp liên kết chặt chẽ với nhau, tài nguyên nghề này sẽ là nguyên liệu của ngành nghề khác.', accent: 'gold', icon: ScrollText },
+  { title: 'WHITELIST', text: 'Quy trình xét duyệt gắt gao, nghiêm túc nhằm giữ vững chất lượng cộng đồng và trải nghiệm nhập vai.', accent: 'red', icon: Shield },
+  { title: 'THỜI TRANG CHỌN LỌC', text: 'mỗi chiếc quần/áo đều được chọn lọc từng chiếc một, tạo nên giá trị thẩm mỹ và đặc trưng cho từng nhân vật.', accent: 'neutral', icon: Gavel },
+  { title: 'LIVE EVENTS', text: 'được chọn lọc kỹ lưỡng và phát triển theo lộ trình tuần - tháng. Thứ hạng càng cao thì phần thưởng càng có giá trị.', accent: 'gold', icon: Sparkles },
+  { title: 'CỘNG ĐỒNG', text: 'thành phố được định hình bởi người chơi. Mọi mối quan hệ, xung đột và câu chuyện đều bắt nguồn từ lựa chọn và hệ quả của bạn.', accent: 'blue', icon: Users }
 ];
 
 const icRules = [
@@ -245,8 +245,8 @@ function HomePage({ setPage, discordUrl }) {
         <div className="container">
           <div className="section-head">
             <div>
-              <Label>World pillars</Label>
-              <h2 className="section-title">The City System</h2>
+              <Label>TỔNG QUAN</Label>
+              <h2 className="section-title">HỆ THỐNG THÀNH PHỐ</h2>
             </div>
             <div className="badge elite-badge">PRIVATE ACCESS ONLY</div>
           </div>
