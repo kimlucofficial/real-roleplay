@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Navbar from './Navbar';
+import IntroCinematic from './IntroCinematic';
 import { useMemo, useState } from 'react';
 
 const introCards = [
@@ -276,8 +277,29 @@ function HomePage({ setPage, discordUrl }) {
 function IntroductionPage() {
   return (
     <>
-      <PageHero eyebrow="About the city" title="Giới thiệu" description="Real Roleplay không được xây theo kiểu vào chơi cho nhanh. Đây là một thế giới được dẫn dắt bằng mood, nhân vật và sự chọn lọc cộng đồng. Mọi trang trong website đều phải cho thấy cùng một đẳng cấp đó." rightTitle="World Standard" rightItems={[['Brand-first visual', 'Tối, sang, điện ảnh và có nhận diện rõ ràng.'], ['Roleplay priority', 'Câu chuyện nhân vật luôn là trung tâm.'], ['Long-term quality', 'Chỉ giữ lại những thứ phục vụ đẳng cấp chung của server.']]} rightNote="Đây là phần giới thiệu tổng quan cho người mới: họ phải hiểu server này là gì, khác ở đâu và vì sao đáng để bước vào." accent="blue" />
-      <section className="section section-tight"><div className="container"><div className="features-grid">{introCards.map((item, i) => { const Icon = item.icon; return (<motion.div key={item.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.04 }}><div className="feature-card premium-card"><div className="content"><div className={`accent-bar accent-${item.accent}`}></div><div className="icon-chip"><Icon size={18} /></div><div className="card-title">{item.title}</div><div className="card-text">{item.text}</div></div></div></motion.div>); })}</div></div></section>
+      <PageHero eyebrow="About the city" title="Giới thiệu" description="Real Roleplay không được xây theo kiểu vào chơi cho nhanh. Đây là một thế giới được dẫn dắt bằng mood, nhân vật và sự chọn lọc cộng đồng. Phần giới thiệu này được dựng như một opening sequence: tối, điện ảnh và có chiều sâu." rightTitle="World Standard" rightItems={[['Narrative first', 'Câu chuyện nhân vật luôn là trung tâm của mọi lựa chọn.'], ['Controlled darkness', 'U tối nhưng có kiểm soát, không biến thành cảm giác tiêu cực hay rẻ tiền.'], ['Selective entry', 'Chỉ những người thật sự phù hợp mới nên bước qua cánh cổng này.']]} rightNote="Important: phần giới thiệu không chỉ nói server có gì, mà phải khiến người xem cảm nhận được khí chất của thành phố trước khi họ đọc các tính năng còn lại." accent="blue" />
+      <IntroCinematic onEnter={() => setPage('whitelist')} />
+      <section className="section section-tight">
+        <div className="container">
+          <div className="features-grid">
+            {introCards.map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <motion.div key={item.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.04 }}>
+                  <div className="feature-card premium-card">
+                    <div className="content">
+                      <div className={`accent-bar accent-${item.accent}`}></div>
+                      <div className="icon-chip"><Icon size={18} /></div>
+                      <div className="card-title">{item.title}</div>
+                      <div className="card-text">{item.text}</div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
     </>
   );
 }
