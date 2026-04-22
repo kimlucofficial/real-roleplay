@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700;800&display=swap');
 
 :root {
   --bg: #060708;
@@ -156,7 +156,7 @@ img { max-width: 100%; display: block; }
 .field-error { margin-top: 8px; color: #f6ddb2; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
 .source-lock { border-radius: 14px; border: 1px solid rgba(212,163,115,.16); background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); padding: 16px 18px; min-height: 58px; }
 .source-lock-value { margin-top: 8px; font-size: 18px; color: #fff; letter-spacing: .04em; }
-.source-lock-note { margin-top: 8px; color: var(--muted); font-size: 13px; line-height: 1.65; font-family: 'Inter', sans-serif; }
+.source-lock-note { margin-top: 8px; color: var(--muted); font-size: 13px; line-height: 1.65; font-family: 'Oswald', sans-serif; }
 .page-shell::before { content: ''; position: fixed; inset: 0; pointer-events: none; opacity: .035; background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,.7) 1px, transparent 0); background-size: 22px 22px; }
 
 
@@ -404,7 +404,7 @@ img { max-width: 100%; display: block; }
 }
 .intro-lead {
   max-width: 860px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Oswald', sans-serif;
   font-size: clamp(21px, 2vw, 28px);
   line-height: 1.7;
   color: rgba(255,255,255,.92);
@@ -494,7 +494,7 @@ img { max-width: 100%; display: block; }
   margin-bottom: 14px;
 }
 .intro-note-text {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Oswald', sans-serif;
   font-size: 18px;
   line-height: 1.8;
   color: rgba(255,255,255,.70);
@@ -541,7 +541,7 @@ img { max-width: 100%; display: block; }
   margin-bottom: 12px;
 }
 .essay-text {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Oswald', sans-serif;
   color: rgba(255,255,255,.72);
   line-height: 1.75;
   font-size: 16px;
