@@ -1,11 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-<<<<<<< HEAD
 import { Menu, X, ChevronDown } from 'lucide-react';
-=======
-import { Crown, Menu, X, ChevronDown } from 'lucide-react';
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
 import { useState } from 'react';
 
 const nav = [
@@ -21,10 +17,6 @@ const nav = [
   // },
    { key: 'rules-oc', label: 'Luật Chung' },
   { key: 'update', label: 'Update' },
-<<<<<<< HEAD
-=======
-  { key: 'ped', label: 'PED' },
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
   { key: 'discord', label: 'Discord' }
 ];
 
@@ -45,11 +37,7 @@ const isRulesActive = page === 'rules-oc';
       <div className="navbar">
         <div className="nav-inner">
           <button className="brand" onClick={() => goTo('home')}>
-<<<<<<< HEAD
             <div className="brand-mark"><img src="/logo.png" alt="Real Roleplay logo" /></div>
-=======
-            <div className="brand-mark"><Crown size={18} /></div>
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
             <div>
               <div className="brand-title">REAL ROLEPLAY</div>
               <div className="brand-sub">LIKE A REAL LIFE</div>

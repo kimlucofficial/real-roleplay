@@ -1,9 +1,5 @@
 'use client';
 
-<<<<<<< HEAD
-=======
-import { motion } from 'framer-motion';
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
 import { ArrowRight } from 'lucide-react';
 
 const scenes = [
@@ -29,19 +25,9 @@ export default function IntroCinematic({ onEnter }) {
     <section className="intro-cinematic">
       <div className="intro-cinematic-stack">
         {scenes.map((scene, index) => (
-<<<<<<< HEAD
           <article
             key={scene.key}
             className={`intro-cinematic-card scene-${scene.key}`}
-=======
-          <motion.article
-            key={scene.key}
-            className={`intro-cinematic-card scene-${scene.key}`}
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ delay: index * 0.08, duration: 0.6 }}
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
           >
             <div className="intro-cinematic-visual" />
             <div className="intro-cinematic-overlay" />
@@ -56,11 +42,7 @@ export default function IntroCinematic({ onEnter }) {
                 </button>
               ) : null}
             </div>
-<<<<<<< HEAD
           </article>
-=======
-          </motion.article>
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
         ))}
       </div>
     </section>

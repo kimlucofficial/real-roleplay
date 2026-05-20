@@ -1,9 +1,5 @@
 'use client';
 
-<<<<<<< HEAD
-=======
-import { motion } from 'framer-motion';
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
 import {
   ArrowRight,
   BadgeCheck,
@@ -164,7 +160,6 @@ Ví dụ vi phạm: Lặp lại hành vi MG/PG dù đã được nhắc nhở tr
 ];
 
 const updates = [
-<<<<<<< HEAD
   { title: 'STARTER JOBS', tag: '01', text: 'Những công việc đầu tiên giúp bạn thích nghi với thành phố và tạo nguồn thu nhập ban đầu.' },
   { title: 'CITY GUIDE', tag: '02', text: 'Khám phá các địa điểm, dịch vụ và khu vực quan trọng trong thành phố.' },
   { title: 'CHARACTER DEVELOPMENT', tag: '03', text: 'Mỗi quyết định và hành động sẽ góp phần định hình con người mà nhân vật của bạn trở thành.' }
@@ -179,28 +174,6 @@ const editorialDeck = [
   { src: '/editorial/editorial-6.webp', eyebrow: 'Freedom and consequence', note: 'Tự do tồn tại, nhưng nó luôn đi kèm giá phải trả, danh tiếng phải giữ và hậu quả phải gánh.' },
   { src: '/editorial/editorial-7.webp', eyebrow: 'Emergency response', note: 'Police và E.M.S là xương sống của những tình huống căng thẳng, nơi thành phố cần người giữ trật tự thật sự.' },
   { src: '/editorial/editorial-8.webp', eyebrow: 'Closing frame', note: 'Khung kết để lại dấu ấn thương hiệu, chốt lại hành trình bằng một cảm giác gọn, sang và có chủ đích.' }
-=======
-  { title: 'Season Update 1.2', tag: 'Major Patch', text: 'Mở rộng khu downtown, cân bằng economy và thêm tuyến tình huống mới giữa lực lượng luật pháp với thế giới ngầm.' },
-  { title: 'Live Event Protocol', tag: 'Event', text: 'Chuỗi sự kiện live theo tuần với hệ quả trực tiếp lên các faction, doanh nghiệp và narrative của thành phố.' },
-  { title: 'Whitelist Standard', tag: 'Policy', text: 'Tiêu chuẩn duyệt đơn được nâng cao để ưu tiên người chơi có tiểu sử tốt, thái độ đúng và định hướng RP rõ ràng.' }
-];
-
-const pedCards = [
-  { name: 'Urban Professional', text: 'Gương mặt doanh nhân, luật sư, tay môi giới hoặc một ông trùm thích khoác lên mình vẻ ngoài sạch sẽ.' },
-  { name: 'Street Operator', text: 'Hợp với chất đời, các tuyến nhân vật bụi bặm, underground và sống trong vùng xám của thành phố.' },
-  { name: 'Tactical Officer', text: 'Dành cho tuyến luật pháp, bảo vệ hoặc nhân vật có màu sắc kỷ luật và quyền lực.' }
-];
-
-const editorialDeck = [
-  { src: '/editorial/editorial-1.png', eyebrow: 'Signature visual 01', note: 'Khung tổng quan mở ra toàn bộ nhịp sống, nghề nghiệp và các tuyến phát triển đặc trưng của thành phố.' },
-  { src: '/editorial/editorial-2.png', eyebrow: 'Signature visual 02', note: 'Phiên bản alternate dùng như nhịp nghỉ thị giác, giữ mood thương hiệu và chiều sâu cho landing page.' },
-  { src: '/editorial/editorial-3.png', eyebrow: 'Live events', note: 'Sự kiện không chỉ để xem. Mỗi lần xuất hiện đều đẩy người chơi vào lựa chọn và hệ quả thực sự.' },
-  { src: '/editorial/editorial-4.png', eyebrow: 'Los Santos', note: 'Một đô thị xa hoa, nhiều cám dỗ, nhiều áp lực và luôn giữ cảm giác mong manh giữa trật tự và hỗn loạn.' },
-  { src: '/editorial/editorial-5.png', eyebrow: 'Player perspective', note: 'Góc nhìn thành phố cho thấy cách người chơi thật sự bước vào đời sống, công việc và những mạch truyện hàng ngày.' },
-  { src: '/editorial/editorial-6.png', eyebrow: 'Freedom and consequence', note: 'Tự do tồn tại, nhưng nó luôn đi kèm giá phải trả, danh tiếng phải giữ và hậu quả phải gánh.' },
-  { src: '/editorial/editorial-7.png', eyebrow: 'Emergency response', note: 'Police và E.M.S là xương sống của những tình huống căng thẳng, nơi thành phố cần người giữ trật tự thật sự.' },
-  { src: '/editorial/editorial-8.png', eyebrow: 'Closing frame', note: 'Khung kết để lại dấu ấn thương hiệu, chốt lại hành trình bằng một cảm giác gọn, sang và có chủ đích.' }
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
 ];
 
 
@@ -244,11 +217,7 @@ function Hero({ setPage, discordUrl }) {
       <div className="hero-side-glow-left" />
       <div className="hero-side-glow-right" />
       <div className="container hero-grid">
-<<<<<<< HEAD
         <div className="hero-copy">
-=======
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="hero-copy">
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
           <Label>Day sleep, night fly.</Label>
           <h1 className="hero-title">Like <span className="muted">A</span><span style={{ display: 'block' }}>Real Life</span></h1>
           <p className="hero-body">Không phải một server. Đây là một thành phố bị xé đôi giữa trật tự và hỗn loạn. Ở đây, câu chuyện của bạn không bắt đầu bằng việc bấm chơi — nó bắt đầu từ việc được chấp nhận bước vào thành phố.</p>
@@ -261,15 +230,9 @@ function Hero({ setPage, discordUrl }) {
               <div className="stat-box" key={l}><div className="stat-value">{v}</div><div className="stat-label">{l}</div></div>
             ))}
           </div>
-<<<<<<< HEAD
         </div>
 
         <div className="hero-card">
-=======
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0, x: 25 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.75 }} className="hero-card">
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
           <Panel>
             <div className="panel-body hero-panel-body">
               <div>
@@ -292,11 +255,7 @@ function Hero({ setPage, discordUrl }) {
               </div>
             </div>
           </Panel>
-<<<<<<< HEAD
         </div>
-=======
-        </motion.div>
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
       </div>
     </section>
   );
@@ -318,22 +277,9 @@ function EditorialDeck() {
 
         <div className="editorial-grid">
           {editorialDeck.map((item, index) => (
-<<<<<<< HEAD
             <div key={item.src} className="editorial-card-grid">
               <div className="editorial-image-wrap small">
                 <img src={item.src} alt={item.eyebrow} className="editorial-image editorial-image-grid" loading="lazy" decoding="async" />
-=======
-            <motion.div
-              key={item.src}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.45, delay: index * 0.04 }}
-              className="editorial-card-grid"
-            >
-              <div className="editorial-image-wrap small">
-                <img src={item.src} alt={item.eyebrow} className="editorial-image editorial-image-grid" loading="lazy" />
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
                 <div className="editorial-overlay">
                   <div className="editorial-overlay-top">
                     <div className="editorial-eyebrow">{item.eyebrow}</div>
@@ -342,11 +288,7 @@ function EditorialDeck() {
                   <p className="editorial-note-grid">{item.note}</p>
                 </div>
               </div>
-<<<<<<< HEAD
             </div>
-=======
-            </motion.div>
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
           ))}
         </div>
       </div>
@@ -373,11 +315,7 @@ function HomePage({ setPage, discordUrl }) {
             {introCards.map((item, i) => {
               const Icon = item.icon;
               return (
-<<<<<<< HEAD
                 <div key={item.title}>
-=======
-                <motion.div key={item.title} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}>
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
                   <div className="feature-card premium-card">
                     <div className="content">
                       <div className={`accent-bar accent-${item.accent}`}></div>
@@ -386,11 +324,7 @@ function HomePage({ setPage, discordUrl }) {
                       <div className="card-text">{item.text}</div>
                     </div>
                   </div>
-<<<<<<< HEAD
                 </div>
-=======
-                </motion.div>
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
               );
             })}
           </div>
@@ -400,17 +334,11 @@ function HomePage({ setPage, discordUrl }) {
 
       <section className="rrx-banner-section">
         <img
-<<<<<<< HEAD
           src="/cinematic/1.jpg"
           alt=""
           className="rrx-banner-image"
           loading="lazy"
           decoding="async"
-=======
-          src="/cinematic/la-4k.jpg"
-          alt=""
-          className="rrx-banner-image"
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
         />
 
         <div className="rrx-banner-overlay" />
@@ -749,7 +677,6 @@ function WhitelistPage() {
 function UpdatePage() {
   return (
     <>
-<<<<<<< HEAD
       <PageHero
         eyebrow="UPDATE 1.0"
         title="UPDATE 1.0"
@@ -764,19 +691,6 @@ function UpdatePage() {
         accent="red"
       />
       <section className="section section-tight"><div className="container"><div className="updates-grid">{updates.map((item) => (<div key={item.title} className="update-card premium-card"><div className="content"><div className="badge">{item.tag}</div><div className="card-title">{item.title}</div><div className="card-text">{item.text}</div></div></div>))}</div></div></section>
-=======
-      <PageHero eyebrow="Update" title="Update 1.0" description="Thành phố không đứng yên. Các bản cập nhật phải vừa rõ ràng, vừa giữ được cảm giác brand và chiều sâu của server." rightTitle="Release Focus" rightItems={[['Narrative', 'Bản cập nhật nên tác động đến câu chuyện chứ không chỉ thêm đồ.'], ['Economy', 'Mọi chỉnh sửa đều phải có lý do vận hành.'], ['Quality', 'Tốc độ cập nhật không quan trọng bằng độ hoàn thiện.']]} rightNote="Update page nên trông như một changelog cao cấp, không phải blog ngẫu hứng." accent="red" />
-      <section className="section section-tight"><div className="container"><div className="updates-grid">{updates.map((item) => (<div key={item.title} className="update-card premium-card"><div className="content"><div className="badge">{item.tag}</div><div className="card-title">{item.title}</div><div className="card-text">{item.text}</div><div className="update-link">Read more <ChevronRight size={16} /></div></div></div>))}</div></div></section>
-    </>
-  );
-}
-
-function PedPage() {
-  return (
-    <>
-      <PageHero eyebrow="Identity library" title="PED" description="Mỗi ngoại hình nên phục vụ cho một kiểu nhân vật cụ thể. Trình bày PED theo hướng catalogue cao cấp sẽ làm cả website đồng bộ hơn." rightTitle="Visual Identity" rightItems={[['Profession', 'Sạch sẽ, chỉnh chu, quyền lực.'], ['Street', 'Đời, bụi, góc tối và màu xám.'], ['Authority', 'Kỷ luật, tactical, kiểm soát.']]} rightNote="PED page nên cho cảm giác tuyển chọn hình ảnh, không chỉ là một danh sách model." accent="blue" />
-      <section className="section section-tight"><div className="container"><div className="ped-grid">{pedCards.map((item, i) => (<div key={item.name} className="ped-card premium-card"><div className={`ped-visual ${i === 0 ? 'ped-v1' : i === 1 ? 'ped-v2' : 'ped-v3'}`}></div><div className="content"><div className="card-title">{item.name}</div><div className="card-text">{item.text}</div></div></div>))}</div></div></section>
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
     </>
   );
 }
@@ -801,10 +715,6 @@ export default function SiteApp({ discordUrl, initialPage = 'home' }) {
       case 'rules-oc': return <RulesPage type="oc" />;
       case 'whitelist': return <WhitelistPage />;
       case 'update': return <UpdatePage />;
-<<<<<<< HEAD
-=======
-      case 'ped': return <PedPage />;
->>>>>>> 2561dc3f06c7c40e77a2d2b74a02da3a9c9462b8
       case 'discord': return <DiscordPage discordUrl={discordUrl} />;
       default: return <HomePage setPage={setPage} discordUrl={discordUrl} />;
     }
