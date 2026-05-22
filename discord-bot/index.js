@@ -6,11 +6,33 @@ import {
   TextInputStyle,
   ActionRowBuilder,
   EmbedBuilder,
+  SlashCommandBuilder,
+  PermissionFlagsBits,
+  ChannelType,
 } from "discord.js";
 
 import { getDb } from "../lib/db.js";
 
 const db = getDb();
+
+const announceCommand = new SlashCommandBuilder()
+  .setName("thongbao")
+  .setDescription("Đăng thông báo embed vào một kênh")
+  .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+  .addChannelOption((option) =>
+    option
+      .setName("kenh")
+      .setDescription("Chọn kênh cần đăng thông báo")
+      .setRequired(true)
+      .addChannelTypes(ChannelType.GuildText)
+  )
+  .addStringOption((option) =>
+    option
+      .setName("noidung")
+      .setDescription("Nội dung thông báo")
+      .setRequired(true)
+      .setMaxLength(4000)
+  );
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
@@ -150,12 +172,62 @@ async function updateApplication(applicationId, status, reason) {
   return result?.affectedRows || 0;
 }
 
-client.once("ready", () => {
+client.once("ready", async () => {
   console.log(`✅ Discord bot online: ${client.user.tag}`);
+
+  try {
+    await client.application.commands.set([announceCommand.toJSON()]);
+    console.log("✅ Đã đăng ký slash command /thongbao");
+  } catch (err) {
+    console.log("Không đăng ký được slash command:", err?.message || err);
+  }
 });
 
 client.on("interactionCreate", async (interaction) => {
   try {
+    // =========================
+    // /THONGBAO COMMAND
+    // =========================
+    if (interaction.isChatInputCommand() && interaction.commandName === "thongbao") {
+      await interaction.deferReply({ ephemeral: true });
+
+      if (!interaction.memberPermissions?.has(PermissionFlagsBits.Administrator)) {
+        await interaction.editReply("❌ Bạn không có quyền dùng lệnh này.");
+        return;
+      }
+
+      const channel = interaction.options.getChannel("kenh");
+      const content = interaction.options.getString("noidung");
+
+      if (!channel || channel.type !== ChannelType.GuildText) {
+        await interaction.editReply("❌ Kênh không hợp lệ. Vui lòng chọn kênh text.");
+        return;
+      }
+
+      const announceEmbed = new EmbedBuilder()
+        .setColor(0xd4af37)
+        .setAuthor({
+          name: "REAL ROLEPLAY",
+          iconURL: "https://cdn.discordapp.com/emojis/1506989509886218391.png",
+        })
+        .setTitle("📢 THÔNG BÁO REAL ROLEPLAY")
+        .setDescription(content)
+        .setFooter({
+          text: "Powered by Real Roleplay",
+          iconURL: "https://cdn.discordapp.com/emojis/1506989509886218391.png",
+        })
+        .setTimestamp();
+
+      await channel.send({
+        content: "@everyone",
+        embeds: [announceEmbed],
+        allowedMentions: { parse: ["everyone"] },
+      });
+
+      await interaction.editReply(`✅ Đã đăng thông báo vào ${channel}.`);
+      return;
+    }
+
     // =========================
     // APPROVE / REJECT BUTTON
     // =========================
