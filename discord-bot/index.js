@@ -15,25 +15,6 @@ import { getDb } from "../lib/db.js";
 
 const db = getDb();
 
-const announceCommand = new SlashCommandBuilder()
-  .setName("thongbao")
-  .setDescription("Đăng thông báo embed vào một kênh")
-  .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-  .addChannelOption((option) =>
-    option
-      .setName("kenh")
-      .setDescription("Chọn kênh cần đăng thông báo")
-      .setRequired(true)
-      .addChannelTypes(ChannelType.GuildText)
-  )
-  .addStringOption((option) =>
-    option
-      .setName("noidung")
-      .setDescription("Nội dung thông báo")
-      .setRequired(true)
-      .setMaxLength(4000)
-  );
-
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 });
@@ -66,6 +47,91 @@ function parseWhitelistCustomId(customId = "") {
 
 function isValidSnowflake(value) {
   return /^\d{15,25}$/.test(String(value || ""));
+}
+
+
+
+const announcementCommand = new SlashCommandBuilder()
+  .setName("thongbao")
+  .setDescription("Đăng thông báo embed vào một kênh")
+  .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+  .addChannelOption((option) =>
+    option
+      .setName("kenh")
+      .setDescription("Chọn kênh cần đăng thông báo")
+      .setRequired(true)
+      .addChannelTypes(ChannelType.GuildText)
+  )
+  .addStringOption((option) =>
+    option
+      .setName("tieude")
+      .setDescription("Tiêu đề thông báo")
+      .setRequired(true)
+      .setMaxLength(256)
+  )
+  .addStringOption((option) =>
+    option
+      .setName("noidung")
+      .setDescription("Nội dung thông báo")
+      .setRequired(true)
+      .setMaxLength(4000)
+  )
+  .addStringOption((option) =>
+    option
+      .setName("mau")
+      .setDescription("Màu thanh bên trái của embed")
+      .setRequired(false)
+      .addChoices(
+        { name: "🟡 Vàng Gold", value: "gold" },
+        { name: "🟢 Xanh Lá", value: "green" },
+        { name: "🔴 Đỏ", value: "red" },
+        { name: "🔵 Xanh Dương", value: "blue" },
+        { name: "🟣 Tím", value: "purple" },
+        { name: "⚫ Đen", value: "dark" }
+      )
+  )
+  .addBooleanOption((option) =>
+    option
+      .setName("everyone")
+      .setDescription("Có tag @everyone không?")
+      .setRequired(false)
+  )
+  .addStringOption((option) =>
+    option
+      .setName("hinhanh")
+      .setDescription("Link ảnh/banner lớn trong embed")
+      .setRequired(false)
+      .setMaxLength(1000)
+  )
+  .addStringOption((option) =>
+    option
+      .setName("thumbnail")
+      .setDescription("Link ảnh nhỏ góc phải embed")
+      .setRequired(false)
+      .setMaxLength(1000)
+  )
+  .addStringOption((option) =>
+    option
+      .setName("footer")
+      .setDescription("Dòng chữ footer, mặc định: Powered by Real Roleplay")
+      .setRequired(false)
+      .setMaxLength(200)
+  );
+
+async function registerSlashCommands() {
+  try {
+    if (process.env.DISCORD_GUILD_ID) {
+      const guild = await client.guilds.fetch(process.env.DISCORD_GUILD_ID);
+      await guild.commands.set([announcementCommand.toJSON()]);
+      console.log("✅ Đã đăng ký slash command /thongbao cho guild.");
+      return;
+    }
+
+    await client.application.commands.set([announcementCommand.toJSON()]);
+    console.log("✅ Đã đăng ký slash command /thongbao global.");
+  } catch (err) {
+    console.error("❌ Không đăng ký được slash command:", err?.message || err);
+  }
 }
 
 const RR_EMOJIS = {
@@ -174,13 +240,7 @@ async function updateApplication(applicationId, status, reason) {
 
 client.once("ready", async () => {
   console.log(`✅ Discord bot online: ${client.user.tag}`);
-
-  try {
-    await client.application.commands.set([announceCommand.toJSON()]);
-    console.log("✅ Đã đăng ký slash command /thongbao");
-  } catch (err) {
-    console.log("Không đăng ký được slash command:", err?.message || err);
-  }
+  await registerSlashCommands();
 });
 
 client.on("interactionCreate", async (interaction) => {
@@ -191,37 +251,52 @@ client.on("interactionCreate", async (interaction) => {
     if (interaction.isChatInputCommand() && interaction.commandName === "thongbao") {
       await interaction.deferReply({ ephemeral: true });
 
-      if (!interaction.memberPermissions?.has(PermissionFlagsBits.Administrator)) {
-        await interaction.editReply("❌ Bạn không có quyền dùng lệnh này.");
-        return;
-      }
-
       const channel = interaction.options.getChannel("kenh");
+      const title = interaction.options.getString("tieude");
       const content = interaction.options.getString("noidung");
+      const colorChoice = interaction.options.getString("mau") || "gold";
+      const pingEveryone = interaction.options.getBoolean("everyone") || false;
+      const imageUrl = interaction.options.getString("hinhanh");
+      const thumbnailUrl = interaction.options.getString("thumbnail");
+      const footerText = interaction.options.getString("footer") || "Powered by Real Roleplay";
 
       if (!channel || channel.type !== ChannelType.GuildText) {
-        await interaction.editReply("❌ Kênh không hợp lệ. Vui lòng chọn kênh text.");
+        await interaction.editReply("❌ Kênh không hợp lệ. Chỉ được chọn kênh chữ.");
         return;
       }
 
-      const announceEmbed = new EmbedBuilder()
-        .setColor(0xd4af37)
+      const colors = {
+        gold: 0xd4af37,
+        green: 0x22c55e,
+        red: 0xef4444,
+        blue: 0x3b82f6,
+        purple: 0xa855f7,
+        dark: 0x111827,
+      };
+
+      const embed = new EmbedBuilder()
+        .setColor(colors[colorChoice] || colors.gold)
         .setAuthor({
           name: "REAL ROLEPLAY",
           iconURL: "https://cdn.discordapp.com/emojis/1506989509886218391.png",
         })
-        .setTitle("📢 THÔNG BÁO REAL ROLEPLAY")
+        .setTitle(title)
         .setDescription(content)
         .setFooter({
-          text: "Powered by Real Roleplay",
+          text: footerText,
           iconURL: "https://cdn.discordapp.com/emojis/1506989509886218391.png",
         })
         .setTimestamp();
 
+      if (imageUrl) embed.setImage(imageUrl);
+      if (thumbnailUrl) embed.setThumbnail(thumbnailUrl);
+
       await channel.send({
-        content: "@everyone",
-        embeds: [announceEmbed],
-        allowedMentions: { parse: ["everyone"] },
+        content: pingEveryone ? "@everyone" : null,
+        embeds: [embed],
+        allowedMentions: {
+          parse: pingEveryone ? ["everyone"] : [],
+        },
       });
 
       await interaction.editReply(`✅ Đã đăng thông báo vào ${channel}.`);
