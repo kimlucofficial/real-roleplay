@@ -253,7 +253,8 @@ client.on("interactionCreate", async (interaction) => {
 
       const channel = interaction.options.getChannel("kenh");
       const title = interaction.options.getString("tieude");
-      const content = interaction.options.getString("noidung");
+      const rawDescription = interaction.options.getString("noidung");
+  const description = rawDescription.replace(/\\n/g, "\n");
       const colorChoice = interaction.options.getString("mau") || "gold";
       const pingEveryone = interaction.options.getBoolean("everyone") || false;
       const imageUrl = interaction.options.getString("hinhanh");
@@ -281,7 +282,7 @@ client.on("interactionCreate", async (interaction) => {
           iconURL: "https://cdn.discordapp.com/emojis/1506989509886218391.png",
         })
         .setTitle(title)
-        .setDescription(content)
+        .setDescription(description)
         .setFooter({
           text: footerText,
           iconURL: "https://cdn.discordapp.com/emojis/1506989509886218391.png",
