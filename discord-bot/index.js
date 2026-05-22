@@ -203,6 +203,7 @@ client.on("interactionCreate", async (interaction) => {
       await interaction.deferReply({ ephemeral: true });
 
       const status = parsed.action === "approve" ? "approved" : "rejected";
+      const approved = status === "approved";
       const reason = interaction.fields.getTextInputValue("reason") || "Không có lý do.";
 
       const affectedRows = await updateApplication(parsed.applicationId, status, reason);
@@ -211,15 +212,50 @@ client.on("interactionCreate", async (interaction) => {
         return;
       }
 
-      const roleAdded = status === "approved" ? await addWhitelistRole(interaction, parsed.discordId) : false;
+      const roleAdded = approved ? await addWhitelistRole(interaction, parsed.discordId) : false;
       const dmSent = await sendResultDm(parsed.discordId, status, reason);
 
       try {
         const messageId = parsed.messageId || interaction.message?.id;
+
         if (messageId && interaction.channel) {
           const msg = await interaction.channel.messages.fetch(messageId);
+
+          const resultEmbed = new EmbedBuilder()
+            .setColor(approved ? 0x22c55e : 0xef4444)
+            .setTitle(approved ? "✅ WHITELIST APPROVED" : "❌ WHITELIST REJECTED")
+            .addFields(
+              {
+                name: "👮 Staff xử lý",
+                value: `${interaction.user.tag}`,
+                inline: true,
+              },
+              {
+                name: "📝 Lý do",
+                value: reason,
+                inline: false,
+              },
+              {
+                name: "🎖️ Role Whitelist",
+                value: approved
+                  ? roleAdded
+                    ? "✅ Đã cấp role"
+                    : "⚠️ Chưa cấp được role"
+                  : "—",
+                inline: true,
+              },
+              {
+                name: "📨 DM",
+                value: dmSent ? "✅ Đã gửi DM" : "⚠️ Không gửi được DM",
+                inline: true,
+              }
+            )
+            .setFooter({ text: "Powered by Real Roleplay" })
+            .setTimestamp();
+
           await msg.edit({
-            content: `${status === "approved" ? "✅ Được duyệt" : "❌ Bị từ chối"} bởi ${interaction.user.tag}\nLý do: ${reason}`,
+            content: `${approved ? "✅ Được duyệt" : "❌ Bị từ chối"} bởi ${interaction.user.tag}`,
+            embeds: [...msg.embeds, resultEmbed],
             components: [],
           });
         }
@@ -228,7 +264,7 @@ client.on("interactionCreate", async (interaction) => {
       }
 
       await interaction.editReply(
-        status === "approved"
+        approved
           ? `✅ Đã duyệt đơn #${parsed.applicationId}${roleAdded ? " + đã cấp role" : " nhưng chưa cấp được role"}${dmSent ? " + đã DM" : " + không DM được"}`
           : `❌ Đã từ chối đơn #${parsed.applicationId}${dmSent ? " + đã DM" : " + không DM được"}`
       );
