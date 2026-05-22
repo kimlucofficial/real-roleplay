@@ -46,22 +46,75 @@ function isValidSnowflake(value) {
   return /^\d{15,25}$/.test(String(value || ""));
 }
 
+const RR_EMOJIS = {
+  crown: "<a:1115crown3:1507012431409582141>",
+  trophy: "<:3021trophy:1507012465290907718>",
+  logo: "<:image:1506989509886218391>",
+};
+
+function truncateText(value = "", max = 900) {
+  const text = String(value || "").trim();
+  if (text.length <= max) return text || "Không có ghi chú.";
+  return `${text.slice(0, max - 3)}...`;
+}
+
 async function sendResultDm(discordId, status, reason) {
   if (!isValidSnowflake(discordId)) return false;
+
+  const approved = status === "approved";
+  const safeReason = truncateText(reason || "Không có ghi chú.");
+
+  const embed = new EmbedBuilder()
+    .setColor(approved ? 0xd4af37 : 0xb91c1c)
+    .setTitle(
+      approved
+        ? `${RR_EMOJIS.crown} REAL ROLEPLAY | WHITELIST APPROVED`
+        : `${RR_EMOJIS.logo} REAL ROLEPLAY | WHITELIST RESULT`
+    )
+    .setDescription(
+      approved
+        ? [
+            `${RR_EMOJIS.trophy} **Chúc mừng! Hồ sơ whitelist của bạn đã được duyệt.**`,
+            "",
+            "Bạn đã chính thức vượt qua vòng xét duyệt và có thể bắt đầu hành trình Roleplay tại **Real Roleplay**.",
+            "",
+            "Vui lòng đọc kỹ luật server, giữ thái độ nghiêm túc và xây dựng nhân vật đúng tinh thần RP.",
+          ].join("\n")
+        : [
+            "Rất tiếc, hồ sơ whitelist của bạn **chưa được duyệt ở lần này**.",
+            "",
+            "Bạn có thể xem lại góp ý bên dưới, chỉnh sửa hồ sơ/kịch bản nhân vật và thử lại khi đã sẵn sàng.",
+          ].join("\n")
+    )
+    .addFields(
+      {
+        name: approved ? "🏆 Trạng thái" : "📌 Trạng thái",
+        value: approved ? "**ĐÃ ĐƯỢC DUYỆT**" : "**ĐÃ BỊ TỪ CHỐI**",
+        inline: true,
+      },
+      {
+        name: "📝 Phản hồi từ Staff",
+        value: safeReason,
+        inline: false,
+      },
+      {
+        name: approved ? "👑 Bước tiếp theo" : "🔁 Gợi ý tiếp theo",
+        value: approved
+          ? "Hãy vào server Discord để nhận thông tin tiếp theo và chuẩn bị vào thành phố."
+          : "Hãy bổ sung thêm chi tiết nhân vật, tình huống RP và đảm bảo câu trả lời đúng yêu cầu.",
+        inline: false,
+      }
+    )
+    .setFooter({ text: "Real Roleplay • Whitelist System" })
+    .setTimestamp();
 
   try {
     const user = await client.users.fetch(discordId);
     await user.send({
-      embeds: [
-        new EmbedBuilder()
-          .setTitle(status === "approved" ? "🎉 WHITELIST APPROVED" : "❌ WHITELIST REJECTED")
-          .setDescription(
-            status === "approved"
-              ? `Bạn đã được duyệt vào server.\n\n📌 Lý do:\n${reason || "Không có lý do."}`
-              : `Đơn whitelist của bạn đã bị từ chối.\n\n📌 Lý do:\n${reason || "Không có lý do."}`
-          )
-          .setColor(status === "approved" ? 0x00ff00 : 0xff0000),
-      ],
+      content: approved
+        ? `${RR_EMOJIS.logo} **Real Roleplay Whitelist Result**`
+        : `${RR_EMOJIS.logo} **Real Roleplay Whitelist Update**`,
+      embeds: [embed],
     });
     return true;
   } catch (err) {
