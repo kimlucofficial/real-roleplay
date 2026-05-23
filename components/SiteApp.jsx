@@ -649,7 +649,7 @@ function UpdatePage() {
       <div className="rr-update-reference-bg-mark" aria-hidden="true" />
       <div className="rr-update-reference-inner">
         <div className="rr-update-reference-kicker">REAL ROLEPLAY</div>
-        <h1 className="rr-update-reference-title">UPDATE 1.0 SỰ KHỞI ĐẦU</h1>
+        <h1 className="rr-update-reference-title"><span>UPDATE 1.0</span><span>SỰ KHỞI ĐẦU</span></h1>
         <p className="rr-update-reference-desc">
           Bắt đầu từ con số không. Không tài sản, không những vội thông qua công danh tiếng,
           gặp gỡ. Mỗi quyết định đầu tiên sẽ định hình cách tồn tại trong thành phố.
