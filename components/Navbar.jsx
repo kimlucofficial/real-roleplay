@@ -120,7 +120,7 @@ const isRulesActive = page === 'rules-oc';
           <button className={page === 'update' ? 'active' : ''} onClick={() => goTo('update')}>UPDATE</button>
           {/* <button className={page === 'ped' ? 'active' : ''} onClick={() => goTo('ped')}>PED</button> */}
           <button onClick={() => window.open(discordUrl, '_blank', 'noopener,noreferrer')}>DISCORD</button>
-          <button type="button" className="mobile-nav-cta" onClick={() => goTo('whitelist')}>REQUEST ACCESS</button>
+          <button type="button" className="mobile-nav-cta" onClick={() => goTo('whitelist')}>ĐĂNG KÝ WL</button>
         </div>
       </div>
     </div>

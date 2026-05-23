@@ -37,7 +37,7 @@ export default function IntroCinematic({ onEnter }) {
               <p>{scene.body}</p>
               {index === 0 ? (
                 <button type="button" className="intro-cinematic-action" onClick={onEnter}>
-                  Request Access
+                 ĐĂNG KÝ WL
                   <ArrowRight size={16} />
                 </button>
               ) : null}
