@@ -3059,19 +3059,19 @@ body { background:#030303; color:#fff; font-family:'Oswald', sans-serif; }
   transform:translateY(32px) !important;
 }
 .rr-update-reference-kicker{
-  font-size:clamp(1.45rem, 1.9vw, 2.18rem) !important;
+  font-size:clamp(2rem, 2.8vw, 3.2rem) !important;
   letter-spacing:.46em !important;
   margin-bottom:20px !important;
   color:#f8d28a !important;
   text-shadow:0 3px 0 rgba(0,0,0,.78), 0 0 28px rgba(246,207,131,.42) !important;
 }
 .rr-update-reference-title{
-  max-width:1180px !important;
-  font-size:clamp(4.2rem, 7.65vw, 7.35rem) !important;
-  line-height:.82 !important;
+  font-size:clamp(5.5rem, 9vw, 9rem) !important;
+  line-height:.78 !important;
 }
-.rr-update-reference-title span{
-  display:block;
+
+.rr-update-reference-title span:last-child{
+  font-size:.72em !important;
 }
 .rr-update-reference-desc{
   margin-top:24px !important;
