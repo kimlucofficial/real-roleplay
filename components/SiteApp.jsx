@@ -165,7 +165,7 @@ const updates = [
   { title: 'CHARACTER DEVELOPMENT', tag: '03', text: 'Mỗi quyết định và hành động góp phần định hình con người mà nhân vật của bạn trở thành.' },
   { title: 'FIRST STEPS', tag: '04', text: 'Làm quen với cuộc sống mới thông qua các công việc cơ bản, gặp gỡ những người quanh mình.' },
   { title: 'CAREER PATH', tag: '05', text: 'Từ công việc nhỏ đến các hướng đi dài hạn, mỗi lựa chọn mở ra con đường riêng.' },
-  { title: 'BUILD YOUR STORY', tag: '06', text: 'Đừng vội định nghĩa hành động góp phần định hình con người, mối quan hệ và cách nhân vật cần trọng nhất.' }
+  { title: 'BUILD YOUR STORY', tag: '06', text: 'Đừng vội định và hành động góp phần định hình con người, mối quan hệ, cơ hội và cá nhân vật của bạn trở thành.' }
 ];
 
 const editorialDeck = [
@@ -645,29 +645,25 @@ function WhitelistPage({ setPage }) {
 
 function UpdatePage() {
   return (
-    <section className="rr-update-hero">
-      <div className="rr-update-bg-logo" />
-      <div className="rr-update-vignette" />
-      <div className="rr-update-line rr-update-line-left" />
-      <div className="rr-update-line rr-update-line-right" />
+    <section className="rr-update-reference">
+      <div className="rr-update-reference-bg-mark" aria-hidden="true" />
+      <div className="rr-update-reference-inner">
+        <div className="rr-update-reference-kicker">REAL ROLEPLAY</div>
+        <h1 className="rr-update-reference-title">UPDATE 1.0 SỰ KHỞI ĐẦU</h1>
+        <p className="rr-update-reference-desc">
+          Bắt đầu từ con số không. Không tài sản, không những vội thông qua công danh tiếng,
+          gặp gỡ. Mỗi quyết định đầu tiên sẽ định hình cách tồn tại trong thành phố.
+        </p>
 
-      <div className="container rr-update-wrap">
-        <div className="rr-update-head">
-          <div className="rr-update-kicker">REAL ROLEPLAY</div>
-          <h1 className="rr-update-title">UPDATE 1.0 SỰ KHỞI ĐẦU</h1>
-          <p>
-            Bắt đầu từ con số không. Không tài sản, không những vội thông qua công danh tiếng,
-            gặp gỡ. Mỗi quyết định đầu tiên sẽ định hình cách tồn tại trong thành phố.
-          </p>
-        </div>
-
-        <div className="rr-update-cards">
+        <div className="rr-update-reference-grid">
           {updates.map((item) => (
-            <article className="rr-update-card" key={item.tag}>
-              <div className="rr-update-card-badge">{item.tag}</div>
-              <h3>{item.title}</h3>
-              <p>{item.text}</p>
-              <div className="rr-update-card-ghost">{item.tag}</div>
+            <article className="rr-update-reference-card" key={item.tag}>
+              <div className="rr-update-reference-badge">{item.tag}</div>
+              <div className="rr-update-reference-content">
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+                <span>{item.tag}</span>
+              </div>
             </article>
           ))}
         </div>
