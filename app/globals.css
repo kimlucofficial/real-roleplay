@@ -3045,3 +3045,55 @@ body { background:#030303; color:#fff; font-family:'Oswald', sans-serif; }
   .rr-update-reference-card{ min-height:168px; }
   .rr-update-reference-bg-mark{ width:105px; height:150px; }
 }
+
+
+/* USER PATCH 2026-05-23: đẩy cụm Update xuống vùng focus, phóng to REAL ROLEPLAY và cân lại layout */
+.page-shell.page-update .rr-update-reference,
+.rr-update-reference{
+  padding-top:154px !important;
+  padding-bottom:74px !important;
+  align-items:flex-start !important;
+}
+.rr-update-reference-inner{
+  max-width:1210px !important;
+  transform:translateY(18px) !important;
+}
+.rr-update-reference-kicker{
+  font-size:clamp(1.18rem, 1.55vw, 1.72rem) !important;
+  letter-spacing:.40em !important;
+  margin-bottom:18px !important;
+  color:#f8d28a !important;
+  text-shadow:0 3px 0 rgba(0,0,0,.78), 0 0 24px rgba(246,207,131,.34) !important;
+}
+.rr-update-reference-title{
+  max-width:1160px !important;
+  font-size:clamp(4rem, 7.35vw, 7.05rem) !important;
+  line-height:.84 !important;
+}
+.rr-update-reference-desc{
+  margin-top:24px !important;
+  max-width:835px !important;
+  font-size:clamp(1.08rem, 1.48vw, 1.42rem) !important;
+}
+.rr-update-reference-grid{
+  margin-top:66px !important;
+  width:min(100%, 1010px) !important;
+  gap:66px 70px !important;
+}
+.rr-update-reference-card{
+  min-height:176px !important;
+}
+@media (max-width: 980px){
+  .page-shell.page-update .rr-update-reference,
+  .rr-update-reference{ padding-top:132px !important; }
+  .rr-update-reference-inner{ transform:translateY(8px) !important; }
+  .rr-update-reference-title{ font-size:clamp(3.15rem, 10vw, 5.2rem) !important; }
+  .rr-update-reference-grid{ margin-top:58px !important; gap:58px 34px !important; }
+}
+@media (max-width: 640px){
+  .page-shell.page-update .rr-update-reference,
+  .rr-update-reference{ padding-top:116px !important; padding-bottom:50px !important; }
+  .rr-update-reference-kicker{ font-size:1rem !important; letter-spacing:.26em !important; }
+  .rr-update-reference-title{ font-size:clamp(2.8rem, 14vw, 4.4rem) !important; }
+  .rr-update-reference-grid{ margin-top:48px !important; }
+}
