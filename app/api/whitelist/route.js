@@ -33,8 +33,12 @@ export async function POST(req) {
       return Response.json({ error: 'Tuổi phải là số hợp lệ và từ 16 trở lên.' }, { status: 400 });
     }
 
-    if (!validateWordRange(body.short_description, 50) || !validateWordRange(body.backstory, 50) || !validateWordRange(body.why_join, 30)) {
-      return Response.json({ error: 'Mô tả phải từ 50 đến 300 chữ, tiểu sử phải từ 50 đến 300 chữ và phần vì sao phải từ 30 đến 300 chữ.' }, { status: 400 });
+    if (!validateWordRange(body.backstory, 50)) {
+      return Response.json({ error: 'Tiểu sử nhân vật phải từ 50 đến 300 chữ.' }, { status: 400 });
+    }
+
+    if (!/^\S+\s+\S+/.test(String(body.short_description || '').trim())) {
+      return Response.json({ error: 'Tên nhân vật phải bao gồm Họ và Tên rõ ràng.' }, { status: 400 });
     }
 
     const db = getDb();

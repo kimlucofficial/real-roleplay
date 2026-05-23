@@ -112,6 +112,13 @@ const announcementCommand = new SlashCommandBuilder()
   )
   .addStringOption((option) =>
     option
+      .setName("video")
+      .setDescription("Link video muốn gửi kèm thông báo (YouTube/TikTok/MP4/Discord CDN)")
+      .setRequired(false)
+      .setMaxLength(1000)
+  )
+  .addStringOption((option) =>
+    option
       .setName("footer")
       .setDescription("Dòng chữ footer, mặc định: Powered by Real Roleplay")
       .setRequired(false)
@@ -259,6 +266,7 @@ client.on("interactionCreate", async (interaction) => {
       const pingEveryone = interaction.options.getBoolean("everyone") || false;
       const imageUrl = interaction.options.getString("hinhanh");
       const thumbnailUrl = interaction.options.getString("thumbnail");
+      const videoUrl = interaction.options.getString("video");
       const footerText = interaction.options.getString("footer") || "Powered by Real Roleplay";
 
       if (!channel || channel.type !== ChannelType.GuildText) {
@@ -291,9 +299,16 @@ client.on("interactionCreate", async (interaction) => {
 
       if (imageUrl) embed.setImage(imageUrl);
       if (thumbnailUrl) embed.setThumbnail(thumbnailUrl);
+      if (videoUrl) {
+        embed.setURL(videoUrl).addFields({
+          name: "🎬 Video",
+          value: `[Bấm để xem video](${videoUrl})`,
+          inline: false,
+        });
+      }
 
       await channel.send({
-        content: pingEveryone ? "@everyone" : null,
+        content: [pingEveryone ? "@everyone" : null, videoUrl ? `🎬 ${videoUrl}` : null].filter(Boolean).join("\n") || null,
         embeds: [embed],
         allowedMentions: {
           parse: pingEveryone ? ["everyone"] : [],

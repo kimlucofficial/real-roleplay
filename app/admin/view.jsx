@@ -89,15 +89,15 @@ export default function AdminClient() {
                       </td>
                       <td>
                         <div>Age: {row.age}</div>
-                        <div style={{ marginTop: 6 }}>RP: {row.rp_experience}</div>
+                        <div style={{ marginTop: 6 }}>Giới tính: {row.rp_experience}</div>
                         <div style={{ marginTop: 6, color: '#a1a1aa' }}>{row.online_time}</div>
                       </td>
                       <td>
-                        <div style={{ maxWidth: 360, color: '#d4d4d8' }}>{row.short_description}</div>
+                        <div style={{ maxWidth: 360, color: '#d4d4d8' }}><strong>Tên nhân vật:</strong> {row.short_description}</div>
                         <details style={{ marginTop: 10 }}>
                           <summary style={{ cursor: 'pointer', color: '#f4c53a' }}>Xem tiểu sử</summary>
                           <div style={{ marginTop: 10, color: '#a1a1aa', lineHeight: 1.7 }}>{row.backstory}</div>
-                          <div style={{ marginTop: 10, color: '#d4d4d8' }}><strong>Tại sao tham gia:</strong> {row.why_join}</div>
+                          <div style={{ marginTop: 10, color: '#d4d4d8' }}><strong>Cam kết luật server:</strong> {row.why_join}</div>
                         </details>
                       </td>
                       <td>

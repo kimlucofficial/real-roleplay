@@ -3065,25 +3065,25 @@ body { background:#030303; color:#fff; font-family:'Oswald', sans-serif; }
   color:#f8d28a !important;
   text-shadow:0 3px 0 rgba(0,0,0,.78), 0 0 28px rgba(246,207,131,.42) !important;
 }
-
 .rr-update-reference-title{
   font-size:clamp(5.5rem, 9vw, 9rem) !important;
-  line-height:.98 !important;
+  line-height:.88 !important;
   white-space:normal !important;
+  text-align:center !important;
 }
 
 .rr-update-reference-title span{
   display:block !important;
   width:100%;
-  text-align:center;
 }
 
 .rr-update-reference-title span:first-child{
-  margin-bottom:.08em;
+  margin-bottom:.04em;
 }
 
 .rr-update-reference-title span:last-child{
-  font-size:.50em !important;
+  font-size:.62em !important;
+  letter-spacing:.04em;
 }
 .rr-update-reference-desc{
   margin-top:24px !important;
