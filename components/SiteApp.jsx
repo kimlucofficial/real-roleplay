@@ -242,7 +242,7 @@ function Hero({ setPage, discordUrl }) {
       <div className="container rr-home-inner">
         <div className="rr-home-left">
           <div className="rr-home-kicker">BAN NGÀY LÀM VIỆC - BAN ĐÊM SỐNG CUỘC ĐỜI CỦA BẠN</div>
-          <h1 className="rr-home-title"><span>SỐNG NHƯ</span><strong>MỘT CUỘC ĐỜI THẬT</strong></h1>
+          <h1 className="rr-home-title"><span>LIKE A</span><strong>REAL LIFE</strong></h1>
           <p className="rr-home-lead">Real Roleplay không phải là nơi để cày cuốc hay thử vận may. Đây là thành phố của những con người thật sự nhập vai, xây dựng sự nghiệp, các mối quan hệ và đối mặt với hệ quả từ mọi lựa chọn của chính mình.</p>
           <div className="rr-home-actions">
             <button className="rr-solid-btn" onClick={() => setPage('whitelist')}>REQUEST ACCESS <ArrowRight size={18} /></button>

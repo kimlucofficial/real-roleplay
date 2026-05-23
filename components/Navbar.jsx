@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
@@ -96,9 +95,9 @@ const isRulesActive = page === 'rules-oc';
             })}
           </div>
 
-          <Link href="/whitelist" className="nav-cta">
+          <button type="button" className="nav-cta" onClick={() => goTo('whitelist')}>
             Request Access
-          </Link>
+          </button>
 
           <button className="menu-btn" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X size={18} /> : <Menu size={18} />}
@@ -121,7 +120,7 @@ const isRulesActive = page === 'rules-oc';
           <button className={page === 'update' ? 'active' : ''} onClick={() => goTo('update')}>UPDATE</button>
           {/* <button className={page === 'ped' ? 'active' : ''} onClick={() => goTo('ped')}>PED</button> */}
           <button onClick={() => window.open(discordUrl, '_blank', 'noopener,noreferrer')}>DISCORD</button>
-          <Link href="/whitelist" className="mobile-nav-cta">REQUEST ACCESS</Link>
+          <button type="button" className="mobile-nav-cta" onClick={() => goTo('whitelist')}>REQUEST ACCESS</button>
         </div>
       </div>
     </div>
