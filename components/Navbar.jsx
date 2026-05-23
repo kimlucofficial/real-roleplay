@@ -96,7 +96,7 @@ const isRulesActive = page === 'rules-oc';
           </div>
 
           <button type="button" className="nav-cta" onClick={() => goTo('whitelist')}>
-            Request Access
+            ĐĂNG KÝ WL
           </button>
 
           <button className="menu-btn" onClick={() => setMobileOpen(!mobileOpen)}>
