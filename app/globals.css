@@ -3082,7 +3082,7 @@ body { background:#030303; color:#fff; font-family:'Oswald', sans-serif; }
 }
 
 .rr-update-reference-title span:last-child{
-  font-size:.62em !important;
+  font-size:.50em !important;
   letter-spacing:.04em;
 }
 .rr-update-reference-desc{
