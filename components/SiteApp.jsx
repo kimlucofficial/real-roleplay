@@ -162,14 +162,10 @@ Ví dụ vi phạm: Lặp lại hành vi MG/PG dù đã được nhắc nhở tr
 const updates = [
   { title: 'STARTER JOBS', tag: '01', text: 'Những công việc đầu tiên giúp bạn thích nghi với thành phố và tạo nguồn thu nhập ban đầu.' },
   { title: 'CITY GUIDE', tag: '02', text: 'Khám phá các địa điểm, dịch vụ và khu vực quan trọng trong thành phố.' },
-  { title: 'CHARACTER DEVELOPMENT', tag: '03', text: 'Mỗi quyết định và hành động góp phần định hình con người mà nhân vật của bạn trở thành.' }
-];
-
-const updateHighlights = [
-  { title: 'FIRST STEPS', text: 'Làm quen với cuộc sống mới thông qua các công việc cơ bản, gặp gỡ những người xung quanh.' },
-  { title: 'CAREER PATH', text: 'Từ công việc nhỏ đến các hướng đi dài hạn, mỗi lựa chọn đều mở ra một con đường riêng.' },
-  { title: 'SOCIAL CONNECTION', text: 'Thành phố được xây bằng con người, mối quan hệ, cơ hội và các câu chuyện bất ngờ.' },
-  { title: 'BUILD YOUR STORY', text: 'Đừng vội vàng tìm đích đến. Hành trình của nhân vật mới là thứ quan trọng nhất.' }
+  { title: 'CHARACTER DEVELOPMENT', tag: '03', text: 'Mỗi quyết định và hành động góp phần định hình con người mà nhân vật của bạn trở thành.' },
+  { title: 'FIRST STEPS', tag: '04', text: 'Làm quen với cuộc sống mới thông qua các công việc cơ bản, gặp gỡ những người quanh mình.' },
+  { title: 'CAREER PATH', tag: '05', text: 'Từ công việc nhỏ đến các hướng đi dài hạn, mỗi lựa chọn mở ra con đường riêng.' },
+  { title: 'BUILD YOUR STORY', tag: '06', text: 'Đừng vội định nghĩa hành động góp phần định hình con người, mối quan hệ và cách nhân vật cần trọng nhất.' }
 ];
 
 const editorialDeck = [
@@ -649,63 +645,34 @@ function WhitelistPage({ setPage }) {
 
 function UpdatePage() {
   return (
-    <>
-      <section className="rr-update-hero">
-        <div className="rr-update-circuit rr-update-circuit-left" />
-        <div className="rr-update-circuit rr-update-circuit-right" />
-        <div className="rr-update-corner rr-update-corner-lt" />
-        <div className="rr-update-corner rr-update-corner-rb" />
-        <div className="rr-update-orb rr-update-orb-left" />
-        <div className="rr-update-orb rr-update-orb-right" />
+    <section className="rr-update-hero">
+      <div className="rr-update-bg-logo" />
+      <div className="rr-update-vignette" />
+      <div className="rr-update-line rr-update-line-left" />
+      <div className="rr-update-line rr-update-line-right" />
 
-        <div className="container rr-update-hero-grid">
-          <div className="rr-update-arch-wrap">
-            <div className="rr-update-arch">
-              <div className="rr-update-arch-inner">
-                <div className="rr-update-kicker">REAL ROLEPLAY</div>
-                <h1 className="rr-update-title">
-                  <span>UPDATE 1.0</span>
-                  <strong>SỰ KHỞI ĐẦU</strong>
-                </h1>
-                <p>
-                  Bắt đầu từ con số không. Không tài sản, không danh tiếng, không mối quan hệ.
-                  Mỗi quyết định đầu tiên sẽ định hình cách bạn tồn tại trong thành phố.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="rr-update-bubbles">
-            {updateHighlights.map((item, index) => (
-              <div className="rr-update-bubble" key={item.title}>
-                <div className="rr-update-bubble-icon">{index + 1}</div>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </div>
-            ))}
-          </div>
+      <div className="container rr-update-wrap">
+        <div className="rr-update-head">
+          <div className="rr-update-kicker">REAL ROLEPLAY</div>
+          <h1 className="rr-update-title">UPDATE 1.0 SỰ KHỞI ĐẦU</h1>
+          <p>
+            Bắt đầu từ con số không. Không tài sản, không những vội thông qua công danh tiếng,
+            gặp gỡ. Mỗi quyết định đầu tiên sẽ định hình cách tồn tại trong thành phố.
+          </p>
         </div>
 
-        <div className="rr-update-footer-mark">POWERED BY REAL ROLEPLAY TEAM</div>
-      </section>
-
-      <section className="rr-update-cards-section">
-        <div className="container">
-          <div className="rr-update-cards">
-            {updates.map((item) => (
-              <div className="rr-update-glass-card" key={item.title}>
-                <div className="rr-update-card-number">{item.tag}</div>
-                <div className="rr-update-card-body">
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
-                </div>
-                <div className="rr-update-card-shadow">{item.tag}</div>
-              </div>
-            ))}
-          </div>
+        <div className="rr-update-cards">
+          {updates.map((item) => (
+            <article className="rr-update-card" key={item.tag}>
+              <div className="rr-update-card-badge">{item.tag}</div>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+              <div className="rr-update-card-ghost">{item.tag}</div>
+            </article>
+          ))}
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
 
