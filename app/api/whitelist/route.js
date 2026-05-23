@@ -25,8 +25,16 @@ export async function POST(req) {
       if (!body[field]) return Response.json({ error: `Missing field: ${field}` }, { status: 400 });
     }
 
-    if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(body.full_name.trim())) {
-      return Response.json({ error: 'Họ tên chỉ được chứa chữ.' }, { status: 400 });
+    if (!/^[\p{L}\s]+$/u.test(String(body.full_name || '').trim())) {
+      return Response.json({ error: 'Họ và tên chỉ được ghi chữ, có thể dùng dấu tiếng Việt, không dùng số/ký tự đặc biệt.' }, { status: 400 });
+    }
+
+    if (!/^[\p{L}\s]+$/u.test(String(body.rp_experience || '').trim())) {
+      return Response.json({ error: 'Giới tính chỉ được ghi bằng chữ, không dùng số/ký tự đặc biệt.' }, { status: 400 });
+    }
+
+    if (!/^[\p{L}\s]+$/u.test(String(body.online_time || '').trim())) {
+      return Response.json({ error: 'Khung giờ online chỉ được ghi bằng chữ, không dùng số/ký tự đặc biệt.' }, { status: 400 });
     }
 
     if (!/^\d+$/.test(String(body.age)) || Number(body.age) < 16) {
@@ -37,7 +45,12 @@ export async function POST(req) {
       return Response.json({ error: 'Tiểu sử nhân vật phải từ 50 đến 300 chữ.' }, { status: 400 });
     }
 
-    if (!/^\S+\s+\S+/.test(String(body.short_description || '').trim())) {
+    const characterName = String(body.short_description || '').trim();
+    if (!/^[a-zA-Z\s]+$/.test(characterName)) {
+      return Response.json({ error: 'Tên nhân vật chỉ được dùng chữ không dấu và không dùng số/ký tự đặc biệt.' }, { status: 400 });
+    }
+
+    if (!/^\S+\s+\S+/.test(characterName)) {
       return Response.json({ error: 'Tên nhân vật phải bao gồm Họ và Tên rõ ràng.' }, { status: 400 });
     }
 

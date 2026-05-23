@@ -3114,3 +3114,53 @@ body { background:#030303; color:#fff; font-family:'Oswald', sans-serif; }
   .rr-update-reference-title{ font-size:clamp(2.75rem, 14vw, 4.3rem) !important; }
   .rr-update-reference-grid{ margin-top:46px !important; }
 }
+
+/* =========================================================
+   PERFORMANCE PATCH - smoother whitelist submit modal
+========================================================= */
+.rr-whitelist-modal{
+  isolation:isolate;
+  contain:layout paint style;
+}
+.rr-whitelist-modal-backdrop{
+  background:rgba(0,0,0,.84) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+.rr-whitelist-dashboard{
+  transform:translateZ(0);
+  backface-visibility:hidden;
+  will-change:scroll-position;
+  contain:layout paint style;
+  box-shadow:0 28px 90px rgba(0,0,0,.78),0 0 34px rgba(242,177,72,.14),inset 0 0 0 1px rgba(255,255,255,.04) !important;
+}
+.rr-whitelist-modal .panel,
+.rr-whitelist-modal .info-tile,
+.rr-whitelist-modal .source-lock,
+.rr-whitelist-modal .form-note{
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+.rr-whitelist-modal .input,
+.rr-whitelist-modal .textarea{
+  transition:border-color .12s ease, background-color .12s ease !important;
+  box-shadow:none !important;
+}
+.rr-whitelist-modal .input:focus,
+.rr-whitelist-modal .textarea:focus{
+  box-shadow:0 0 0 2px rgba(212,163,115,.1) !important;
+}
+.rr-whitelist-modal .textarea{
+  resize:none;
+}
+@media (prefers-reduced-motion: reduce), (max-width: 860px){
+  .rr-whitelist-modal *,
+  .rr-access-hero *{
+    animation:none !important;
+    transition:none !important;
+  }
+  .rr-access-sparks,
+  .rr-access-orbit{
+    display:none !important;
+  }
+}
