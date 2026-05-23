@@ -3068,7 +3068,7 @@ body { background:#030303; color:#fff; font-family:'Oswald', sans-serif; }
 
 .rr-update-reference-title{
   font-size:clamp(5.5rem, 9vw, 9rem) !important;
-  line-height:.78 !important;
+  line-height:.9 !important;
   white-space:normal !important;
 }
 
@@ -3078,8 +3078,12 @@ body { background:#030303; color:#fff; font-family:'Oswald', sans-serif; }
   text-align:center;
 }
 
+.rr-update-reference-title span:first-child{
+  margin-bottom:.08em;
+}
+
 .rr-update-reference-title span:last-child{
-  font-size:.72em !important;
+  font-size:.68em !important;
 }
 .rr-update-reference-desc{
   margin-top:24px !important;
