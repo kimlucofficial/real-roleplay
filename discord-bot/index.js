@@ -187,7 +187,7 @@ async function sendTicketPanel(interaction) {
   const embed = new EmbedBuilder()
     .setColor(0xd4af37)
     .setAuthor({ name: "REAL ROLEPLAY", iconURL: interaction.client.user.displayAvatarURL() })
-    .setTitle("<a:38543megaphone:1507587403248963724> Real Roleplay Support Center")
+    .setTitle("<a:38543megaphone:1507587403248963724>  Support Center")
     .setDescription([
       "Cần hỗ trợ hoặc muốn báo lỗi? Hãy chọn đúng mục bên dưới để tạo ticket.",
       "",
@@ -197,7 +197,7 @@ async function sendTicketPanel(interaction) {
       "",
       "Vui lòng không spam ticket và mô tả vấn đề rõ ràng để staff xử lý nhanh hơn."
     ].join("\n"))
-    .setFooter({ text: "Real Roleplay • Ticket" })
+    // .setFooter({ text: "Real Roleplay • Ticket" })
     .setTimestamp();
 
   const row = new ActionRowBuilder().addComponents(
