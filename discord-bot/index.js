@@ -187,16 +187,17 @@ async function sendTicketPanel(interaction) {
   const embed = new EmbedBuilder()
     .setColor(0xd4af37)
     .setAuthor({ name: "REAL ROLEPLAY", iconURL: interaction.client.user.displayAvatarURL() })
-    .setTitle("🎫 HỆ THỐNG TICKET")
+    .setTitle("<a:38543megaphone:1507587403248963724>   TICKET")
     .setDescription([
       "Cần hỗ trợ hoặc muốn báo lỗi? Hãy chọn đúng mục bên dưới để tạo ticket.",
       "",
       "🛡️ **Support**: Hỗ trợ chung, câu hỏi, cần staff giúp đỡ.",
-      "🐞 **Báo lỗi**: Báo bug website/server/gameplay/script.",
+      "",
+      ":scroll: **Báo lỗi**: Báo bug website/server/gameplay.",
       "",
       "Vui lòng không spam ticket và mô tả vấn đề rõ ràng để staff xử lý nhanh hơn."
     ].join("\n"))
-    .setFooter({ text: "Real Roleplay • Ticket System" })
+    .setFooter({ text: "Real Roleplay • Ticket" })
     .setTimestamp();
 
   const row = new ActionRowBuilder().addComponents(
@@ -208,7 +209,7 @@ async function sendTicketPanel(interaction) {
     new ButtonBuilder()
       .setCustomId("rr_ticket_bug")
       .setLabel("Báo lỗi")
-      .setEmoji("🐞")
+      .setEmoji(":scroll:")
       .setStyle(ButtonStyle.Danger)
   );
 
