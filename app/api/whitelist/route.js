@@ -47,7 +47,7 @@ export async function POST(req) {
 
     const characterName = String(body.short_description || '').trim();
     if (!/^[a-zA-Z\s]+$/.test(characterName)) {
-      return Response.json({ error: 'Tên nhân vật chỉ được dùng không dấu và không dùng số/ký tự đặc biệt.' }, { status: 400 });
+      return Response.json({ error: 'Tên nhân vật chỉ được dùng chữ không dấu và không dùng số/ký tự đặc biệt.' }, { status: 400 });
     }
 
     if (!/^\S+\s+\S+/.test(characterName)) {

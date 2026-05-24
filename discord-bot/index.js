@@ -5,31 +5,20 @@ import {
   TextInputBuilder,
   TextInputStyle,
   ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
   EmbedBuilder,
   SlashCommandBuilder,
   PermissionFlagsBits,
   ChannelType,
-  ButtonBuilder,
-  ButtonStyle,
-  StringSelectMenuBuilder,
-  StringSelectMenuOptionBuilder,
-  AttachmentBuilder,
-  PermissionsBitField,
 } from "discord.js";
-import { createCanvas, loadImage } from "@napi-rs/canvas";
-import path from "path";
-import { fileURLToPath } from "url";
 
 import { getDb } from "../lib/db.js";
 
 const db = getDb();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const rootDir = path.resolve(__dirname, "..");
-
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages],
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 });
 
 function parseWhitelistCustomId(customId = "") {
@@ -63,6 +52,12 @@ function isValidSnowflake(value) {
 }
 
 
+
+
+const ticketPanelCommand = new SlashCommandBuilder()
+  .setName("ticketpanel")
+  .setDescription("Tạo panel ticket Real Roleplay")
+  .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
 
 const announcementCommand = new SlashCommandBuilder()
   .setName("thongbao")
@@ -138,194 +133,17 @@ const announcementCommand = new SlashCommandBuilder()
       .setMaxLength(200)
   );
 
-
-
-const ticketPanelCommand = new SlashCommandBuilder()
-  .setName("ticketpanel")
-  .setDescription("Tạo bảng mở ticket Real Roleplay")
-  .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-  .addChannelOption((option) =>
-    option
-      .setName("kenh")
-      .setDescription("Kênh sẽ đăng bảng ticket")
-      .setRequired(true)
-      .addChannelTypes(ChannelType.GuildText)
-  );
-
-function getEnvId(name) {
-  const value = process.env[name];
-  return isValidSnowflake(value) ? value : null;
-}
-
-async function buildWelcomeAttachment(member) {
-  const bannerPath = path.join(rootDir, "public", "welcome-banner.png");
-  const background = await loadImage(bannerPath);
-  const canvas = createCanvas(background.width, background.height);
-  const ctx = canvas.getContext("2d");
-
-  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-
-  const avatarUrl = member.user.displayAvatarURL({ extension: "png", size: 512, forceStatic: true });
-  const avatar = await loadImage(avatarUrl);
-
-  // Vị trí vòng tròn logo trên banner 1664x936. Tự scale theo kích thước ảnh gốc.
-  const scaleX = canvas.width / 1664;
-  const scaleY = canvas.height / 936;
-  const centerX = 1228 * scaleX;
-  const centerY = 386 * scaleY;
-  const radius = 137 * Math.min(scaleX, scaleY);
-
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-  ctx.closePath();
-  ctx.clip();
-  ctx.drawImage(avatar, centerX - radius, centerY - radius, radius * 2, radius * 2);
-  ctx.restore();
-
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(centerX, centerY, radius + 10 * Math.min(scaleX, scaleY), 0, Math.PI * 2);
-  ctx.strokeStyle = "#ffffff";
-  ctx.lineWidth = 12 * Math.min(scaleX, scaleY);
-  ctx.shadowColor = "rgba(212,175,55,.8)";
-  ctx.shadowBlur = 18 * Math.min(scaleX, scaleY);
-  ctx.stroke();
-  ctx.restore();
-
-  return new AttachmentBuilder(await canvas.encode("png"), { name: "real-roleplay-welcome.png" });
-}
-
-async function findOrCreateTicketCategory(guild, type) {
-  const envName = type === "bug" ? "TICKET_BUG_CATEGORY_ID" : "TICKET_SUPPORT_CATEGORY_ID";
-  const envId = getEnvId(envName);
-  if (envId) {
-    const found = guild.channels.cache.get(envId) || await guild.channels.fetch(envId).catch(() => null);
-    if (found && found.type === ChannelType.GuildCategory) return found;
-  }
-
-  const wantedName = type === "bug" ? "Báo lỗi" : "Support";
-  const existing = guild.channels.cache.find(
-    (channel) => channel.type === ChannelType.GuildCategory && channel.name.toLowerCase() === wantedName.toLowerCase()
-  );
-  if (existing) return existing;
-
-  return guild.channels.create({
-    name: wantedName,
-    type: ChannelType.GuildCategory,
-  });
-}
-
-function makeTicketPanelPayload() {
-  const embed = new EmbedBuilder()
-    .setColor(0xd4af37)
-    .setAuthor({ name: "REAL ROLEPLAY • TICKET CENTER" })
-    .setTitle("🎫 Trung Tâm Hỗ Trợ")
-    .setDescription([
-      "Bạn cần hỗ trợ vấn đề gì? Nhấn đúng nút bên dưới để mở ticket vào đúng category.",
-      "",
-      "🛡️ **Support**",
-      "Hỗ trợ chung, hỏi đáp, khiếu nại, tài khoản, whitelist hoặc vấn đề cần Staff xử lý.",
-      "",
-      "🐞 **Báo lỗi**",
-      "Báo bug server, lỗi script, lỗi website/bot hoặc lỗi trong quá trình trải nghiệm.",
-      "",
-      "Vui lòng không spam ticket và ghi rõ nội dung kèm ảnh/video nếu có."
-    ].join("\n"))
-    .setFooter({ text: "Real Roleplay • Ticket System" })
-    .setTimestamp();
-
-  const supportButton = new ButtonBuilder()
-    .setCustomId("rr_ticket_support")
-    .setLabel("Support")
-    .setEmoji("🛡️")
-    .setStyle(ButtonStyle.Primary);
-
-  const bugButton = new ButtonBuilder()
-    .setCustomId("rr_ticket_bug")
-    .setLabel("Báo lỗi")
-    .setEmoji("🐞")
-    .setStyle(ButtonStyle.Danger);
-
-  return { embeds: [embed], components: [new ActionRowBuilder().addComponents(supportButton, bugButton)] };
-}
-
-async function createTicketChannel(interaction, type) {
-  const guild = interaction.guild;
-  const member = interaction.member;
-  const category = await findOrCreateTicketCategory(guild, type);
-  const prefix = type === "bug" ? "bao-loi" : "support";
-  const existing = guild.channels.cache.find(
-    (channel) => channel.type === ChannelType.GuildText && channel.name.includes(interaction.user.id.slice(-6))
-  );
-
-  if (existing) {
-    await interaction.reply({ content: `⚠️ Bạn đang có ticket mở: ${existing}`, ephemeral: true });
-    return;
-  }
-
-  const channel = await guild.channels.create({
-    name: `${prefix}-${interaction.user.username}`.toLowerCase().replace(/[^a-z0-9-]/g, "-").slice(0, 80) + `-${interaction.user.id.slice(-6)}`,
-    type: ChannelType.GuildText,
-    parent: category.id,
-    permissionOverwrites: [
-      { id: guild.roles.everyone.id, deny: [PermissionsBitField.Flags.ViewChannel] },
-      { id: interaction.user.id, allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ReadMessageHistory, PermissionsBitField.Flags.AttachFiles] },
-      { id: client.user.id, allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ManageChannels, PermissionsBitField.Flags.ReadMessageHistory] },
-    ],
-  });
-
-  const staffRoleId = getEnvId("TICKET_STAFF_ROLE_ID");
-  if (staffRoleId) {
-    await channel.permissionOverwrites.edit(staffRoleId, {
-      ViewChannel: true,
-      SendMessages: true,
-      ReadMessageHistory: true,
-      ManageMessages: true,
-    }).catch(() => null);
-  }
-
-  const closeButton = new ButtonBuilder()
-    .setCustomId("rr_ticket_close")
-    .setLabel("Đóng ticket")
-    .setEmoji("🔒")
-    .setStyle(ButtonStyle.Danger);
-
-  const embed = new EmbedBuilder()
-    .setColor(type === "bug" ? 0xef4444 : 0xd4af37)
-    .setTitle(type === "bug" ? "🐞 Ticket Báo Lỗi" : "🛡️ Ticket Support")
-    .setDescription([
-      `${interaction.user}, Staff sẽ hỗ trợ bạn tại đây.`,
-      "",
-      "Vui lòng gửi đầy đủ thông tin:",
-      "• Nội dung cần hỗ trợ / lỗi gặp phải",
-      "• Ảnh hoặc video nếu có",
-      "• Thời gian xảy ra lỗi nếu là báo bug"
-    ].join("\n"))
-    .setFooter({ text: "Real Roleplay • Ticket System" })
-    .setTimestamp();
-
-  await channel.send({
-    content: `${interaction.user}${staffRoleId ? ` <@&${staffRoleId}>` : ""}`,
-    embeds: [embed],
-    components: [new ActionRowBuilder().addComponents(closeButton)],
-    allowedMentions: { users: [interaction.user.id], roles: staffRoleId ? [staffRoleId] : [] },
-  });
-
-  await interaction.reply({ content: `✅ Đã tạo ticket: ${channel}`, ephemeral: true });
-}
-
 async function registerSlashCommands() {
   try {
     if (process.env.DISCORD_GUILD_ID) {
       const guild = await client.guilds.fetch(process.env.DISCORD_GUILD_ID);
       await guild.commands.set([announcementCommand.toJSON(), ticketPanelCommand.toJSON()]);
-      console.log("✅ Đã đăng ký slash command /thongbao cho guild.");
+      console.log("✅ Đã đăng ký slash command /thongbao + /ticketpanel cho guild.");
       return;
     }
 
     await client.application.commands.set([announcementCommand.toJSON(), ticketPanelCommand.toJSON()]);
-    console.log("✅ Đã đăng ký slash command /thongbao global.");
+    console.log("✅ Đã đăng ký slash command /thongbao + /ticketpanel global.");
   } catch (err) {
     console.error("❌ Không đăng ký được slash command:", err?.message || err);
   }
@@ -341,6 +159,156 @@ function truncateText(value = "", max = 900) {
   const text = String(value || "").trim();
   if (text.length <= max) return text || "Không có ghi chú.";
   return `${text.slice(0, max - 3)}...`;
+}
+
+
+function sanitizeChannelName(value = "ticket") {
+  return String(value)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9-]/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 80) || "ticket";
+}
+
+async function sendTicketPanel(interaction) {
+  const panelChannelId = process.env.TICKET_PANEL_CHANNEL_ID;
+  const panelChannel = panelChannelId
+    ? await interaction.guild.channels.fetch(panelChannelId).catch(() => null)
+    : interaction.channel;
+
+  if (!panelChannel || panelChannel.type !== ChannelType.GuildText) {
+    await interaction.editReply("❌ Không tìm thấy TICKET_PANEL_CHANNEL_ID hoặc kênh panel không phải kênh chữ.");
+    return;
+  }
+
+  const embed = new EmbedBuilder()
+    .setColor(0xd4af37)
+    .setAuthor({ name: "REAL ROLEPLAY", iconURL: interaction.client.user.displayAvatarURL() })
+    .setTitle("🎫 HỆ THỐNG TICKET")
+    .setDescription([
+      "Cần hỗ trợ hoặc muốn báo lỗi? Hãy chọn đúng mục bên dưới để tạo ticket.",
+      "",
+      "🛡️ **Support**: Hỗ trợ chung, câu hỏi, cần staff giúp đỡ.",
+      "🐞 **Báo lỗi**: Báo bug website/server/gameplay/script.",
+      "",
+      "Vui lòng không spam ticket và mô tả vấn đề rõ ràng để staff xử lý nhanh hơn."
+    ].join("\n"))
+    .setFooter({ text: "Real Roleplay • Ticket System" })
+    .setTimestamp();
+
+  const row = new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
+      .setCustomId("rr_ticket_support")
+      .setLabel("Support")
+      .setEmoji("🛡️")
+      .setStyle(ButtonStyle.Primary),
+    new ButtonBuilder()
+      .setCustomId("rr_ticket_bug")
+      .setLabel("Báo lỗi")
+      .setEmoji("🐞")
+      .setStyle(ButtonStyle.Danger)
+  );
+
+  await panelChannel.send({ embeds: [embed], components: [row] });
+  await interaction.editReply(`✅ Đã tạo panel ticket tại ${panelChannel}.`);
+}
+
+async function createTicketChannel(interaction, type) {
+  const isBug = type === "bug";
+  const categoryId = isBug ? process.env.TICKET_BUG_CATEGORY_ID : process.env.TICKET_SUPPORT_CATEGORY_ID;
+  const staffRoleId = process.env.TICKET_STAFF_ROLE_ID;
+
+  if (!categoryId) {
+    await interaction.reply({ content: `❌ Thiếu ${isBug ? "TICKET_BUG_CATEGORY_ID" : "TICKET_SUPPORT_CATEGORY_ID"}.`, ephemeral: true });
+    return;
+  }
+
+  const guild = interaction.guild;
+  const category = await guild.channels.fetch(categoryId).catch(() => null);
+  if (!category || category.type !== ChannelType.GuildCategory) {
+    await interaction.reply({ content: "❌ Category ticket không hợp lệ. Hãy kiểm tra lại ID category trên Railway.", ephemeral: true });
+    return;
+  }
+
+  const prefix = isBug ? "bug" : "support";
+  const safeUser = sanitizeChannelName(interaction.user.username);
+  const channelName = `${prefix}-${safeUser}`.slice(0, 90);
+
+  const existing = guild.channels.cache.find(
+    (ch) => ch.parentId === categoryId && ch.topic?.includes(`USER_ID:${interaction.user.id}`)
+  );
+
+  if (existing) {
+    await interaction.reply({ content: `⚠️ Bạn đã có ticket đang mở: ${existing}`, ephemeral: true });
+    return;
+  }
+
+  const permissionOverwrites = [
+    { id: guild.roles.everyone.id, deny: ["ViewChannel"] },
+    { id: interaction.user.id, allow: ["ViewChannel", "SendMessages", "ReadMessageHistory", "AttachFiles"] },
+  ];
+
+  if (staffRoleId && isValidSnowflake(staffRoleId)) {
+    permissionOverwrites.push({
+      id: staffRoleId,
+      allow: ["ViewChannel", "SendMessages", "ReadMessageHistory", "AttachFiles", "ManageChannels"],
+    });
+  }
+
+  const ticketChannel = await guild.channels.create({
+    name: channelName,
+    type: ChannelType.GuildText,
+    parent: categoryId,
+    topic: `REAL ROLEPLAY TICKET | TYPE:${prefix} | USER_ID:${interaction.user.id}`,
+    permissionOverwrites,
+  });
+
+  const embed = new EmbedBuilder()
+    .setColor(isBug ? 0xef4444 : 0x3b82f6)
+    .setTitle(isBug ? "🐞 Ticket Báo Lỗi" : "🛡️ Ticket Support")
+    .setDescription([
+      `${interaction.user}, ticket của bạn đã được tạo.`,
+      "",
+      isBug
+        ? "Vui lòng mô tả lỗi, thời gian xảy ra, hình ảnh/video nếu có."
+        : "Vui lòng mô tả vấn đề bạn cần hỗ trợ càng rõ càng tốt.",
+      "",
+      staffRoleId && isValidSnowflake(staffRoleId) ? `<@&${staffRoleId}> sẽ hỗ trợ bạn sớm nhất.` : "Staff sẽ hỗ trợ bạn sớm nhất."
+    ].join("\n"))
+    .setFooter({ text: "Real Roleplay • Ticket System" })
+    .setTimestamp();
+
+  const closeRow = new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
+      .setCustomId("rr_ticket_close")
+      .setLabel("Đóng ticket")
+      .setEmoji("🔒")
+      .setStyle(ButtonStyle.Secondary)
+  );
+
+  await ticketChannel.send({
+    content: staffRoleId && isValidSnowflake(staffRoleId) ? `${interaction.user} <@&${staffRoleId}>` : `${interaction.user}`,
+    embeds: [embed],
+    components: [closeRow],
+    allowedMentions: { users: [interaction.user.id], roles: staffRoleId && isValidSnowflake(staffRoleId) ? [staffRoleId] : [] },
+  });
+
+  await interaction.reply({ content: `✅ Đã tạo ticket cho bạn: ${ticketChannel}`, ephemeral: true });
+}
+
+async function closeTicket(interaction) {
+  if (!interaction.channel?.topic?.includes("REAL ROLEPLAY TICKET")) {
+    await interaction.reply({ content: "❌ Lệnh này chỉ dùng trong kênh ticket.", ephemeral: true });
+    return;
+  }
+
+  await interaction.reply({ content: "🔒 Ticket sẽ đóng sau 3 giây...", ephemeral: true });
+  setTimeout(() => {
+    interaction.channel.delete("Real Roleplay ticket closed").catch((err) => console.log("Không xoá được ticket:", err?.message || err));
+  }, 3000);
 }
 
 async function sendResultDm(discordId, status, reason) {
@@ -438,54 +406,6 @@ async function updateApplication(applicationId, status, reason) {
 client.once("ready", async () => {
   console.log(`✅ Discord bot online: ${client.user.tag}`);
   await registerSlashCommands();
-
-  // Nếu muốn bot tự đăng panel ticket khi khởi động, điền TICKET_PANEL_CHANNEL_ID trên Railway.
-  const panelChannelId = getEnvId("TICKET_PANEL_CHANNEL_ID");
-  if (panelChannelId) {
-    try {
-      const channel = await client.channels.fetch(panelChannelId);
-      if (channel?.type === ChannelType.GuildText) {
-        await channel.send(makeTicketPanelPayload());
-        console.log("✅ Đã đăng ticket panel tự động.");
-      }
-    } catch (err) {
-      console.log("Không đăng được ticket panel tự động:", err?.message || err);
-    }
-  }
-});
-
-client.on("guildMemberAdd", async (member) => {
-  const welcomeChannelId = getEnvId("WELCOME_CHANNEL_ID");
-  if (!welcomeChannelId) return;
-
-  try {
-    const channel = await member.guild.channels.fetch(welcomeChannelId);
-    if (!channel || channel.type !== ChannelType.GuildText) return;
-
-    const attachment = await buildWelcomeAttachment(member);
-    const memberCount = member.guild.memberCount?.toLocaleString("vi-VN") || "?";
-
-    const embed = new EmbedBuilder()
-      .setColor(0xd4af37)
-      .setTitle("👋 Welcome to Real Roleplay")
-      .setDescription([
-        `Chào mừng ${member} đã đến với **Real Roleplay**!`,
-        `Bạn là cư dân thứ **#${memberCount}** của server.`,
-        "Chúc bạn có những giây phút Roleplay tuyệt vời tại thành phố."
-      ].join("\n"))
-      .setImage("attachment://real-roleplay-welcome.png")
-      .setFooter({ text: "Real Roleplay • Welcome System" })
-      .setTimestamp();
-
-    await channel.send({
-      content: `🎉 Chào mừng ${member} đến với **Real Roleplay**!`,
-      embeds: [embed],
-      files: [attachment],
-      allowedMentions: { users: [member.id] },
-    });
-  } catch (err) {
-    console.log("Không gửi được welcome:", err?.message || err);
-  }
 });
 
 client.on("interactionCreate", async (interaction) => {
@@ -493,6 +413,12 @@ client.on("interactionCreate", async (interaction) => {
     // =========================
     // /THONGBAO COMMAND
     // =========================
+    if (interaction.isChatInputCommand() && interaction.commandName === "ticketpanel") {
+      await interaction.deferReply({ ephemeral: true });
+      await sendTicketPanel(interaction);
+      return;
+    }
+
     if (interaction.isChatInputCommand() && interaction.commandName === "thongbao") {
       await interaction.deferReply({ ephemeral: true });
 
@@ -557,45 +483,25 @@ client.on("interactionCreate", async (interaction) => {
       return;
     }
 
-
-    // =========================
-    // /TICKETPANEL COMMAND
-    // =========================
-    if (interaction.isChatInputCommand() && interaction.commandName === "ticketpanel") {
-      await interaction.deferReply({ ephemeral: true });
-
-      const channel = interaction.options.getChannel("kenh");
-      if (!channel || channel.type !== ChannelType.GuildText) {
-        await interaction.editReply("❌ Kênh không hợp lệ. Chỉ được chọn kênh chữ.");
-        return;
-      }
-
-      await channel.send(makeTicketPanelPayload());
-      await interaction.editReply(`✅ Đã tạo bảng ticket tại ${channel}.`);
-      return;
-    }
-
-    // =========================
-    // TICKET BUTTON / CLOSE
-    // =========================
-    if (interaction.isButton() && ["rr_ticket_support", "rr_ticket_bug"].includes(interaction.customId)) {
-      const type = interaction.customId === "rr_ticket_bug" ? "bug" : "support";
-      await createTicketChannel(interaction, type);
-      return;
-    }
-
-    if (interaction.isButton() && interaction.customId === "rr_ticket_close") {
-      await interaction.reply({ content: "🔒 Ticket sẽ được đóng sau 5 giây.", ephemeral: true });
-      setTimeout(() => {
-        interaction.channel?.delete("Real Roleplay ticket closed").catch(() => null);
-      }, 5000);
-      return;
-    }
-
     // =========================
     // APPROVE / REJECT BUTTON
     // =========================
     if (interaction.isButton()) {
+      if (interaction.customId === "rr_ticket_support") {
+        await createTicketChannel(interaction, "support");
+        return;
+      }
+
+      if (interaction.customId === "rr_ticket_bug") {
+        await createTicketChannel(interaction, "bug");
+        return;
+      }
+
+      if (interaction.customId === "rr_ticket_close") {
+        await closeTicket(interaction);
+        return;
+      }
+
       const parsed = parseWhitelistCustomId(interaction.customId);
 
       if (!parsed || !["approve", "reject"].includes(parsed.action) || !parsed.applicationId) {
