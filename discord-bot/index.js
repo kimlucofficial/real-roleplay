@@ -181,9 +181,9 @@ async function sendWelcomeMessage(member) {
   const embed = new EmbedBuilder()
     .setColor(0xd4af37)
     .setAuthor({ name: "REAL ROLEPLAY", iconURL: member.client.user.displayAvatarURL() })
-    .setTitle("👋 Chào mừng cư dân mới")
+    // .setTitle("<:2177owner:1507012449998475274>  Chào mừng cư dân mới")
     .setDescription([
-      `Chào mừng ${member} đã đến với **Real Roleplay**.`,
+      `<:2177owner:1507012449998475274> Chào mừng ${member} đã đến với **Real Roleplay**.`,
       "",
       memberCount ? `Bạn là cư dân thứ **#${memberCount}** của thành phố.` : "Chúc bạn có những giây phút tuyệt vời tại thành phố.",
       "",
@@ -191,8 +191,8 @@ async function sendWelcomeMessage(member) {
     ].join("\n"))
     .setThumbnail(member.user.displayAvatarURL({ size: 256 }))
     .setImage("attachment://welcome-banner.png")
-    .setFooter({ text: "Real Roleplay • Welcome System" })
-    .setTimestamp();
+    // .setFooter({ text: "Real Roleplay • Welcome System" })
+    // .setTimestamp();
 
   await channel.send({
     content: `${member}`,
@@ -238,7 +238,7 @@ async function sendTicketPanel(interaction) {
       "Vui lòng không spam ticket và mô tả vấn đề rõ ràng để staff xử lý nhanh hơn."
     ].join("\n"))
     // .setFooter({ text: "Real Roleplay • Ticket" })
-    .setTimestamp();
+    // .setTimestamp();
 
   const row = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
