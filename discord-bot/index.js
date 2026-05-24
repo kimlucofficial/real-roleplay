@@ -11,6 +11,7 @@ import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   ChannelType,
+  AttachmentBuilder,
 } from "discord.js";
 
 import { getDb } from "../lib/db.js";
@@ -161,6 +162,45 @@ function truncateText(value = "", max = 900) {
   return `${text.slice(0, max - 3)}...`;
 }
 
+
+
+
+async function sendWelcomeMessage(member) {
+  const channelId = process.env.WELCOME_CHANNEL_ID;
+  if (!channelId) return;
+
+  const channel = await member.guild.channels.fetch(channelId).catch(() => null);
+  if (!channel || channel.type !== ChannelType.GuildText) {
+    console.log("WELCOME_CHANNEL_ID không hợp lệ hoặc không phải kênh chữ.");
+    return;
+  }
+
+  const memberCount = member.guild.memberCount || (await member.guild.members.fetch().then((m) => m.size).catch(() => null));
+  const bannerFile = new AttachmentBuilder("./public/welcome-banner.png", { name: "welcome-banner.png" });
+
+  const embed = new EmbedBuilder()
+    .setColor(0xd4af37)
+    .setAuthor({ name: "REAL ROLEPLAY", iconURL: member.client.user.displayAvatarURL() })
+    .setTitle("👋 Chào mừng cư dân mới")
+    .setDescription([
+      `Chào mừng ${member} đã đến với **Real Roleplay**.`,
+      "",
+      memberCount ? `Bạn là cư dân thứ **#${memberCount}** của thành phố.` : "Chúc bạn có những giây phút tuyệt vời tại thành phố.",
+      "",
+      "Vui lòng đọc luật server và hoàn tất các bước cần thiết trước khi vào RP."
+    ].join("\n"))
+    .setThumbnail(member.user.displayAvatarURL({ size: 256 }))
+    .setImage("attachment://welcome-banner.png")
+    .setFooter({ text: "Real Roleplay • Welcome System" })
+    .setTimestamp();
+
+  await channel.send({
+    content: `${member}`,
+    embeds: [embed],
+    files: [bannerFile],
+    allowedMentions: { users: [member.id] },
+  });
+}
 
 function sanitizeChannelName(value = "ticket") {
   return String(value)
@@ -407,6 +447,15 @@ async function updateApplication(applicationId, status, reason) {
 client.once("ready", async () => {
   console.log(`✅ Discord bot online: ${client.user.tag}`);
   await registerSlashCommands();
+});
+
+
+client.on("guildMemberAdd", async (member) => {
+  try {
+    await sendWelcomeMessage(member);
+  } catch (err) {
+    console.error("Lỗi welcome:", err?.message || err);
+  }
 });
 
 client.on("interactionCreate", async (interaction) => {
