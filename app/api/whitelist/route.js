@@ -7,9 +7,9 @@ function countWords(text = '') {
   return text.trim().split(/\s+/).filter(Boolean).length;
 }
 
-function validateWordRange(text, minWords = 50) {
+function validateWordRange(text, minWords = 300) {
   const words = countWords(text);
-  return words >= minWords && words <= 300;
+  return words >= minWords && words <= 2000;
 }
 
 export async function POST(req) {
