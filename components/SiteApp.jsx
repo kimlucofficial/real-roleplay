@@ -587,11 +587,11 @@ function countWords(text) {
   return text.trim().split(/\s+/).filter(Boolean).length;
 }
 
-function getWordError(value, minWords = 50) {
+function getWordError(value, minWords = 300) {
   const words = countWords(value);
   if (words === 0) return '';
   if (words < minWords) return `Ít nhất ${minWords} chữ`;
-  if (words > 300) return 'Tối đa 300 chữ';
+  if (words > 2000) return 'Tối đa 2000 chữ';
   return '';
 }
 
@@ -602,7 +602,7 @@ const WhitelistApplicationModal = memo(function WhitelistApplicationModal({ onCl
   const [message, setMessage] = useState('');
 
   const backstoryWords = useMemo(() => countWords(form.backstory), [form.backstory]);
-  const backstoryError = useMemo(() => getWordError(form.backstory, 50), [form.backstory]);
+  const backstoryError = useMemo(() => getWordError(form.backstory, 300), [form.backstory]);
 
   const onChange = useCallback((e) => {
     const { name, value } = e.target;
@@ -610,7 +610,7 @@ const WhitelistApplicationModal = memo(function WhitelistApplicationModal({ onCl
       ? value.replace(restrictedWhitelistFields[name], '')
       : value;
 
-    if (wordLimitedWhitelistFields.has(name) && countWords(cleanValue) > 300) return;
+    if (wordLimitedWhitelistFields.has(name) && countWords(cleanValue) > 2000) return;
 
     setForm((prev) => {
       if (prev[name] === cleanValue) return prev;
