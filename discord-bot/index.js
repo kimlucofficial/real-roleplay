@@ -91,12 +91,12 @@ const announcementCommand = new SlashCommandBuilder()
       .setDescription("Màu thanh bên trái của embed")
       .setRequired(false)
       .addChoices(
-        { name: "🟡 Vàng Gold", value: "gold" },
-        { name: "🟢 Xanh Lá", value: "green" },
-        { name: "🔴 Đỏ", value: "red" },
-        { name: "🔵 Xanh Dương", value: "blue" },
-        { name: "🟣 Tím", value: "purple" },
-        { name: "⚫ Đen", value: "dark" }
+        { name: "Vàng Gold", value: "gold" },
+        { name: "Xanh Lá", value: "green" },
+        { name: "Đỏ", value: "red" },
+        { name: "Xanh Dương", value: "blue" },
+        { name: "Tím", value: "purple" },
+        { name: "Đen", value: "dark" }
       )
   )
   .addBooleanOption((option) =>
