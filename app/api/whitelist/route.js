@@ -41,9 +41,9 @@ export async function POST(req) {
       return Response.json({ error: 'Tuổi phải là số hợp lệ và từ 16 trở lên.' }, { status: 400 });
     }
 
-    if (!validateWordRange(body.backstory, 50)) {
-      return Response.json({ error: 'Tiểu sử nhân vật phải từ 50 đến 300 chữ.' }, { status: 400 });
-    }
+   if (!validateWordRange(body.backstory)) {
+  return Response.json({ error: 'Tiểu sử nhân vật phải từ 300 đến 2000 chữ.' }, { status: 400 });
+}
 
     const characterName = String(body.short_description || '').trim();
     if (!/^[a-zA-Z\s]+$/.test(characterName)) {
