@@ -3,7 +3,7 @@ export const countWords = (text) =>
 
 export const validateDefault = (text) => {
   const words = countWords(text);
-  if (words < 300) return "Tối thiểu 300 Từ";
+  if (words < 200) return "Tối thiểu 200 Từ";
   if (words > 2000) return "Tối đa 2000 Ký tự";
   return "";
 };
