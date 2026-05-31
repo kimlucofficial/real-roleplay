@@ -356,7 +356,7 @@ async function sendResultDm(discordId, status, reason) {
   if (!isValidSnowflake(discordId)) return false;
 
   const approved = status === "approved";
-  const safeReason = truncateText(reason || "Không có ghi chú.");
+  const safeReason = truncateText(reason || "Không có ghi chú.", 1000);
 
   const embed = new EmbedBuilder()
     .setColor(approved ? 0xd4af37 : 0xb91c1c)
@@ -624,7 +624,7 @@ client.on("interactionCreate", async (interaction) => {
               },
               {
                 name: "📝 Lý do",
-                value: reason,
+                value: truncateText(reason, 1000),
                 inline: false,
               },
               {

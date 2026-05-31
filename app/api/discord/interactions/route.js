@@ -165,8 +165,8 @@ async function processWhitelistResult(interaction) {
               {
                 title: status === 'approved' ? '🎉 WHITELIST APPROVED' : '❌ WHITELIST REJECTED',
                 description: status === 'approved'
-                  ? `Bạn đã được duyệt vào server.\n\n📌 Lý do:\n${reason || 'Không có lý do.'}`
-                  : `Đơn whitelist của bạn đã bị từ chối.\n\n📌 Lý do:\n${reason || 'Không có lý do.'}`,
+                  ? `Bạn đã được duyệt vào server.\n\n📌 Lý do:\n${String(reason || 'Không có lý do.').slice(0, 3500)}`
+                  : `Đơn whitelist của bạn đã bị từ chối.\n\n📌 Lý do:\n${String(reason || 'Không có lý do.').slice(0, 3500)}`,
                 color: status === 'approved' ? 0x00ff00 : 0xff0000
               }
             ]
@@ -192,25 +192,11 @@ async function processWhitelistResult(interaction) {
 }
 
 
-export async function GET(req) {
-  console.log('[discord interactions] GET healthcheck HIT', {
-    url: req.url,
-    hasPublicKey: Boolean(process.env.DISCORD_PUBLIC_KEY),
-    hasBotToken: Boolean(process.env.DISCORD_BOT_TOKEN),
-    hasDatabaseUrl: Boolean(process.env.DATABASE_URL),
-    hasWhitelistRoleId: Boolean(process.env.WHITELIST_ROLE_ID)
-  });
-
+export async function GET() {
   return Response.json({
     ok: true,
     route: '/api/discord/interactions',
-    message: 'Discord interactions route is deployed and reachable.',
-    env: {
-      DISCORD_PUBLIC_KEY: Boolean(process.env.DISCORD_PUBLIC_KEY),
-      DISCORD_BOT_TOKEN: Boolean(process.env.DISCORD_BOT_TOKEN),
-      DATABASE_URL: Boolean(process.env.DATABASE_URL),
-      WHITELIST_ROLE_ID: Boolean(process.env.WHITELIST_ROLE_ID)
-    }
+    message: 'Discord interactions route is deployed and reachable.'
   });
 }
 

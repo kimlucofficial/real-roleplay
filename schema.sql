@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS whitelist_applications (
   rp_experience VARCHAR(120) NOT NULL,
   online_time VARCHAR(120) NOT NULL,
   source VARCHAR(120) NOT NULL,
-  short_description TEXT NOT NULL,
+  short_description VARCHAR(80) NOT NULL,
   backstory LONGTEXT NOT NULL,
   why_join TEXT NOT NULL,
   status ENUM('pending','review','approved','rejected') NOT NULL DEFAULT 'pending',
@@ -19,5 +19,6 @@ CREATE TABLE IF NOT EXISTS whitelist_applications (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_discord_id (discord_id),
-  INDEX idx_status (status)
+  INDEX idx_status (status),
+  INDEX idx_created_at (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

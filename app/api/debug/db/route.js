@@ -1,9 +1,16 @@
+import { getServerSession } from 'next-auth';
+import { authOptions, isAdminDiscordId } from '@/lib/auth';
 import { testDbConnection } from '@/lib/db';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.discordId || !isAdminDiscordId(session.user.discordId)) {
+    return Response.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
   const startedAt = Date.now();
   try {
     const ok = await testDbConnection();
@@ -13,20 +20,15 @@ export async function GET() {
       message: err?.message,
       code: err?.code,
       errno: err?.errno,
-      sqlState: err?.sqlState,
-      sqlMessage: err?.sqlMessage,
-      stack: err?.stack
+      sqlState: err?.sqlState
     });
 
     return Response.json({
       ok: false,
       ms: Date.now() - startedAt,
       error: {
-        message: err?.message,
-        code: err?.code,
-        errno: err?.errno,
-        sqlState: err?.sqlState,
-        sqlMessage: err?.sqlMessage
+        message: 'Database healthcheck failed',
+        code: err?.code || 'UNKNOWN'
       }
     }, { status: 500 });
   }

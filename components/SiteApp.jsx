@@ -577,11 +577,11 @@ const restrictedWhitelistFields = {
   full_name: /[^\p{L}\s]/gu,
   age: /[^0-9]/g,
   rp_experience: /[^\p{L}\s]/gu,
-  online_time: /[^\p{L}\s]/gu,
+  online_time: /[^\p{L}\s0-9/:.,\-]/gu,
   short_description: /[^a-zA-Z\s]/g
 };
 
-const wordLimitedWhitelistFields = new Set(['backstory', 'why_join']);
+const wordLimitedWhitelistFields = new Set(['backstory']);
 
 function countWords(text) {
   return text.trim().split(/\s+/).filter(Boolean).length;
@@ -611,6 +611,7 @@ const WhitelistApplicationModal = memo(function WhitelistApplicationModal({ onCl
       : value;
 
     if (wordLimitedWhitelistFields.has(name) && countWords(cleanValue) > 2000) return;
+    if (name === 'why_join' && cleanValue.length > 2000) return;
 
     setForm((prev) => {
       if (prev[name] === cleanValue) return prev;
@@ -624,19 +625,37 @@ const WhitelistApplicationModal = memo(function WhitelistApplicationModal({ onCl
     setMessage('');
 
     if (!/^[\p{L}\s]+$/u.test(form.full_name.trim())) {
-      setMessage('Họ và tên.');
+      setMessage('Họ và tên chỉ được ghi chữ, có thể dùng dấu tiếng Việt, không dùng số/ký tự đặc biệt.');
       setLoading(false);
       return;
     }
 
     if (!/^[\p{L}\s]+$/u.test(form.rp_experience.trim())) {
-      setMessage('Giới tính.');
+      setMessage('Giới tính chỉ được ghi bằng chữ, không dùng số/ký tự đặc biệt.');
       setLoading(false);
       return;
     }
 
-    if (!/^[\p{L}\s]+$/u.test(form.online_time.trim())) {
-      setMessage('Khung giờ online chỉ được ghi bằng chữ, không dùng số/ký tự đặc biệt.');
+    if (!/^[\p{L}\s0-9/:.,\-]+$/u.test(form.online_time.trim())) {
+      setMessage('Khung giờ online chỉ được dùng chữ, số, khoảng trắng và các ký tự / : . , -');
+      setLoading(false);
+      return;
+    }
+
+    if (form.full_name.trim().length > 120 || form.rp_experience.trim().length > 120 || form.online_time.trim().length > 120) {
+      setMessage('Họ tên, giới tính và khung giờ online tối đa 120 ký tự.');
+      setLoading(false);
+      return;
+    }
+
+    if (form.short_description.trim().length > 80) {
+      setMessage('Tên nhân vật tối đa 80 ký tự.');
+      setLoading(false);
+      return;
+    }
+
+    if (form.why_join.trim().length > 2000) {
+      setMessage('Cam kết luật server tối đa 2000 ký tự.');
       setLoading(false);
       return;
     }
@@ -647,8 +666,8 @@ const WhitelistApplicationModal = memo(function WhitelistApplicationModal({ onCl
       return;
     }
 
-    if (getWordError(form.backstory, 50)) {
-      setMessage('Tiểu sử nhân vật phải từ 50 đến 300 chữ.');
+    if (getWordError(form.backstory, 300)) {
+      setMessage('Tiểu sử nhân vật phải từ 300 đến 2000 chữ.');
       setLoading(false);
       return;
     }
@@ -659,9 +678,11 @@ const WhitelistApplicationModal = memo(function WhitelistApplicationModal({ onCl
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Submit failed');
-      setMessage('Đơn whitelist đã được gửi thành công.');
+      setMessage(data.discordNotified === false
+        ? 'Đơn whitelist đã được lưu thành công, nhưng Discord chưa nhận thông báo. Staff vẫn xem được trong dashboard.'
+        : 'Đơn whitelist đã được gửi thành công.');
       setForm(INITIAL_WHITELIST_FORM);
     } catch (err) {
       setMessage(err.message || 'Có lỗi xảy ra.');
@@ -675,9 +696,9 @@ const WhitelistApplicationModal = memo(function WhitelistApplicationModal({ onCl
       <div className="rr-whitelist-modal-backdrop" onClick={onClose} />
       <div className="rr-whitelist-dashboard">
         <button className="rr-whitelist-close" type="button" onClick={onClose} aria-label="Đóng form whitelist">×</button>
-        <section className="section section-tight rr-whitelist-modal-section" style={{ position: 'relative' }}><div className="container whitelist-grid"><Panel><div className="panel-body"><Label>Admission note</Label><h2 className="section-title" style={{ marginTop: 12 }}>Before You Apply</h2><p className="section-sub" style={{ marginTop: 18 }}>Người được chấp nhận không chỉ là người trả lời đủ câu hỏi. Đó là người cho thấy mình hiểu roleplay, hiểu cộng đồng và có khả năng xây một nhân vật đáng nhớ.</p><div className="panel-stack">{[['Character First', 'Nhân vật cần có động lực, tính cách và mục tiêu rõ ràng.'], ['Serious Entry', 'Chỉ người chơi phù hợp mới được bước vào.'], ['Manual Review', 'Từng hồ sơ được xem xét cẩn thận thay vì auto accept.']].map(([a, b]) => <div className="info-tile" key={a}><div className="info-title">{a}</div><div className="info-text">{b}</div></div>)}</div></div></Panel><Panel><div className="panel-body"><div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: 16 }}><div><Label>Application form</Label><h3 className="section-title" style={{ fontSize: '2.6rem', marginTop: 12 }}>Submit Your Application</h3><p className="section-sub" style={{ marginTop: 12 }}>Trả lời nghiêm túc. Đây là lần đầu tiên thành phố đọc câu chuyện của bạn.</p></div><div className="badge"><BadgeCheck size={14} style={{ marginRight: 8 }} /> verified</div></div>{status !== 'authenticated' ? (<div className="form-note" style={{ marginTop: 24 }}>Bạn cần đăng nhập bằng Discord trước khi nộp whitelist.<div style={{ marginTop: 16 }}><button className="btn-primary" onClick={() => signIn('discord')}>LOGIN WITH DISCORD</button></div></div>) : (<><div className="form-note" style={{ marginTop: 24 }}>Đăng nhập với: <strong style={{ color: '#fff' }}>{session?.user?.globalName || session?.user?.name}</strong><button type="button" style={{ marginLeft: 12, border: 0, background: 'transparent', color: '#f4c53a', fontWeight: 700 }} onClick={() => signOut()}>Đổi tài khoản</button></div><form onSubmit={submit}><div className="form-grid-2" style={{ marginTop: 18 }}><input className="input" name="full_name" value={form.full_name} onChange={onChange} placeholder="Họ và tên" inputMode="text" autoComplete="name" required /><input className="input" value={session?.user?.username || ''} disabled placeholder="Discord username" /></div><div className="form-grid-2" style={{ marginTop: 14 }}><input className="input" name="age" type="text" inputMode="numeric" value={form.age} onChange={onChange} placeholder="Tuổi" autoComplete="off" required /><input className="input" name="rp_experience" value={form.rp_experience} onChange={onChange} placeholder="Giới tính của bạn" required /></div><div className="form-grid-2" style={{ marginTop: 14 }}><input className="input" name="online_time" value={form.online_time} onChange={onChange} placeholder="Khung giờ online (Sáng / Trưa / Chiều / Tối)" required /><div className="source-lock"><div className="eyebrow">Kiểm Soát Chất Lượng</div><div className="source-lock-value">Real Roleplay</div><div className="source-lock-note">Hồ sơ whitelist được kiểm duyệt thủ công để giữ chất lượng nhập vai cho cộng đồng.</div></div></div><input type="hidden" name="source" value={form.source} /><div className="field-wrap" style={{ marginTop: 14 }}><textarea className="textarea" name="short_description" value={form.short_description} onChange={onChange} placeholder={`Tên Nhân Vật Của Bạn: ( Lưu ý: Tên phải rõ ràng bao gồm Họ và Tên. Các tên đặt không đúng theo Họ và Tên mà sử dụng các từ biệt danh hoặc không có ý nghĩa sẽ không được chấp nhận.
+        <section className="section section-tight rr-whitelist-modal-section" style={{ position: 'relative' }}><div className="container whitelist-grid"><Panel><div className="panel-body"><Label>Admission note</Label><h2 className="section-title" style={{ marginTop: 12 }}>Before You Apply</h2><p className="section-sub" style={{ marginTop: 18 }}>Người được chấp nhận không chỉ là người trả lời đủ câu hỏi. Đó là người cho thấy mình hiểu roleplay, hiểu cộng đồng và có khả năng xây một nhân vật đáng nhớ.</p><div className="panel-stack">{[['Character First', 'Nhân vật cần có động lực, tính cách và mục tiêu rõ ràng.'], ['Serious Entry', 'Chỉ người chơi phù hợp mới được bước vào.'], ['Manual Review', 'Từng hồ sơ được xem xét cẩn thận thay vì auto accept.']].map(([a, b]) => <div className="info-tile" key={a}><div className="info-title">{a}</div><div className="info-text">{b}</div></div>)}</div></div></Panel><Panel><div className="panel-body"><div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: 16 }}><div><Label>Application form</Label><h3 className="section-title" style={{ fontSize: '2.6rem', marginTop: 12 }}>Submit Your Application</h3><p className="section-sub" style={{ marginTop: 12 }}>Trả lời nghiêm túc. Đây là lần đầu tiên thành phố đọc câu chuyện của bạn.</p></div><div className="badge"><BadgeCheck size={14} style={{ marginRight: 8 }} /> verified</div></div>{status !== 'authenticated' ? (<div className="form-note" style={{ marginTop: 24 }}>Bạn cần đăng nhập bằng Discord trước khi nộp whitelist.<div style={{ marginTop: 16 }}><button className="btn-primary" onClick={() => signIn('discord')}>LOGIN WITH DISCORD</button></div></div>) : (<><div className="form-note" style={{ marginTop: 24 }}>Đăng nhập với: <strong style={{ color: '#fff' }}>{session?.user?.globalName || session?.user?.name}</strong><button type="button" style={{ marginLeft: 12, border: 0, background: 'transparent', color: '#f4c53a', fontWeight: 700 }} onClick={() => signOut()}>Đổi tài khoản</button></div><form onSubmit={submit}><div className="form-grid-2" style={{ marginTop: 18 }}><input className="input" name="full_name" maxLength={120} value={form.full_name} onChange={onChange} placeholder="Họ và tên" inputMode="text" autoComplete="name" required /><input className="input" value={session?.user?.username || ''} disabled placeholder="Discord username" /></div><div className="form-grid-2" style={{ marginTop: 14 }}><input className="input" name="age" type="text" inputMode="numeric" maxLength={3} value={form.age} onChange={onChange} placeholder="Tuổi" autoComplete="off" required /><input className="input" name="rp_experience" maxLength={120} value={form.rp_experience} onChange={onChange} placeholder="Giới tính của bạn" required /></div><div className="form-grid-2" style={{ marginTop: 14 }}><input className="input" name="online_time" maxLength={120} value={form.online_time} onChange={onChange} placeholder="Khung giờ online (Sáng / Trưa / Chiều / Tối)" required /><div className="source-lock"><div className="eyebrow">Kiểm Soát Chất Lượng</div><div className="source-lock-value">Real Roleplay</div><div className="source-lock-note">Hồ sơ whitelist được kiểm duyệt thủ công để giữ chất lượng nhập vai cho cộng đồng.</div></div></div><input type="hidden" name="source" value={form.source} /><div className="field-wrap" style={{ marginTop: 14 }}><textarea className="textarea" name="short_description" maxLength={80} value={form.short_description} onChange={onChange} placeholder={`Tên Nhân Vật Của Bạn: ( Lưu ý: Tên phải rõ ràng bao gồm Họ và Tên. Các tên đặt không đúng theo Họ và Tên mà sử dụng các từ biệt danh hoặc không có ý nghĩa sẽ không được chấp nhận.
 Ví dụ hợp lệ: Michael De Santa, Trevor Philips.
-Không hợp lệ: Nguyễn Văn A, Mr Tý, Em Tèo Cute, tên có dấu hoặc biệt danh.)`} required /><div className="field-meta"><span>TÊN NHÂN VẬT KHÔNG DẤU, CÓ HỌ VÀ TÊN</span><span></span></div></div><div className="field-wrap" style={{ marginTop: 14 }}><textarea className="textarea long" name="backstory" value={form.backstory} onChange={onChange} placeholder="Tiểu sử nhân vật của bạn: Tiểu sử phải ghi rõ quá khứ, tính cách, xuất thân nhân vật và có định hướng tương lai. Nhân vật phải bám sát vào tiểu sử, chúng tôi sẽ đối chiếu hành vi trong tương lai với tiểu sử của bạn." required /><div className="field-meta"><span>{backstoryWords} / 2000 chữ</span><span>Tối thiểu 300 chữ</span></div>{backstoryError && <div className="field-error">{backstoryError}</div>}</div><div className="field-wrap" style={{ marginTop: 14 }}><textarea className="textarea" name="why_join" value={form.why_join} onChange={onChange} placeholder="Bạn có đồng ý sẽ tuân thủ và chấp hành luật server hay không? Việc vi phạm luật nghiêm trọng sẽ dẫn đến việc bạn bị mất whitelist mà không cần báo trước!" required /><div className="field-meta"><span>Vui lòng trả lời rõ: Đồng ý / Không đồng ý</span><span>Cam kết tuân thủ luật server</span></div></div><div className="form-note">Đơn whitelist sẽ được đội ngũ staff kiểm tra thủ công. Hãy coi đây là bước giới thiệu bản thân với thành phố, không chỉ là một form để điền cho xong.</div>{message && <div className="form-note" style={{ color: message.includes('thành công') ? '#fde68a' : '#fca5a5' }}>{message}</div>}<button type="submit" className="btn-full" disabled={loading} style={{ marginTop: 18 }}>{loading ? 'SUBMITTING...' : 'ĐĂNG KÝ WL'}</button></form></>)}</div></Panel></div></section>
+Không hợp lệ: Nguyễn Văn A, Mr Tý, Em Tèo Cute, tên có dấu hoặc biệt danh.)`} required /><div className="field-meta"><span>TÊN NHÂN VẬT KHÔNG DẤU, CÓ HỌ VÀ TÊN</span><span></span></div></div><div className="field-wrap" style={{ marginTop: 14 }}><textarea className="textarea long" name="backstory" value={form.backstory} onChange={onChange} placeholder="Tiểu sử nhân vật của bạn: Tiểu sử phải ghi rõ quá khứ, tính cách, xuất thân nhân vật và có định hướng tương lai. Nhân vật phải bám sát vào tiểu sử, chúng tôi sẽ đối chiếu hành vi trong tương lai với tiểu sử của bạn." required /><div className="field-meta"><span>{backstoryWords} / 2000 chữ</span><span>Tối thiểu 300 chữ</span></div>{backstoryError && <div className="field-error">{backstoryError}</div>}</div><div className="field-wrap" style={{ marginTop: 14 }}><textarea className="textarea" name="why_join" maxLength={2000} value={form.why_join} onChange={onChange} placeholder="Bạn có đồng ý sẽ tuân thủ và chấp hành luật server hay không? Việc vi phạm luật nghiêm trọng sẽ dẫn đến việc bạn bị mất whitelist mà không cần báo trước!" required /><div className="field-meta"><span>Vui lòng trả lời rõ: Đồng ý / Không đồng ý</span><span>Cam kết tuân thủ luật server</span></div></div><div className="form-note">Đơn whitelist sẽ được đội ngũ staff kiểm tra thủ công. Hãy coi đây là bước giới thiệu bản thân với thành phố, không chỉ là một form để điền cho xong.</div>{message && <div className="form-note" style={{ color: message.includes('thành công') ? '#fde68a' : '#fca5a5' }}>{message}</div>}<button type="submit" className="btn-full" disabled={loading} style={{ marginTop: 18 }}>{loading ? 'SUBMITTING...' : 'ĐĂNG KÝ WL'}</button></form></>)}</div></Panel></div></section>
       </div>
     </div>
   );
