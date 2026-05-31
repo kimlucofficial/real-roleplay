@@ -1,6 +1,6 @@
 -- Real Roleplay database schema
--- Dùng 1 database duy nhất: defaultdb trên Aiven.
--- Trong DBeaver: connect vào defaultdb rồi chạy file này.
+-- Dùng MySQL trên Railway.
+-- Trong Railway Query tab hoặc DBeaver/MySQL Workbench: connect vào database railway rồi chạy file này.
 
 CREATE TABLE IF NOT EXISTS whitelist_applications (
   id INT AUTO_INCREMENT PRIMARY KEY,

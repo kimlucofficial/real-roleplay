@@ -100,13 +100,13 @@ export async function POST(req) {
     safeError('[whitelist] submit failed', error);
 
     if (error?.code === 'ER_DATA_TOO_LONG') {
-      return jsonError('Một ô nhập đang vượt giới hạn database. Vui lòng kiểm tra lại độ dài các thông tin.', 400);
+      return jsonError('Một ô nhập đang vượt giới hạn. Vui lòng kiểm tra lại độ dài các thông tin.', 400);
     }
 
     if (['PROTOCOL_CONNECTION_LOST', 'ECONNRESET', 'ETIMEDOUT', 'ENOTFOUND', 'ECONNREFUSED'].includes(error?.code)) {
-      return jsonError('Database đang mất kết nối hoặc timeout. Vui lòng báo staff kiểm tra hosting/Aiven.', 503);
+      return jsonError('Database đang mất kết nối hoặc timeout. Vui lòng báo staff kiểm tra.', 503);
     }
 
-    return jsonError('Không thể gửi whitelist lúc này. Vui lòng báo staff kiểm tra log website/database.', 500);
+    return jsonError('Không thể gửi whitelist lúc này. Vui lòng báo staff kiểm tra.', 500);
   }
 }
