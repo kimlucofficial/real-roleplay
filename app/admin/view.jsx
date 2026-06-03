@@ -82,7 +82,7 @@ export default function AdminClient() {
                 </thead>
                 <tbody>
                   {rows.map((row) => (
-                    <tr key={row.id}>
+                    <tr key={row.id} id={`application-${row.id}`}>
                       <td>
                         <strong>{row.full_name}</strong>
                         <div style={{ marginTop: 6, color: '#a1a1aa' }}>{row.discord_username}</div>
