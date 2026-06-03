@@ -14,7 +14,7 @@ export async function GET() {
 
     const db = getDb();
     const [rows] = await db.query(
-      `SELECT id, discord_id, discord_username, full_name, age, rp_experience, online_time, source, short_description, backstory, why_join, status, staff_note, created_at, updated_at
+      `SELECT id, discord_id, discord_username, full_name, age, rp_experience, online_time, source, short_description, backstory, why_join, status, staff_note, created_at, NULL AS updated_at
        FROM whitelist_applications
        ORDER BY created_at DESC
        LIMIT 300`
