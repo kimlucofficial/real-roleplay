@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth';
-import { authOptions, isAdminDiscordId } from '@/lib/auth';
+import { authOptions, isAdminSession } from '@/lib/auth';
 import { testDbConnection } from '@/lib/db';
 
 export const runtime = 'nodejs';
@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const session = await getServerSession(authOptions);
-  if (!session?.user?.discordId || !isAdminDiscordId(session.user.discordId)) {
+  if (!(await isAdminSession(session))) {
     return Response.json({ error: 'Forbidden' }, { status: 403 });
   }
 
@@ -27,8 +27,10 @@ export async function GET() {
       ok: false,
       ms: Date.now() - startedAt,
       error: {
-        message: 'Database healthcheck failed',
-        code: err?.code || 'UNKNOWN'
+        message: err?.message || 'Database healthcheck failed',
+        code: err?.code || 'UNKNOWN',
+        errno: err?.errno || null,
+        sqlState: err?.sqlState || null
       }
     }, { status: 500 });
   }
